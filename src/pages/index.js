@@ -1,114 +1,406 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
-
-const inter = Inter({ subsets: ['latin'] })
+import Head from "next/head";
+// import Image from "next/image";
+import styles from "@/styles/Home.module.css";
+import { useEffect, useState } from "react";
+import EpisodeDetails from "@/components/EpisodeDetails";
+import { ColorRing } from "react-loader-spinner";
 
 export default function Home() {
+  const [episodeData, setEpisodeData] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [validLink, setValidLink] = useState(null);
+
+  const dummyData = {
+    audio_preview_url:
+      "https://podz-content.spotifycdn.com/audio/clips/61Q4EZuIfZXVSB6QlXOD3C/clip_570300_620500.mp3",
+    description:
+      "Sabbaticals have long been thought of as an academic privilege, but a growing number of companies offer them, especially since the pandemic. DJ DiDonna, a senior lecturer at Harvard Business School and founder of The Sabbatical Project, has interviewed hundreds of workers who’ve taken them and studied organizations that offer them. From his research and his own experience on a sabbatical, DiDonna shares the surprising impacts that extended time off—paid or unpaid—can have on workers, teams, and the overall organization. And he explains how organizations can make sabbaticals work both financially and culturally.",
+    duration_ms: 1605433,
+    explicit: false,
+    external_urls: {
+      spotify: "https://open.spotify.com/episode/6BaFiYI847M9d10CUwkHFF",
+    },
+    href: "https://api.spotify.com/v1/episodes/6BaFiYI847M9d10CUwkHFF",
+    html_description:
+      "Sabbaticals have long been thought of as an academic privilege, but a growing number of companies offer them, especially since the pandemic. DJ DiDonna, a senior lecturer at Harvard Business School and founder of The Sabbatical Project, has interviewed hundreds of workers who’ve taken them and studied organizations that offer them. From his research and his own experience on a sabbatical, DiDonna shares the surprising impacts that extended time off—paid or unpaid—can have on workers, teams, and the overall organization. And he explains how organizations can make sabbaticals work both financially and culturally.",
+    id: "6BaFiYI847M9d10CUwkHFF",
+    images: [
+      {
+        height: 640,
+        url: "https://i.scdn.co/image/ab6765630000ba8a2c2f2ab953bf8bf8c6a817ea",
+        width: 640,
+      },
+      {
+        height: 300,
+        url: "https://i.scdn.co/image/ab67656300005f1f2c2f2ab953bf8bf8c6a817ea",
+        width: 300,
+      },
+      {
+        height: 64,
+        url: "https://i.scdn.co/image/ab6765630000f68d2c2f2ab953bf8bf8c6a817ea",
+        width: 64,
+      },
+    ],
+    is_externally_hosted: false,
+    is_playable: true,
+    language: "en",
+    languages: ["en"],
+    name: "Why More Companies Should Have a Sabbatical Policy",
+    release_date: "2023-06-06",
+    release_date_precision: "day",
+    show: {
+      available_markets: [
+        "AD",
+        "AE",
+        "AG",
+        "AL",
+        "AM",
+        "AO",
+        "AR",
+        "AT",
+        "AU",
+        "AZ",
+        "BA",
+        "BB",
+        "BE",
+        "BF",
+        "BG",
+        "BH",
+        "BI",
+        "BJ",
+        "BN",
+        "BO",
+        "BR",
+        "BS",
+        "BT",
+        "BW",
+        "BZ",
+        "CA",
+        "CH",
+        "CI",
+        "CL",
+        "CM",
+        "CO",
+        "CR",
+        "CV",
+        "CW",
+        "CY",
+        "CZ",
+        "DE",
+        "DJ",
+        "DK",
+        "DM",
+        "DO",
+        "DZ",
+        "EC",
+        "EE",
+        "EG",
+        "ES",
+        "FI",
+        "FJ",
+        "FM",
+        "FR",
+        "GA",
+        "GB",
+        "GD",
+        "GE",
+        "GH",
+        "GM",
+        "GN",
+        "GQ",
+        "GR",
+        "GT",
+        "GW",
+        "GY",
+        "HK",
+        "HN",
+        "HR",
+        "HT",
+        "HU",
+        "ID",
+        "IE",
+        "IL",
+        "IN",
+        "IS",
+        "IT",
+        "JM",
+        "JO",
+        "JP",
+        "KE",
+        "KH",
+        "KI",
+        "KM",
+        "KN",
+        "KR",
+        "KW",
+        "LA",
+        "LB",
+        "LC",
+        "LI",
+        "LR",
+        "LS",
+        "LT",
+        "LU",
+        "LV",
+        "MA",
+        "MC",
+        "ME",
+        "MG",
+        "MH",
+        "MK",
+        "ML",
+        "MN",
+        "MO",
+        "MR",
+        "MT",
+        "MU",
+        "MV",
+        "MW",
+        "MX",
+        "MY",
+        "MZ",
+        "NA",
+        "NE",
+        "NG",
+        "NI",
+        "NL",
+        "NO",
+        "NP",
+        "NR",
+        "NZ",
+        "OM",
+        "PA",
+        "PE",
+        "PG",
+        "PH",
+        "PL",
+        "PS",
+        "PT",
+        "PW",
+        "PY",
+        "QA",
+        "RO",
+        "RS",
+        "RW",
+        "SA",
+        "SB",
+        "SC",
+        "SE",
+        "SG",
+        "SI",
+        "SK",
+        "SL",
+        "SM",
+        "SN",
+        "SR",
+        "ST",
+        "SV",
+        "SZ",
+        "TD",
+        "TG",
+        "TH",
+        "TL",
+        "TN",
+        "TO",
+        "TR",
+        "TT",
+        "TV",
+        "TW",
+        "TZ",
+        "UA",
+        "US",
+        "UY",
+        "UZ",
+        "VC",
+        "VN",
+        "VU",
+        "WS",
+        "XK",
+        "ZA",
+        "ZM",
+        "ZW",
+      ],
+      copyrights: [],
+      description:
+        "A weekly podcast featuring the leading thinkers in business and management.",
+      explicit: false,
+      external_urls: {
+        spotify: "https://open.spotify.com/show/4gtSBBxIAE142ApX6LqsvN",
+      },
+      href: "https://api.spotify.com/v1/shows/4gtSBBxIAE142ApX6LqsvN",
+      html_description:
+        "A weekly podcast featuring the leading thinkers in business and management.",
+      id: "4gtSBBxIAE142ApX6LqsvN",
+      images: [
+        {
+          height: 640,
+          url: "https://i.scdn.co/image/ab6765630000ba8a2c2f2ab953bf8bf8c6a817ea",
+          width: 640,
+        },
+        {
+          height: 300,
+          url: "https://i.scdn.co/image/ab67656300005f1f2c2f2ab953bf8bf8c6a817ea",
+          width: 300,
+        },
+        {
+          height: 64,
+          url: "https://i.scdn.co/image/ab6765630000f68d2c2f2ab953bf8bf8c6a817ea",
+          width: 64,
+        },
+      ],
+      is_externally_hosted: false,
+      languages: ["en"],
+      media_type: "audio",
+      name: "HBR IdeaCast",
+      publisher: "Harvard Business Review",
+      total_episodes: 648,
+      type: "show",
+      uri: "spotify:show:4gtSBBxIAE142ApX6LqsvN",
+    },
+    type: "episode",
+    uri: "spotify:episode:6BaFiYI847M9d10CUwkHFF",
+  };
+
+  const ErrorComponent = ({ error }) => {
+    return (
+      <div
+        style={{
+          backgroundColor: "rgb(224, 54, 66)",
+          padding: 10,
+          borderRadius: 4,
+          fontSize: 17,
+          color: "white",
+        }}
+      >
+        Error {error.status}: {error.message}
+      </div>
+    );
+  };
+
+  const LinkNotValidComponent = () => {
+    return (
+      <div
+        style={{
+          backgroundColor: "rgb(224, 54, 66)",
+          padding: 10,
+          borderRadius: 4,
+          fontSize: 17,
+          color: "white",
+        }}
+      >
+        Link not valid
+      </div>
+    );
+  };
+
+  const validateLink = (link) => {
+    const pattern =
+      /^https:\/\/open\.spotify\.com\/episode\/[a-zA-Z0-9]{22}\?si=[a-zA-Z0-9_]+$/;
+    const match = pattern.test(link);
+
+    if (match) {
+      setValidLink(true);
+      // console.log(true);
+      return true;
+    } else {
+      setValidLink(false);
+      // console.log(false);
+      return false;
+    }
+  };
+
+  const handleInput = (e) => {
+    const link = e.target.value;
+    if (link == "") {
+      setValidLink(null);
+      return;
+    }
+
+    if (validateLink(link)) {
+      setLoading(true);
+
+      //extract the episode id
+      const episodeId = link.slice(33, 55);
+
+      //make spotify query for the episode
+      const url =
+        "https://api.spotify.com/v1/episodes/" + episodeId + "?market=US";
+      const token =
+        "BQC0lw_NfhTH6c5_h35FYZwJf1PMDgI9FAdQ64yeKKtcTrvVLECXLwoeFEb6TZA-RLWV3n2kpyMGXpe9T6O6yeJcvncTOz2AlIMOmr3QyI7tsfm66Eo";
+      fetch(url, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => {
+          // if (!response.ok) {
+          //   // console.log(response.status);
+          //   throw new Error(response.status);
+          // }
+          return response.json();
+        })
+        .then((data) => {
+          setLoading(false);
+          setEpisodeData(data);
+          // Handle the response data
+          // console.log(data);
+        })
+        .catch((error) => {
+          // Handle any errors
+          setLoading(false);
+          setEpisodeData({
+            error: { status: "unknown", message: "Unknown Error" },
+          });
+          console.error(error);
+        });
+    }
+  };
+
   return (
     <>
       <Head>
-        <title>Create Next App</title>
-        <meta name="description" content="Generated by create next app" />
+        <title>Podcast Summariser</title>
+        <meta name="description" content="Summarize podcasts" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={`${styles.main} ${inter.className}`}>
-        <div className={styles.description}>
-          <p>
-            Get started by editing&nbsp;
-            <code className={styles.code}>src/pages/index.js</code>
-          </p>
-          <div>
-            <a
-              href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              By{' '}
-              <Image
-                src="/vercel.svg"
-                alt="Vercel Logo"
-                className={styles.vercelLogo}
-                width={100}
-                height={24}
-                priority
-              />
-            </a>
-          </div>
-        </div>
-
-        <div className={styles.center}>
-          <Image
-            className={styles.logo}
-            src="/next.svg"
-            alt="Next.js Logo"
-            width={180}
-            height={37}
-            priority
+      <main className={styles.container}>
+        <h1>Podcast Summariser</h1>
+        <form className={styles.linkContainer}>
+          <label htmlFor="link">Spotify Link:</label>
+          <input
+            type="text"
+            id="link"
+            name="link"
+            onChange={handleInput}
+            style={{ width: 300, marginLeft: 20 }}
           />
-        </div>
+        </form>
 
-        <div className={styles.grid}>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Docs <span>-&gt;</span>
-            </h2>
-            <p>
-              Find in-depth information about Next.js features and&nbsp;API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Learn <span>-&gt;</span>
-            </h2>
-            <p>
-              Learn about Next.js in an interactive course with&nbsp;quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Templates <span>-&gt;</span>
-            </h2>
-            <p>
-              Discover and deploy boilerplate example Next.js&nbsp;projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Deploy <span>-&gt;</span>
-            </h2>
-            <p>
-              Instantly deploy your Next.js site to a shareable URL
-              with&nbsp;Vercel.
-            </p>
-          </a>
-        </div>
+        {validLink != null ? ( //if no link has been added yet
+          validLink == false ? ( //if not a valid link was added
+            <LinkNotValidComponent />
+          ) : loading ? ( //if link is valid and loading
+            <ColorRing
+              visible={true}
+              height="80"
+              width="80"
+              ariaLabel="blocks-loading"
+              wrapperStyle={{}}
+              wrapperClass="blocks-wrapper"
+              colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+            />
+          ) : //once link is loaded
+          episodeData.hasOwnProperty("error") ? (
+            <ErrorComponent error={episodeData.error} />
+          ) : (
+            <EpisodeDetails data={episodeData} />
+          )
+        ) : (
+          <></>
+        )}
       </main>
     </>
-  )
+  );
 }
