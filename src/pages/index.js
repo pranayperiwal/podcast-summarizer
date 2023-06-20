@@ -295,7 +295,7 @@ export default function Home() {
 
   const validateLink = (link) => {
     const pattern =
-      /^https:\/\/open\.spotify\.com\/episode\/[a-zA-Z0-9]{22}\?si=[a-zA-Z0-9_]+$/;
+      /^https:\/\/open\.spotify\.com\/episode\/[a-zA-Z0-9]{22}\?si=[a-zA-Z0-9_-]+$/;
     const match = pattern.test(link);
 
     if (match) {
@@ -326,7 +326,7 @@ export default function Home() {
       const url =
         "https://api.spotify.com/v1/episodes/" + episodeId + "?market=US";
       const token =
-        "BQC0lw_NfhTH6c5_h35FYZwJf1PMDgI9FAdQ64yeKKtcTrvVLECXLwoeFEb6TZA-RLWV3n2kpyMGXpe9T6O6yeJcvncTOz2AlIMOmr3QyI7tsfm66Eo";
+        "BQCbB_8EIjBCg2xnMWkbkcVU2hR4Ulq9tNeviL2zEIHYNrmzyE5gPcEFJlYa4hSzq0Ok2iTiOSJWOhAfqdm4nOEtTD-RdffyhYnjyReZDuNPPDnnZwI";
       fetch(url, {
         method: "GET",
         headers: {
@@ -392,9 +392,10 @@ export default function Home() {
               colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
             />
           ) : //once link is loaded
-          episodeData.hasOwnProperty("error") ? (
+          episodeData.hasOwnProperty("error") ? ( //if error in link
             <ErrorComponent error={episodeData.error} />
           ) : (
+            //if no error
             <EpisodeDetails data={episodeData} />
           )
         ) : (
