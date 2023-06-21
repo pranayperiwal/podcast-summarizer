@@ -1,0 +1,10 @@
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  padding-left: 40px;
+  padding-right: 40px;
+  background-color: #f2f2f2;
+  width: 100%;
+}
