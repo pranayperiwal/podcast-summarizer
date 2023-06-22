@@ -1,14 +1,19 @@
 import "../styles/global.css";
-import { SessionProvider as AuthProvider } from "next-auth/react";
+import { SessionProvider } from "next-auth/react";
+import { ProtectedLayout } from "@/components/layout/protectedLayout";
 
 function App({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <>
-      <AuthProvider session={session}>
-        <Component {...pageProps} />
-      </AuthProvider>
-
-      {/* <Toaster /> */}
+      <SessionProvider session={session}>
+        {Component.requireAuth ? (
+          <ProtectedLayout>
+            <Component {...pageProps} />
+          </ProtectedLayout>
+        ) : (
+          <Component {...pageProps} />
+        )}
+      </SessionProvider>
     </>
   );
 }

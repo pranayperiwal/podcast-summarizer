@@ -3,7 +3,12 @@ import EpisodeDetails from "@/components/EpisodeDetails";
 import { ColorRing } from "react-loader-spinner";
 import styles from "@/styles/Home.module.css";
 
-function home() {
+import { getSession, useSession } from "next-auth/react";
+import Header from "@/components/Header";
+
+function HomePage() {
+  const { data: session } = useSession({ required: true });
+
   const [episodeData, setEpisodeData] = useState({});
   const [loading, setLoading] = useState(false);
   const [validLink, setValidLink] = useState(null);
@@ -357,6 +362,7 @@ function home() {
 
   return (
     <div className={styles.container}>
+      <Header loggedIn={true} />
       <form className={styles.linkContainer}>
         <label htmlFor="link">Spotify Link:</label>
         <input
@@ -395,4 +401,21 @@ function home() {
   );
 }
 
-export default home;
+HomePage.requireAuth = true;
+
+export default HomePage;
+
+// export const getServerSideProps = async (context) => {
+//   const session = await getSession(context);
+//   if (!session) {
+//     return {
+//       redirct: {
+//         destination: "/",
+//       },
+//     };
+//   }
+
+//   return {
+//     props: { session },
+//   };
+// };

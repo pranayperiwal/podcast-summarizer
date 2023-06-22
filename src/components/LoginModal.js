@@ -1,18 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
-
+import { useSession, signIn } from "next-auth/react";
 const LoginModal = ({ open, onClose }) => {
-  //   const classes = useStyles();
+  const [isRedirecting, setIsRedirecting] = useState(false);
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (session && !isRedirecting && router.isReady) {
+      // display some message to the user that he is being redirected
+      setIsRedirecting(true);
+      setTimeout(() => {
+        // redirect to the return url or home page
+        router.push(router.query.returnUrl || "/");
+      }, 2000);
+    }
+  }, [session, isRedirecting, router]);
 
   const handleGoogleLogin = () => {
     // Handle Google login logic here
     // You can use Firebase or Google Sign-In API for authentication
+    signIn("google", {
+      callbackUrl: "http://localhost:3000/home",
+    });
   };
 
   return (
     <Modal
-      //   className={}
       style={{
         display: "flex",
         alignItems: "center",
