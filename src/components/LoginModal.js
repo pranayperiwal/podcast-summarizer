@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
+import ClearIcon from "@mui/icons-material/Clear";
 import { useSession, signIn } from "next-auth/react";
+import styles from "@/styles/components/LoginModal.module.css";
+
 const LoginModal = ({ open, onClose }) => {
   const [isRedirecting, setIsRedirecting] = useState(false);
   const { data: session } = useSession();
@@ -30,22 +33,39 @@ const LoginModal = ({ open, onClose }) => {
 
   return (
     <Modal
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
+      className={styles.container}
       open={open}
       onClose={onClose}
       aria-labelledby="login-modal-title"
       aria-describedby="login-modal-description"
     >
-      <div style={{ border: "2px solid #000", backgroundColor: "white" }}>
-        <h2 id="login-modal-title">Login/Sign Up</h2>
-        <p id="login-modal-description">Please sign in with Google:</p>
-        <Button variant="contained" color="primary" onClick={handleGoogleLogin}>
-          Sign in with Google
-        </Button>
+      <div className={styles.modalContainer}>
+        <header className={styles.header}>
+          <div className={styles.crossContainer}>
+            <ClearIcon fontSize="small" onClick={onClose} />
+          </div>
+          <h4 style={{ marginBottom: 0, marginTop: 0 }}>Log in or Sign Up</h4>
+        </header>
+
+        <div className={styles.loginProviderContainer}>
+          <div style={{ fontSize: 25, position: "relative", bottom: 50 }}>
+            Welcome to PodSum
+          </div>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={handleGoogleLogin}
+            className={styles.loginButton}
+          >
+            <Image
+              src="/google-logo.png"
+              alt="Google Logo"
+              width={20}
+              height={20}
+            />
+            Continue with Google
+          </Button>
+        </div>
       </div>
     </Modal>
   );

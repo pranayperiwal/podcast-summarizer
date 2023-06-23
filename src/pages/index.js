@@ -6,17 +6,18 @@ import Header from "../components/Header";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
-export default function LandingPage() {
+function LandingPage() {
   const { data: session } = useSession();
   const router = useRouter();
 
-  useEffect(() => {
-    if (session) {
-      console.log(session);
-      // User is signed in, redirect to a different page
-      router.push("/home");
-    }
-  }, []);
+  // useEffect(() => {
+  //   console.log("index page");
+  //   if (session) {
+  //     console.log(session);
+  //     // User is signed in, redirect to a different page
+  //     router.push("/home");
+  //   }
+  // }, []);
 
   return (
     <>
@@ -34,3 +35,5 @@ export default function LandingPage() {
     </>
   );
 }
+
+export default LandingPage;

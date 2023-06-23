@@ -5,6 +5,31 @@
   padding: 10px;
   padding-left: 40px;
   padding-right: 40px;
-  background-color: #f2f2f2;
-  width: 100%;
+  /* background-color: #f2f2f2; */
+  width: 90%;
+  border-bottom: 2px solid rgb(240, 239, 237);
+}
+
+.logoContainer {
+  font-weight: bold;
+}
+
+.linksContainer {
+  /* border: 1px solid red; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  gap: 2rem;
+  color: #000;
+  /* width: 100%; */
+  /* margin: auto; */
+}
+
+.linkItem {
+  color: #000;
+}
+
+.menu {
+  width: 200px;
 }

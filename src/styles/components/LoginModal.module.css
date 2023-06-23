@@ -1,0 +1,65 @@
+.container {
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+  margin-top: 15%;
+}
+
+.modalContainer {
+  background-color: white;
+  height: 300px;
+  width: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 15px;
+  /* justify-content: center; */
+  /* padding: 0 0px; */
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  border-bottom: 2px solid rgb(240, 239, 237);
+}
+
+.clearIcon {
+  position: relative;
+  right: 20%;
+}
+
+.crossContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  right: 80px;
+  height: 30px;
+  width: 30px;
+}
+
+.crossContainer:hover {
+  background-color: rgb(240, 239, 237);
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.loginProviderContainer {
+  /* border: 1px solid red; */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.loginButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 80%;
+}

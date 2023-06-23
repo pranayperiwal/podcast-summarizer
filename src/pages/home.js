@@ -1,17 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import EpisodeDetails from "@/components/EpisodeDetails";
 import { ColorRing } from "react-loader-spinner";
 import styles from "@/styles/Home.module.css";
+import { useRouter } from "next/router";
 
 import { getSession, useSession } from "next-auth/react";
 import Header from "@/components/Header";
 
 function HomePage() {
   const { data: session } = useSession({ required: true });
+  const router = useRouter();
 
   const [episodeData, setEpisodeData] = useState({});
   const [loading, setLoading] = useState(false);
   const [validLink, setValidLink] = useState(null);
+
+  // useEffect(() => {
+  //   console.log("home page");
+  //   if (session) {
+  //     console.log(session);
+  //     // User is signed in, redirect to a different page
+  //     router.push("/home");
+  //   }
+  // }, []);
 
   const dummyData = {
     audio_preview_url:
