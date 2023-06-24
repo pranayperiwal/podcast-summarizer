@@ -48,7 +48,7 @@ const LoginModal = ({ open, onClose }) => {
         </header>
 
         <div className={styles.loginProviderContainer}>
-          <div style={{ fontSize: 25, position: "relative", bottom: 50 }}>
+          <div style={{ fontSize: 25, position: "relative", bottom: 20 }}>
             Welcome to PodSum
           </div>
           <Button

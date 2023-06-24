@@ -1,0 +1,12 @@
+.linkContainer {
+  width: 500px;
+  /* border: 1px solid red; */
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  font-size: 20px;
+}
+
+.validOrNotContainer {
+  width: 30px;
+}

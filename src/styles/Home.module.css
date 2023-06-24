@@ -6,15 +6,16 @@
   /* padding-top: 30px; */
 }
 
-.linkContainer {
-  width: 500px;
+.contentContainer {
   /* border: 1px solid red; */
+  width: 100%;
   display: flex;
   justify-content: center;
-  padding: 20px;
-  font-size: 20px;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 30px;
 }
 
-.validOrNotContainer {
-  width: 30px;
+.contentHeader {
+  margin-bottom: 30px;
 }

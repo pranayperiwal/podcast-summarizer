@@ -6,8 +6,12 @@ import { signOut, signIn } from "next-auth/react";
 import Link from "next/link";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-
-function Header({ loggedIn }) {
+import Logout from "@mui/icons-material/Logout";
+import Avatar from "@mui/material/Avatar";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+function Header({ loggedIn, credits }) {
   const [openModal, setOpenModal] = useState(false);
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
@@ -44,11 +48,11 @@ function Header({ loggedIn }) {
           <Link className={styles.linkItem} href="/home">
             Home
           </Link>
-          <Link className={styles.linkItem} href="/my-summaries">
-            My Summaries
-          </Link>
           <Link className={styles.linkItem} href="/about">
             About
+          </Link>
+          <Link className={styles.linkItem} href="/my-summaries">
+            My Summaries
           </Link>
         </div>
       ) : (
@@ -57,12 +61,16 @@ function Header({ loggedIn }) {
 
       <div className={styles.authSectionContainer}>
         {loggedIn ? (
-          // <div>
-          //   <Button variant="outlined" onClick={handleLogout}>
-          //     Logout
-          //   </Button>
-          // </div>
-          <div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              // border: "1px solid red",
+              width: 210,
+            }}
+          >
+            <div style={{ fontSize: 13 }}>Credits: ${credits}</div>
             <Button
               variant="outlined"
               id="basic-button"
@@ -70,22 +78,29 @@ function Header({ loggedIn }) {
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}
               onClick={handleClick}
+              style={{ fontSize: 14 }}
             >
-              My Account
+              Account
             </Button>
+
             <Menu
-              id="basic-menu"
               anchorEl={anchorEl}
+              id="account-menu"
               open={open}
               onClose={handleClose}
-              MenuListProps={{
-                "aria-labelledby": "basic-button",
-              }}
-              className={styles.menu}
+              onClick={handleClose}
+              transformOrigin={{ horizontal: "right", vertical: "top" }}
+              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
-              <MenuItem onClick={handleClose}>Logout</MenuItem>
+              <MenuItem onClick={handleClose} style={{ width: 200 }}>
+                <AccountCircleIcon style={{ marginRight: 10 }} />
+                Profile
+              </MenuItem>
+
+              <MenuItem onClick={handleLogout} style={{ width: 200 }}>
+                <LogoutRoundedIcon style={{ marginRight: 10 }} />
+                Logout
+              </MenuItem>
             </Menu>
           </div>
         ) : (
