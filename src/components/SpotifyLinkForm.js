@@ -291,6 +291,25 @@ const SpotifyLinkForm = () => {
     );
   };
 
+  async function getToken() {
+    const url = 'https://accounts.spotify.com/api/token';
+    const data = {
+      grant_type: 'client_credentials',
+      client_id: '2bc3ecc79ff049e784dfc9d2a98acc9b',
+      client_secret: 'fe4989d24a10487698c85885a99c14ef'
+    };
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams(data).toString()
+    };
+    const response = await fetch(url, options);
+    const json = await response.json();
+    return json.access_token;
+  }
+  
   const validateLink = (link) => {
     const pattern =
       /^https:\/\/open\.spotify\.com\/episode\/[a-zA-Z0-9]{22}\?si=[a-zA-Z0-9_-]+$/;
@@ -307,7 +326,7 @@ const SpotifyLinkForm = () => {
     }
   };
 
-  const handleInput = (e) => {
+  const handleInput = async (e) => {
     const link = e.target.value;
     if (link == "") {
       setValidLink(null);
@@ -323,8 +342,10 @@ const SpotifyLinkForm = () => {
       //make spotify query for the episode
       const url =
         "https://api.spotify.com/v1/episodes/" + episodeId + "?market=US";
-      const token =
-        "BQDXFUZENCFAW4rk_lLR8qFQZU_AsSOvu0ZxbDQJhd8H6l_VLSPIj1xX1zy9fkrpOlgXn8WQRcyXSaopkEIljcu_AS1ndClfl-e2-KJF0EQ4zCZRnFA";
+      // const token =
+      //   "BQDXFUZENCFAW4rk_lLR8qFQZU_AsSOvu0ZxbDQJhd8H6l_VLSPIj1xX1zy9fkrpOlgXn8WQRcyXSaopkEIljcu_AS1ndClfl-e2-KJF0EQ4zCZRnFA";
+      console.log("Getting token");
+      const token = await getToken();
       fetch(url, {
         method: "GET",
         headers: {

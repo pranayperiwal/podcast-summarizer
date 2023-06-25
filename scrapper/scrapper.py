@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -87,7 +87,7 @@ class Scrapper:
 
         podcast_link = top_result_link.get_attribute("href")
 
-        print(f'Podcast Link is: {podcast_link}')
+        print(f'Pocast Link is: {podcast_link}')
         return podcast_link
     
     
@@ -106,7 +106,11 @@ def audio():
     title = request.args.get('title')
     print(f"Searching for: {author} - {title}")
     link = bot.get_audio_link(author, title)
-    return f'Link is: {link}'
+    
+    result = {
+        "link": link
+    }
+    return jsonify(result);
     
 
 if __name__ == '__main__':
