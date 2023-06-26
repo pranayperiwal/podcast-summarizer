@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 import urllib.parse
 
-class Scrapper: 
+class WebScrapper: 
 
     timeout = 60
     scroll_y_offset = 200
@@ -29,63 +29,65 @@ class Scrapper:
         self.driver.get(f'https://player.fm/search/{urllib.parse.quote(podcast_author)}')
 
         # Scroll down a bit 
-        self.driver.execute_script(f"window.scrollTo(0, {Scrapper.scroll_y_offset})") 
+        self.driver.execute_script(f"window.scrollTo(0, {WebScrapper.scroll_y_offset})") 
 
         # Close one trust policy 
         WebDriverWait(
-            self.driver, Scrapper.timeout
+            self.driver, WebScrapper.timeout
         ).until(
             EC.element_to_be_clickable(
-                (By.XPATH, Scrapper.one_trust_policy_xpath)
+                (By.XPATH, WebScrapper.one_trust_policy_xpath)
             )
         ).click()
 
         # Search 
         WebDriverWait(
-            self.driver, Scrapper.timeout
+            self.driver, WebScrapper.timeout
         ).until(
             EC.element_to_be_clickable(
-                (By.XPATH, Scrapper.podcast_search_bar_xpath)
+                (By.XPATH, WebScrapper.podcast_search_bar_xpath)
             )
         ).click()
 
         # Scroll down a bit 
         self.driver.execute_script(
-            f"window.scrollTo(0, {Scrapper.scroll_y_offset})"
+            f"window.scrollTo(0, {WebScrapper.scroll_y_offset})"
         ) 
 
         # Click search icon
         WebDriverWait(
-            self.driver, 60
+            self.driver, WebScrapper.timeout
         ).until(
             EC.element_to_be_clickable(
-                (By.XPATH, Scrapper.episodes_search_bar_icon_xpath)
+                (By.XPATH, WebScrapper.episodes_search_bar_icon_xpath)
             )
         ).click()
 
         # Enter podcast title
         WebDriverWait(
-            self.driver, 60
+            self.driver, WebScrapper.timeout
         ).until(
             EC.element_to_be_clickable(
-                (By.XPATH, Scrapper.episodes_search_bar_xpath)
+                (By.XPATH, WebScrapper.episodes_search_bar_xpath)
             )
         ).send_keys(podcast_title)
 
         # Press enter
         WebDriverWait(
-            self.driver, 60
+            self.driver, WebScrapper.timeout
         ).until(
             EC.element_to_be_clickable(
-                (By.XPATH, Scrapper.episodes_search_bar_icon_xpath)
+                (By.XPATH, WebScrapper.episodes_search_bar_xpath)
             )
         ).send_keys(Keys.RETURN);
 
-        top_result_link = self.driver.find_element(
-            By.XPATH, Scrapper.top_result_xpath
-        )
-
-        podcast_link = top_result_link.get_attribute("href")
+        podcast_link = WebDriverWait(
+            self.driver, WebScrapper.timeout
+        ).until(
+            EC.element_to_be_clickable(
+                (By.XPATH, WebScrapper.top_result_xpath)
+            )
+        ).get_attribute("href")
 
         print(f'Pocast Link is: {podcast_link}')
         return podcast_link
@@ -101,19 +103,18 @@ def search():
 
 @app.route('/audio')
 def audio():
-    print("Hello")
     author = request.args.get('author')
     title = request.args.get('title')
     print(f"Searching for: {author} - {title}")
     link = bot.get_audio_link(author, title)
-    
     result = {
         "link": link
     }
-    return jsonify(result);
+    print(result)
+    return jsonify(result)
     
 
 if __name__ == '__main__':
-    bot = Scrapper()
+    bot = WebScrapper()
     app.run()
     
