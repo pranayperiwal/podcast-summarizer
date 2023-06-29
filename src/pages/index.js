@@ -28,8 +28,6 @@ function LandingPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.container}>
-        <Header loggedIn={false} />
-        {/* <h1>Podcast Summariser</h1> */}
         <div>Hi, please sign in</div>
       </main>
     </>
