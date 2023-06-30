@@ -69,6 +69,7 @@ model Podcast {
   image               String
   date                DateTime
   users               User[]
+  hash                String
 }
 
 model Transaction {
@@ -91,4 +92,14 @@ model CreditsSpent {
   podcastId     Int
   // Relationships
   user          User      @relation(fields: [userId], references: [id])
+}
+
+model Request {
+  id          Int       @id @default(autoincrement())
+  hash        String 
+  podcastName String
+  showName    String
+  date        DateTime
+  status      String //success | in progress | failed
+  
 }

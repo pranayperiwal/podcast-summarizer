@@ -1,0 +1,74 @@
+.container {
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+
+  /* border: 3px solid red; */
+  /* max-width: 500px; */
+}
+
+.modalContainer {
+  background-color: white;
+  /* height: auto; */
+  /* width: ; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 15px;
+  /* border: 3px solid red; */
+  max-width: 500px;
+  margin: auto;
+
+  /* justify-content: center; */
+  /* padding: 0 0px; */
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  border-bottom: 2px solid rgb(240, 239, 237);
+}
+
+/* .clearIcon {
+  position: absolute;
+  right: 20px;
+} */
+
+.crossContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  right: 110px;
+  height: 30px;
+  width: 30px;
+}
+
+.crossContainer:hover {
+  background-color: rgb(240, 239, 237);
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.contentContainer {
+  /* border: 1px solid red; */
+  width: 90%;
+  height: 100%;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* text-align: center; */
+}
+
+.confirmButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  /* width: 80%; */
+}

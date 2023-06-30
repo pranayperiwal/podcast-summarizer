@@ -1,31 +1,21 @@
-import React, { useState, useEffect } from "react";
-
-import styles from "@/styles/Home.module.css";
+import React from "react";
+import Header from "@/components/Header";
 import { authOptions } from "../pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
-import Header from "@/components/Header";
-import SpotifyLinkForm from "@/components/home/SpotifyLinkForm";
-import { Divider } from "@mui/material";
+import styles from "@/styles/RequestSummary.module.css";
 
-const HomePage = ({ user }) => {
-  // console.log(user);
+const RequestSummary = ({ user }) => {
   return (
     <div className={styles.container}>
       <Header loggedIn={true} credits={user.credits} />
-      <div className={styles.contentContainer}>
-        <div className={styles.contentHeader}>
-          Enter the spotify link of the podcast you would like to summarise
-        </div>
-        <Divider />
-        <SpotifyLinkForm />
-      </div>
+      <div>requestSummary</div>
     </div>
   );
 };
 
-HomePage.requireAuth = true;
+RequestSummary.requireAuth = true;
 
-export default HomePage;
+export default RequestSummary;
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import EpisodeDetails from "@/components/EpisodeDetails";
+import EpisodeDetails from "@/components/home/EpisodeDetails";
 import { ColorRing } from "react-loader-spinner";
-import styles from "@/styles/components/SpotifyLinkForm.module.css";
+import styles from "@/styles/components/home/SpotifyLinkForm.module.css";
 
 const SpotifyLinkForm = () => {
   const [episodeData, setEpisodeData] = useState({});
@@ -292,24 +292,24 @@ const SpotifyLinkForm = () => {
   };
 
   async function getToken() {
-    const url = 'https://accounts.spotify.com/api/token';
+    const url = "https://accounts.spotify.com/api/token";
     const data = {
-      grant_type: 'client_credentials',
-      client_id: '2bc3ecc79ff049e784dfc9d2a98acc9b',
-      client_secret: 'fe4989d24a10487698c85885a99c14ef'
+      grant_type: "client_credentials",
+      client_id: "2bc3ecc79ff049e784dfc9d2a98acc9b",
+      client_secret: "fe4989d24a10487698c85885a99c14ef",
     };
     const options = {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        "Content-Type": "application/x-www-form-urlencoded",
       },
-      body: new URLSearchParams(data).toString()
+      body: new URLSearchParams(data).toString(),
     };
     const response = await fetch(url, options);
     const json = await response.json();
     return json.access_token;
   }
-  
+
   const validateLink = (link) => {
     const pattern =
       /^https:\/\/open\.spotify\.com\/episode\/[a-zA-Z0-9]{22}\?si=[a-zA-Z0-9_-]+$/;
@@ -342,10 +342,8 @@ const SpotifyLinkForm = () => {
       //make spotify query for the episode
       const url =
         "https://api.spotify.com/v1/episodes/" + episodeId + "?market=US";
-      // const token =
-      //   "BQDXFUZENCFAW4rk_lLR8qFQZU_AsSOvu0ZxbDQJhd8H6l_VLSPIj1xX1zy9fkrpOlgXn8WQRcyXSaopkEIljcu_AS1ndClfl-e2-KJF0EQ4zCZRnFA";
-      console.log("Getting token");
-      const token = await getToken();
+      const token =
+        "BQD2YOCCzDDKGN9iJ2QrVzNlwKNtkWrb7hcMDOUPH3jyJbo69RWNlaDP6W7vAWw6WoUr4ReiB5DwD5Xvp7YYJCQmfhIEyRhJwsRzBX1lBEfpGYYdNos";
       fetch(url, {
         method: "GET",
         headers: {
@@ -386,7 +384,12 @@ const SpotifyLinkForm = () => {
       }}
     >
       <form className={styles.linkContainer}>
-        <label htmlFor="link">Spotify Link:</label>
+        <label
+          htmlFor="link"
+          style={{ color: "rgb(101, 212, 110)", fontWeight: "bold" }}
+        >
+          Spotify Link:
+        </label>
         <input
           type="text"
           id="link"
