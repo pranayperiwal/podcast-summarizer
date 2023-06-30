@@ -47,7 +47,7 @@ const SummaryErrorModal = ({
               columnSpacing={{ xs: 1, sm: 2, md: 10 }}
               style={{ marginBottom: 20 }}
             >
-                <span style={{ fontWeight: "" }}>An error has occured while fetching the podcast!</span>
+                <span style={{ fontWeight: "" }}>An error has occured while fetching the podcast    !</span>
              
             </Grid>
             <Button

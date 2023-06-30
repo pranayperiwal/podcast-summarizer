@@ -6,6 +6,7 @@ import styles from "@/styles/components/home/EpisodeDetails.module.css";
 import ConfirmSummaryModal from "./ConfirmSummaryModal";
 import SummaryErrorModal from "./SummaryErrorModal";
 import LoadingModal from "./LoadingModal";
+import { style } from "@mui/system";
 
 const EpisodeDetails = ({ data }) => {
   const [open, setOpen] = React.useState(false);
@@ -89,16 +90,20 @@ const EpisodeDetails = ({ data }) => {
               {msToTime(data.duration_ms)}
             </div>
           </div>
+          <div className={styles.buttonContainer}>
+          <Button
+            className={styles.summarizeButton}
+            variant="contained" 
+            onClick={() => handleOpen(data.show.name, data.name)}
+          >
+            Request Summary
+          </Button>
         </div>
+        </div>
+       
+     
       </div>
 
-      <Button
-        className={styles.summarizeButton}
-        variant="contained"
-        onClick={() => handleOpen(data.show.name, data.name)}
-      >
-        Summarize
-      </Button>
       <LoadingModal 
         handleClose={handleClose}
         open={loadingOpen}

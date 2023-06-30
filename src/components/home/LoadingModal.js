@@ -48,6 +48,9 @@ const LoadingModal = ({
                 <span style={{ fontWeight: "" }}><CircularProgress /></span>
              
             </Grid>
+            
+                <span style={{ textAlign: "center",fontWeight: "" }}>The requested podcast details are been fetched!</span>
+             
             </div>
         </div>
       </Modal>

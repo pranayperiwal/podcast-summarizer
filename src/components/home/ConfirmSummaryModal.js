@@ -3,6 +3,8 @@ import Modal from "@mui/material/Modal";
 import ClearIcon from "@mui/icons-material/Clear";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
+import SendIcon from '@mui/icons-material/Send';
+import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import { shake_128 } from "js-sha3";
 import styles from "@/styles/components/home/ConfirmSummaryModal.module.css";
 
@@ -52,7 +54,7 @@ const ConfirmSummaryModal = ({
               <ClearIcon fontSize="small" onClick={handleClose} />
             </div>
             <h4 style={{ marginBottom: 0, marginTop: 0 }}>
-              Summarising Podcast
+              Podcast Information
             </h4>
           </header>
 
@@ -84,14 +86,27 @@ const ConfirmSummaryModal = ({
                 </span>
               </Grid>
             </Grid>
+            <Grid item>
             <Button
               variant="outlined"
+              color="secondary"
+              className={styles.confirmButton}
+              onClick={handleClose}
+            >
+              Cancel
+            </Button>
+            <Button
+              style={{marginLeft: 10}}
+              variant="contained"
               color="primary"
               className={styles.confirmButton}
+              endIcon={<SendIcon />}
               onClick={handleConfirm}
             >
               Confirm
             </Button>
+            </Grid>
+            
           </div>
         </div>
       </Modal>

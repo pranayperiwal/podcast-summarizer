@@ -295,8 +295,8 @@ const SpotifyLinkForm = () => {
     const url = "https://accounts.spotify.com/api/token";
     const data = {
       grant_type: "client_credentials",
-      client_id: process.env.SPOTIFY_CLIENT_ID,
-      client_secret: process.env.SPOTIFY_CLIENT_SECRET,
+      client_id: "2bc3ecc79ff049e784dfc9d2a98acc9b",
+      client_secret: "fe4989d24a10487698c85885a99c14ef",
     };
     const options = {
       method: "POST",
@@ -383,18 +383,21 @@ const SpotifyLinkForm = () => {
       }}
     >
       <form className={styles.linkContainer}>
-        <label
+        {/* <label
           htmlFor="link"
           style={{ color: "rgb(101, 212, 110)", fontWeight: "bold" }}
         >
           Spotify Link:
-        </label>
+        </label> */}
+        
         <input
-          type="text"
+          className={styles.linkInput}
+          type="search"
+          placeholder="Enter Spotify Link"
           id="link"
           name="link"
           onChange={handleInput}
-          style={{ width: 300, marginLeft: 20 }}
+         
         />
       </form>
 

@@ -1,5 +1,5 @@
 .linkContainer {
-  width: 500px;
+  width: 600px;
   /* border: 1px solid red; */
   display: flex;
   justify-content: center;
@@ -9,4 +9,24 @@
 
 .validOrNotContainer {
   width: 30px;
+}
+
+.linkInput {
+  background: url("http://kodyrabatowe.wp.pl/img/ico/search_gr.png") top left;
+  padding: 2px 12px 2px 30px;
+  font-size: 16px;
+  height: 60px;
+  box-sizing: border-box;
+  width: 100%;
+  margin-left: 20px;
+  box-shadow: 0px 8px 20px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.03);
+  transition: all 0.5s;
+  margin-bottom: 25px;
+}
+
+.linkInput:focus {
+  outline: none;
+  border: 1px solid rgba(64, 88, 230, 0.03);
+  box-shadow: 0px 8px 20px rgba(0,0,0,0.12);
 }
