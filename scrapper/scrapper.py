@@ -101,6 +101,17 @@ def search():
     print(query)
     return f'Searching for: {query}'
 
+@app.route('/test')
+def test():
+    author = request.args.get('author')
+    title = request.args.get('title')
+    print(author, title)
+    link = f"audio.com/for/{author}/{title}"
+    result = {
+        "link": link
+    }
+    return jsonify(result)
+
 @app.route('/audio')
 def audio():
     author = request.args.get('author')

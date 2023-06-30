@@ -22,6 +22,29 @@ const EpisodeDetails = ({ data }) => {
     return pad(hrs) + ":" + pad(mins) + ":" + pad(secs);
   }
 
+  /**
+   * Gets the audio of the podcast
+   */
+  async function getAudioLink(showName, episodeName) {
+    try {
+      const url = `http://localhost:3000/api/audio?showName=${encodeURIComponent(showName)}&episodeName=${encodeURIComponent(episodeName)}`;
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error('There was a problem with the fetch operation:', error);
+    }
+  }
+
+  // Function to get the summary of the episode 
+  function generateSummary() {
+    // Get the audio link 
+     
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.podcastDetailsContainer}>
@@ -45,7 +68,7 @@ const EpisodeDetails = ({ data }) => {
         </div>
       </div>
 
-      <Button className={styles.summarizeButton} variant="contained">
+      <Button className={styles.summarizeButton} variant="contained" onClick={() => getAudioLink(data.show.name, data.name)}>
         Summarize
       </Button>
     </div>
