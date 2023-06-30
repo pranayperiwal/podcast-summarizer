@@ -20,6 +20,7 @@
     "eslint": "8.42.0",
     "eslint-config-next": "13.4.6",
     "faunadb": "^4.8.0",
+    "js-sha3": "^0.8.0",
     "moment": "^2.29.4",
     "next": "13.4.6",
     "next-auth": "^4.22.1",

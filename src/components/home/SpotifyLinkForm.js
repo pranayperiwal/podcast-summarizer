@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import EpisodeDetails from "@/components/EpisodeDetails";
+import EpisodeDetails from "@/components/home/EpisodeDetails";
 import { ColorRing } from "react-loader-spinner";
-import styles from "@/styles/components/SpotifyLinkForm.module.css";
+import styles from "@/styles/components/home/SpotifyLinkForm.module.css";
 
 const SpotifyLinkForm = () => {
   const [episodeData, setEpisodeData] = useState({});
@@ -324,7 +324,7 @@ const SpotifyLinkForm = () => {
       const url =
         "https://api.spotify.com/v1/episodes/" + episodeId + "?market=US";
       const token =
-        "BQDXFUZENCFAW4rk_lLR8qFQZU_AsSOvu0ZxbDQJhd8H6l_VLSPIj1xX1zy9fkrpOlgXn8WQRcyXSaopkEIljcu_AS1ndClfl-e2-KJF0EQ4zCZRnFA";
+        "BQD2YOCCzDDKGN9iJ2QrVzNlwKNtkWrb7hcMDOUPH3jyJbo69RWNlaDP6W7vAWw6WoUr4ReiB5DwD5Xvp7YYJCQmfhIEyRhJwsRzBX1lBEfpGYYdNos";
       fetch(url, {
         method: "GET",
         headers: {
@@ -365,7 +365,12 @@ const SpotifyLinkForm = () => {
       }}
     >
       <form className={styles.linkContainer}>
-        <label htmlFor="link">Spotify Link:</label>
+        <label
+          htmlFor="link"
+          style={{ color: "rgb(101, 212, 110)", fontWeight: "bold" }}
+        >
+          Spotify Link:
+        </label>
         <input
           type="text"
           id="link"

@@ -2,10 +2,13 @@ import Image from "next/image";
 import React from "react";
 import Button from "@mui/material/Button";
 import Moment from "react-moment";
-import styles from "@/styles/components/EpisodeDetails.module.css";
+import styles from "@/styles/components/home/EpisodeDetails.module.css";
+import ConfirmSummaryModal from "./ConfirmSummaryModal";
 
 const EpisodeDetails = ({ data }) => {
-  // console.log(data);
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   function pad(n) {
     return ("00" + n).slice(-2);
@@ -45,9 +48,20 @@ const EpisodeDetails = ({ data }) => {
         </div>
       </div>
 
-      <Button className={styles.summarizeButton} variant="contained">
+      <Button
+        className={styles.summarizeButton}
+        variant="contained"
+        onClick={handleOpen}
+      >
         Summarize
       </Button>
+      <ConfirmSummaryModal
+        handleClose={handleClose}
+        open={open}
+        podcastName={data.name}
+        podcastDuration={data.duration_ms}
+        showName={data.show.name}
+      />
     </div>
   );
 };
