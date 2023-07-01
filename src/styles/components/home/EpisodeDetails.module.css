@@ -12,6 +12,7 @@
   padding: 20px;
   display: flex;
   align-items: center;
+  padding-bottom: 40px;
   margin-bottom: 20px;
 }
 
@@ -24,7 +25,26 @@
 }
 
 .summarizeButton {
-  width: 120px;
-  height: 50px;
+  flex: right;
+  width: 48%;
+  height: 60px;
   border-radius: 10px;
+  border: 3px solid #fff !important;
+  background: none !important;
+  color: #fff !important;
+  text-transform: capitalize !important;
+  font-weight: 600 !important;
+}
+.summarizeButton:hover {
+  border: 3px solid #fff !important;
+  background: #fff !important;
+  color: #333 !important;
+}
+
+.buttonContainer {
+  display: flex;
+  width: 100%;
+  margin-top: 30px;
+  flex: 1;
+  justify-content: space-between;
 }

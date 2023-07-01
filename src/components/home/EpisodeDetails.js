@@ -4,13 +4,25 @@ import Button from "@mui/material/Button";
 import Moment from "react-moment";
 import styles from "@/styles/components/home/EpisodeDetails.module.css";
 import ConfirmSummaryModal from "./ConfirmSummaryModal";
+import SummaryErrorModal from "./SummaryErrorModal";
+import LoadingModal from "./LoadingModal";
+import { style } from "@mui/system";
 
 const EpisodeDetails = ({ data }) => {
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
+  const [errorOpen, setErrorOpen] = React.useState(false);
+  const [loadingOpen, setLoadingOpen] = React.useState(false);
+ 
+  /* Mock sleep */
+  async function sleep (time) {
+    return new Promise((resolve) => setTimeout(resolve, time));
+  }
+
   const handleClose = () => {
-    getAudioLink(data.show.name, data.name);
+    // getAudioLink(data.show.name, data.name);
     setOpen(false);
+    setErrorOpen(false);
+    setLoadingOpen(false);
   };
 
   function pad(n) {
@@ -31,8 +43,11 @@ const EpisodeDetails = ({ data }) => {
   /**
    * Gets the audio of the podcast
    */
-  async function getAudioLink(showName, episodeName) {
+  async function handleOpen(showName, episodeName) {
     try {
+      setLoadingOpen(true);
+      await sleep(2000);
+      console.log("OK");
       const url = `http://localhost:3000/api/audio?showName=${encodeURIComponent(
         showName
       )}&episodeName=${encodeURIComponent(episodeName)}`;
@@ -41,8 +56,11 @@ const EpisodeDetails = ({ data }) => {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
+      setLoadingOpen(false);
       console.log(data);
+      setOpen(true);
     } catch (error) {
+      setErrorOpen(true);
       console.error("There was a problem with the fetch operation:", error);
     }
   }
@@ -72,22 +90,34 @@ const EpisodeDetails = ({ data }) => {
               {msToTime(data.duration_ms)}
             </div>
           </div>
+          <div className={styles.buttonContainer}>
+          <Button
+            className={styles.summarizeButton}
+            variant="contained" 
+            onClick={() => handleOpen(data.show.name, data.name)}
+          >
+            Request Summary
+          </Button>
         </div>
+        </div>
+       
+     
       </div>
 
-      <Button
-        className={styles.summarizeButton}
-        variant="contained"
-        onClick={handleOpen}
-      >
-        Summarize
-      </Button>
+      <LoadingModal 
+        handleClose={handleClose}
+        open={loadingOpen}
+      />
       <ConfirmSummaryModal
         handleClose={handleClose}
         open={open}
         podcastName={data.name}
         podcastDuration={data.duration_ms}
         showName={data.show.name}
+      />
+       <SummaryErrorModal
+        handleClose={handleClose}
+        open={errorOpen}
       />
     </div>
   );

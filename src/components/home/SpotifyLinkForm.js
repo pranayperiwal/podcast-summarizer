@@ -342,9 +342,6 @@ const SpotifyLinkForm = () => {
       //make spotify query for the episode
       const url =
         "https://api.spotify.com/v1/episodes/" + episodeId + "?market=US";
-      // const token =
-      //   "BQD2YOCCzDDKGN9iJ2QrVzNlwKNtkWrb7hcMDOUPH3jyJbo69RWNlaDP6W7vAWw6WoUr4ReiB5DwD5Xvp7YYJCQmfhIEyRhJwsRzBX1lBEfpGYYdNos";
-      console.log("Getting token");
       const token = await getToken();
       fetch(url, {
         method: "GET",
@@ -386,18 +383,21 @@ const SpotifyLinkForm = () => {
       }}
     >
       <form className={styles.linkContainer}>
-        <label
+        {/* <label
           htmlFor="link"
           style={{ color: "rgb(101, 212, 110)", fontWeight: "bold" }}
         >
           Spotify Link:
-        </label>
+        </label> */}
+        
         <input
-          type="text"
+          className={styles.linkInput}
+          type="search"
+          placeholder="Enter Spotify Link"
           id="link"
           name="link"
           onChange={handleInput}
-          style={{ width: 300, marginLeft: 20 }}
+         
         />
       </form>
 
