@@ -7,9 +7,11 @@ import ConfirmSummaryModal from "./ConfirmSummaryModal";
 
 const EpisodeDetails = ({ data }) => {
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => {
+  const handleOpen = () => {
     getAudioLink(data.show.name, data.name);
+    setOpen(true);
+  };
+  const handleClose = () => {
     setOpen(false);
   };
 

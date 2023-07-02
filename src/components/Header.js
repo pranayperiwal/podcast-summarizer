@@ -51,8 +51,11 @@ function Header({ loggedIn, credits }) {
           <Link className={styles.linkItem} href="/about">
             About
           </Link>
-          <Link className={styles.linkItem} href="/my-summaries">
-            My Summaries
+          <Link className={styles.linkItem} href="/summaries">
+            Summaries
+          </Link>
+          <Link className={styles.linkItem} href="/requests">
+            Requests
           </Link>
         </div>
       ) : (
