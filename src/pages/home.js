@@ -21,7 +21,7 @@ const HomePage = ({ user }) => {
       <Header loggedIn={true} credits={user.credits} />
       <div className={styles.contentContainer}>
         <div className={styles.contentHeader}>
-          Enter the spotify link of the podcast you would like to summarise
+          Enter the Spotify link of the podcast you would like to summarise
         </div>
         <Divider />
         <SpotifyLinkForm />
