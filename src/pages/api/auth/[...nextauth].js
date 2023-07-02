@@ -28,6 +28,16 @@ export const authOptions = {
   ],
   secret: process.env.JWT_SECRET,
   adapter: PrismaAdapter(prisma),
+  callbacks: {
+    async session({ session, token, user }) {
+      // Send properties to the client, like an access_token and user id from a provider.
+      // session.accessToken = token.accessToken;
+      // console.log(user);
+      session.user.uid = user.user_id;
+
+      return session;
+    },
+  },
 };
 
 export default NextAuth(authOptions);

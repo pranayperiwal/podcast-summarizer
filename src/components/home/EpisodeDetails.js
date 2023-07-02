@@ -6,20 +6,25 @@ import styles from "@/styles/components/home/EpisodeDetails.module.css";
 import ConfirmSummaryModal from "./ConfirmSummaryModal";
 import SummaryErrorModal from "./SummaryErrorModal";
 import LoadingModal from "./LoadingModal";
-import { style } from "@mui/system";
 
 const EpisodeDetails = ({ data }) => {
   const [open, setOpen] = React.useState(false);
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [loadingOpen, setLoadingOpen] = React.useState(false);
- 
+
   /* Mock sleep */
-  async function sleep (time) {
+  async function sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
   }
 
+  // const handleClose = () => {}
+  // getAudioLink(data.show.name, data.name);
+  const handleOpen = () => {
+    getAudioLink(data.show.name, data.name);
+    setOpen(true);
+  };
+
   const handleClose = () => {
-    // getAudioLink(data.show.name, data.name);
     setOpen(false);
     setErrorOpen(false);
     setLoadingOpen(false);
@@ -91,23 +96,18 @@ const EpisodeDetails = ({ data }) => {
             </div>
           </div>
           <div className={styles.buttonContainer}>
-          <Button
-            className={styles.summarizeButton}
-            variant="contained" 
-            onClick={() => handleOpen(data.show.name, data.name)}
-          >
-            Request Summary
-          </Button>
+            <Button
+              className={styles.summarizeButton}
+              variant="contained"
+              onClick={() => handleOpen(data.show.name, data.name)}
+            >
+              Request Summary
+            </Button>
+          </div>
         </div>
-        </div>
-       
-     
       </div>
 
-      <LoadingModal 
-        handleClose={handleClose}
-        open={loadingOpen}
-      />
+      <LoadingModal handleClose={handleClose} open={loadingOpen} />
       <ConfirmSummaryModal
         handleClose={handleClose}
         open={open}
@@ -115,10 +115,7 @@ const EpisodeDetails = ({ data }) => {
         podcastDuration={data.duration_ms}
         showName={data.show.name}
       />
-       <SummaryErrorModal
-        handleClose={handleClose}
-        open={errorOpen}
-      />
+      <SummaryErrorModal handleClose={handleClose} open={errorOpen} />
     </div>
   );
 };

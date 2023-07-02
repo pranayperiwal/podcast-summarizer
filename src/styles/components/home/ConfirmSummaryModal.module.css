@@ -14,12 +14,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+
   border-radius: 15px;
   /* border: 3px solid red; */
-  max-width: 500px;
-  min-width: 300px;
-  height: auto;
-  min-height: 280px;
+  width: 500px;
+  min-height: 200px;
+
   margin: auto;
 
   /* justify-content: center; */
@@ -57,7 +57,6 @@
 }
 
 .contentContainer {
-  /* border: 1px solid red; */
   width: 90%;
   height: 100%;
   margin: 20px;
