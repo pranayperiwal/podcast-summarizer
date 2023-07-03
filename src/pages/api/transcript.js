@@ -52,18 +52,18 @@ async function transcribeAudio(audioHash, audioUrl, apiKey) {
     const requestBody = {
         audio_url: audioUrl,
         webhook_url: buildWebhookUrl(audioHash)
-        
     };
     try {
         // Send a POST request to the API endpoint and handle the response
         const response = await fetch(apiUrl, {
             method: "POST",
             headers: headers,
-            body: JSON.stringify(requestBody)
+            body: JSON.stringify(requestBody)   
         });
         
         // If the response is not in the 200-299 range, throw an error
         if (!response.ok) {
+            console.error(await response.text());
             throw new Error(`Request failed with status ${response.status}`);
         }
         // Parse the response body as JSON
@@ -73,6 +73,7 @@ async function transcribeAudio(audioHash, audioUrl, apiKey) {
     } catch (error) {
     // Handle any errors that occur during the request
         console.error(`Error: ${error.message}`);
+        throw new Error(`Error: ${error.message}`);
     }
 }
 
