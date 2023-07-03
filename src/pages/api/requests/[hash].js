@@ -2,19 +2,24 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
-  const { data, creditsRequired } = req.body;
+  const {
+    data,
+    creditsRequired,
+    showImage,
+    podcastReleaseDate,
+    podcastDuration,
+  } = req.body;
+
+  //check all the errors
 
   try {
     //check if the request hasnt been made previously, if it has, raise error
     const prevRequestMadeResponse = await prisma.request.findMany({
       where: {
-        hash: data.hash,
+        podcast_hash: data.podcast_hash,
         userId: data.userId,
       },
     });
-
-    // console.log(prevRequestMadeResponse);
-
     if (prevRequestMadeResponse.length) {
       throw new Error("Request made earlier");
     }
@@ -33,41 +38,122 @@ export default async function handler(req, res) {
       throw new Error("Not enough credits");
     }
 
+    //database updates as a transaction
+    const updateDatabases = async () => {
+      try {
+        const result = await prisma.$transaction([
+          prisma.podcast.upsert({
+            where: { hash: data.podcast_hash },
+            update: {},
+            create: {
+              hash: data.podcast_hash,
+              duration: podcastDuration,
+              image: showImage,
+              date: new Date(podcastReleaseDate),
+              episode_name: data.podcast_name,
+              show_name: data.show_name,
+            },
+          }),
+
+          prisma.request.create({ data }),
+
+          prisma.user.update({
+            where: {
+              user_id: data.userId,
+            },
+            data: {
+              credits: credits - creditsRequired,
+            },
+          }),
+
+          prisma.creditsSpent.create({
+            data: {
+              userId: data.userId,
+              date: new Date(),
+              quantity: creditsRequired,
+              podcast_hash: data.podcast_hash,
+            },
+          }),
+        ]);
+
+        res.status(200);
+        res.end(JSON.stringify(result));
+      } catch (error) {
+        console.log(error);
+        res.status(400).end(JSON.stringify(error));
+      }
+    };
+
+    await updateDatabases();
+
     //make request
-    const requestCreatedResponse = await prisma.request.create({ data });
-    console.log("request record created");
+    // const requestCreatedResponse = await prisma.request.create({ data });
+    // console.log("request record created");
     // console.log(response);
 
     //reduce credits
-    const updateUser = await prisma.user.update({
-      where: {
-        user_id: data.userId,
-      },
-      data: {
-        credits: credits - creditsRequired,
-      },
-    });
+    // const updateUser = await prisma.user.update({
+    //   where: {
+    //     user_id: data.userId,
+    //   },
+    //   data: {
+    //     credits: credits - creditsRequired,
+    //   },
+    // });
 
     //store in CreditsSpent table
-    const credtsSpentResponse = await prisma.creditsSpent.create({
-      data: {
-        userId: data.userId,
-        date: new Date(),
-        quantity: creditsRequired,
-        request_id: requestCreatedResponse.id,
-      },
-    });
+    // const credtsSpentResponse = await prisma.creditsSpent.create({
+    //   data: {
+    //     userId: data.userId,
+    //     date: new Date(),
+    //     quantity: creditsRequired,
+    //     request_id: requestCreatedResponse.id,
+    //   },
+    // });
+
+    //store podcast details in Podcast table
+
+    // const podcastEntry = await prisma.podcast.upsert({
+    //   where: { hash: data.hash },
+    //   update: {},
+    //   create: {
+    //     hash: data.hash,
+    //     duration: data.podcast_duration,
+    //     image: data.show_image,
+    //     date: new Date(podcast_release_date),
+    //     episode_name: data.podcast_name,
+    //     show_name: data.show_name,
+    //   },
+    // });
+
+    // const podcastExists = await prisma.podcast.findUnique({
+    //   where: {
+    //     hash: data.hash,
+    //   },
+    // });
+
+    // if (!podcastExists) {
+    //   const newPocastEntry = await prisma.podcast.create({
+    //     data: {
+    //       hash: data.hash,
+    //       duration: data.podcast_duration,
+    //       image: data.show_image,
+    //       date: new Date(podcast_release_date),
+    //       episode_name: data.podcast_name,
+    //       show_name: data.show_name,
+    //     },
+    //   });
+    // }
 
     // console.log("Credits left: ", updateUser.credits);
 
-    res.status(200);
-    res.end(JSON.stringify(requestCreatedResponse));
+    // res.status(200);
+    // res.end(JSON.stringify(requestCreatedResponse));
   } catch (err) {
     console.error(err);
 
     if (err.message === "Request made earlier") {
       res.status(444).send("Not enough credits");
-      //   res.status(444).end(JSON.stringify(err));
     } else if (err.message === "Not enough credits") {
       res.status(445).end(JSON.stringify(err));
     } else {

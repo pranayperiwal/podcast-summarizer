@@ -48,7 +48,7 @@ model User {
   name                String?
   email               String         @unique
   image               String?
-  credits             Float          @default(2.0)
+  credits             Float          @default(20.0)
   emailVerified       DateTime?
   user_id             String         @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   accounts            Account[]
@@ -64,10 +64,12 @@ model Podcast {
   duration     Int
   image        String
   date         DateTime
-  hash         String
+  hash         String   @unique
   episode_name String
   show_name    String
   users        User[]   @relation("PodcastToUser")
+  creditsSpent CreditsSpent[]
+  requests     Request[]
 }
 
 model Transaction {
@@ -81,25 +83,25 @@ model Transaction {
 }
 
 model CreditsSpent {
-  id         Int      @id @default(autoincrement())
-  date       DateTime
-  quantity   Float
-  request_id Int      @unique
-  userId     String   @db.Uuid
-  request    Request  @relation(fields: [request_id], references: [id])
-  user       User     @relation(fields: [userId], references: [user_id])
+  id                Int      @id @default(autoincrement())
+  date              DateTime
+  quantity          Float
+  podcast_hash      String   @unique
+  userId            String   @db.Uuid
+  podcast           Podcast?  @relation(fields: [podcast_hash], references: [hash])
+  user              User?     @relation(fields: [userId], references: [user_id])
 }
 
 model Request {
   id           Int           @id @default(autoincrement())
-  hash         String
-  date         DateTime
+  podcast_hash String        @unique
+  date         DateTime      
   status       String
   podcast_name String
   show_name    String
   userId       String        @db.Uuid
   summary_url  String?       @unique
-  creditsSpent CreditsSpent?
+  podcast      Podcast       @relation(fields: [podcast_hash], references: [hash])
   user         User          @relation(fields: [userId], references: [user_id])
 }
 

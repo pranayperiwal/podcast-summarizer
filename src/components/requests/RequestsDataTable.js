@@ -30,7 +30,7 @@ const RequestsDataTable = ({ requests }) => {
   const rows = requests.map((item, index) => {
     return createData(
       index + 1,
-      item.hash,
+      item.podcast_hash,
       item.podcast_name,
       item.show_name,
       item.date,

@@ -62,7 +62,8 @@ RequestIndividualPage.requireAuth = true;
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
 
-  //   const {query} = context;
+  // const { query } = context;
+  // console.log(query);
 
   //1. check if session exists
   if (!session) {
@@ -78,7 +79,7 @@ export async function getServerSideProps(context) {
   const userRequest = await prisma.request.findFirst({
     where: {
       userId: session.user.uid,
-      hash: context.query.hash,
+      podcast_hash: context.query.hash,
     },
   });
   // console.log(userRequest);

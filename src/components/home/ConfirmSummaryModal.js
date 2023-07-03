@@ -3,8 +3,8 @@ import Modal from "@mui/material/Modal";
 import ClearIcon from "@mui/icons-material/Clear";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import SendIcon from '@mui/icons-material/Send';
-import DoDisturbIcon from '@mui/icons-material/DoDisturb';
+import SendIcon from "@mui/icons-material/Send";
+import DoDisturbIcon from "@mui/icons-material/DoDisturb";
 import { shake_128 } from "js-sha3";
 import { useAtom } from "jotai";
 import { ColorRing } from "react-loader-spinner";
@@ -19,6 +19,8 @@ const ConfirmSummaryModal = ({
   podcastName,
   podcastDuration,
   showName,
+  showImage,
+  podcastReleaseDate,
 }) => {
   const [userUID] = useAtom(userUIDAtom);
 
@@ -49,14 +51,20 @@ const ConfirmSummaryModal = ({
     //2. store the entry in the request table
     const body = {
       data: {
-        hash,
+        podcast_hash: hash,
         date: new Date(),
         status: "In Progress",
         podcast_name: podcastName,
         show_name: showName,
+        // show_image: showImage,
+        // podcast_release_date: podcastReleaseDate,
+        // podcast_duration: podcastDuration,
         userId: userUID,
       },
       creditsRequired: calculateCost(podcastDuration),
+      showImage,
+      podcastReleaseDate,
+      podcastDuration,
     };
 
     setInitalState(false);

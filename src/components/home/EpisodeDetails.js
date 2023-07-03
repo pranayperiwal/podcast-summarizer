@@ -114,6 +114,8 @@ const EpisodeDetails = ({ data }) => {
         podcastName={data.name}
         podcastDuration={data.duration_ms}
         showName={data.show.name}
+        showImage={data.images[1].url}
+        podcastReleaseDate={data.release_date}
       />
       {/* <SummaryErrorModal handleClose={handleClose} open={errorOpen} /> */}
     </div>
