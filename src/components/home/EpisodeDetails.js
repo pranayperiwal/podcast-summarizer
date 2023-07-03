@@ -45,24 +45,50 @@ const EpisodeDetails = ({ data }) => {
     return pad(hrs) + ":" + pad(mins) + ":" + pad(secs);
   }
 
+  async function makeTranscriptRequest() {
+    const podcastDetails = {
+      hash: '1234567890',
+      audioUrl: 'https://example.com/podcast.mp3'
+    };
+
+    try {
+      const response = await fetch('http://localhost:3000/api/transcript', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(podcastDetails)
+      });
+    
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      throw new Error("Error making transcript request - " + error.message);  
+    }
+}
+
   /**
    * Gets the audio of the podcast
    */
   async function handleOpen(showName, episodeName) {
     try {
-      // setLoadingOpen(true);
-      // await sleep(2000);
-      // console.log("OK");
-      // const url = `http://localhost:3000/api/audio?showName=${encodeURIComponent(
-      //   showName
-      // )}&episodeName=${encodeURIComponent(episodeName)}`;
-      // const response = await fetch(url);
-      // if (!response.ok) {
-      //   throw new Error("Network response was not ok");
-      // }
-      // const data = await response.json();
-      // setLoadingOpen(false);
-      // console.log(data);
+      setLoadingOpen(true);
+      await sleep(2000);
+      console.log("OK");
+      const url = `http://localhost:3000/api/audio?showName=${encodeURIComponent(
+        showName
+      )}&episodeName=${encodeURIComponent(episodeName)}`;
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+     
+      const data = await response.json();
+     
+      await makeTranscriptRequest();
+     
+      setLoadingOpen(false);
+    
       setOpen(true);
     } catch (error) {
       setErrorOpen(true);

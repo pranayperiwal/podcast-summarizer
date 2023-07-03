@@ -7,11 +7,11 @@
  * ii) Title - Title of the episode  
  */
 export default async function handler(req, res) {
+    console.log(req.query);
     const showName = req.query.showName; 
     const episodeName = req.query.episodeName;
 
     const url = `http://127.0.0.1:5000/test?author=${encodeURIComponent(showName)}&title=${encodeURIComponent(episodeName)}`;
-    console.log(url);
    
     console.log(url);
     try {
