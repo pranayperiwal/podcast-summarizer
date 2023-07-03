@@ -6,15 +6,22 @@ import { getServerSession } from "next-auth/next";
 import Header from "@/components/Header";
 import SpotifyLinkForm from "@/components/home/SpotifyLinkForm";
 import { Divider } from "@mui/material";
+import { atom } from "jotai";
+import { useHydrateAtoms } from "jotai/utils";
+
+export const userUIDAtom = atom();
 
 const HomePage = ({ user }) => {
   // console.log(user);
+
+  useHydrateAtoms([[userUIDAtom, user.user_id]]);
+
   return (
     <div className={styles.container}>
       <Header loggedIn={true} credits={user.credits} />
       <div className={styles.contentContainer}>
         <div className={styles.contentHeader}>
-          Enter the spotify link of the podcast you would like to summarise
+          Enter the Spotify link of the podcast you would like to summarise
         </div>
         <Divider />
         <SpotifyLinkForm />
@@ -41,9 +48,10 @@ export async function getServerSideProps(context) {
 
   const user = await prisma.user.findUnique({
     where: {
-      email: session.user.email,
+      user_id: session.user.uid,
     },
   });
+  // console.log(session);
 
   return {
     props: {

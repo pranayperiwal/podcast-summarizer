@@ -389,7 +389,7 @@ const SpotifyLinkForm = () => {
         >
           Spotify Link:
         </label> */}
-        
+
         <input
           className={styles.linkInput}
           type="search"
@@ -397,7 +397,6 @@ const SpotifyLinkForm = () => {
           id="link"
           name="link"
           onChange={handleInput}
-         
         />
       </form>
 
