@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { authOptions } from "../pages/api/auth/[...nextauth]";
+import { getServerSession } from "next-auth/next";
 
 function LandingPage() {
   const { data: session } = useSession();
@@ -35,3 +37,20 @@ function LandingPage() {
 }
 
 export default LandingPage;
+
+export async function getServerSideProps(context) {
+  const session = await getServerSession(context.req, context.res, authOptions);
+
+  if (session) {
+    return {
+      redirect: {
+        destination: "/home",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+}
