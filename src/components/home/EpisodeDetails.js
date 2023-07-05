@@ -81,20 +81,14 @@ const EpisodeDetails = ({ data }) => {
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error("Network response was not ok");
-      }
-<<<<<<< HEAD
-      const data = await response.json();
-      setLoadingOpen(false);
-      console.log(data);
-=======
+      }]
      
       const data = await response.json();
-     
+    
       await makeTranscriptRequest();
      
       setLoadingOpen(false);
     
->>>>>>> b4169013af3567f8ec2f4ad69fc5b0b5d998c527
       setOpen(true);
     } catch (error) {
       setErrorOpen(true);

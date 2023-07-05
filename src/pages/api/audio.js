@@ -12,13 +12,8 @@ export default async function handler(req, res) {
     const episodeName = req.query.episodeName;
 
     const url = `http://127.0.0.1:5000/test?author=${encodeURIComponent(showName)}&title=${encodeURIComponent(episodeName)}`;
-<<<<<<< HEAD
     console.log(url);
 
-=======
-   
-    console.log(url);
->>>>>>> b4169013af3567f8ec2f4ad69fc5b0b5d998c527
     try {
         const response = await fetch(url);
         const data = await response.json();
