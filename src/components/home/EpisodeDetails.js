@@ -50,19 +50,19 @@ const EpisodeDetails = ({ data }) => {
    */
   async function handleOpen(showName, episodeName) {
     try {
-      // setLoadingOpen(true);
-      // await sleep(2000);
-      // console.log("OK");
-      // const url = `http://localhost:3000/api/audio?showName=${encodeURIComponent(
-      //   showName
-      // )}&episodeName=${encodeURIComponent(episodeName)}`;
-      // const response = await fetch(url);
-      // if (!response.ok) {
-      //   throw new Error("Network response was not ok");
-      // }
-      // const data = await response.json();
-      // setLoadingOpen(false);
-      // console.log(data);
+      setLoadingOpen(true);
+      await sleep(2000);
+      console.log("OK");
+      const url = `http://localhost:3000/api/audio?showName=${encodeURIComponent(
+        showName
+      )}&episodeName=${encodeURIComponent(episodeName)}`;
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setLoadingOpen(false);
+      console.log(data);
       setOpen(true);
     } catch (error) {
       setErrorOpen(true);
@@ -107,7 +107,7 @@ const EpisodeDetails = ({ data }) => {
         </div>
       </div>
 
-      {/* <LoadingModal handleClose={handleClose} open={loadingOpen} /> */}
+     <LoadingModal handleClose={handleClose} open={loadingOpen} />
       <ConfirmSummaryModal
         handleClose={handleClose}
         open={open}

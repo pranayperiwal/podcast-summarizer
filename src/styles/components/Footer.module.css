@@ -1,13 +1,14 @@
 .container {
   width: 100%;
-  border: 1px solid black;
-  height: 10vh;
+  border-top: 1px solid rgba(0,0,0,0.3);
+  height: 7vh;
   color: white;
-  background-color: black;
+  background-color: #181818;
   display: flex;
   justify-content: center;
   align-items: center;
   position: absolute;
   bottom: 0;
   font-size: 13px;
+  
 }

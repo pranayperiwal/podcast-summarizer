@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap');
+
+
 html,
 body {
   padding: 0;
@@ -24,4 +27,14 @@ a:hover {
 img {
   max-width: 100%;
   display: block;
+}
+
+/* Color Pallette */ 
+
+:root {
+  --main-bg-color:  #181818;
+  --secondary-color: #8758FF;
+  --main-font: montserrat;
+  --main-text-color: #fff;
+  --main-card-bg: #21262d;
 }

@@ -81,6 +81,8 @@ class WebScrapper:
             )
         ).send_keys(Keys.RETURN);
 
+
+        # Gets the link
         podcast_link = WebDriverWait(
             self.driver, WebScrapper.timeout
         ).until(

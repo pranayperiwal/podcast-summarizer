@@ -11,7 +11,8 @@ import Avatar from "@mui/material/Avatar";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
-function Header({ loggedIn, credits }) {
+
+function HeaderHome({ loggedIn, credits }) {
   const [openModal, setOpenModal] = useState(false);
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
@@ -119,4 +120,4 @@ function Header({ loggedIn, credits }) {
   );
 }
 
-export default Header;
+export default HeaderHome;

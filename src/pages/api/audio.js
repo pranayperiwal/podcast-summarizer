@@ -12,8 +12,7 @@ export default async function handler(req, res) {
 
     const url = `http://127.0.0.1:5000/test?author=${encodeURIComponent(showName)}&title=${encodeURIComponent(episodeName)}`;
     console.log(url);
-   
-    console.log(url);
+
     try {
         const response = await fetch(url);
         const data = await response.json();
