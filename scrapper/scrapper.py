@@ -108,7 +108,7 @@ def test():
     author = request.args.get('author')
     title = request.args.get('title')
     print(author, title)
-    link = f"audio.com/for/{author}/{title}"
+    link = f"https://dcs.megaphone.fm/FPMN7420349155.mp3?key=fee6f14ceca2640217ed5d8768a62289&request_event_id=826ba599-29d6-48bd-bd6d-10ecf3450f3c"
     result = {
         "link": link
     }

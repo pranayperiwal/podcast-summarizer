@@ -45,6 +45,28 @@ const EpisodeDetails = ({ data }) => {
     return pad(hrs) + ":" + pad(mins) + ":" + pad(secs);
   }
 
+  async function makeTranscriptRequest() {
+    const podcastDetails = {
+      hash: '1234567890',
+      audioUrl: 'https://example.com/podcast.mp3'
+    };
+
+    try {
+      const response = await fetch('http://localhost:3000/api/transcript', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(podcastDetails)
+      });
+    
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      throw new Error("Error making transcript request - " + error.message);  
+    }
+}
+
   /**
    * Gets the audio of the podcast
    */
@@ -60,9 +82,19 @@ const EpisodeDetails = ({ data }) => {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
+<<<<<<< HEAD
       const data = await response.json();
       setLoadingOpen(false);
       console.log(data);
+=======
+     
+      const data = await response.json();
+     
+      await makeTranscriptRequest();
+     
+      setLoadingOpen(false);
+    
+>>>>>>> b4169013af3567f8ec2f4ad69fc5b0b5d998c527
       setOpen(true);
     } catch (error) {
       setErrorOpen(true);

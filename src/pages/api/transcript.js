@@ -51,10 +51,14 @@ async function transcribeAudio(audioHash, audioUrl, apiKey) {
     // Define the request body
     const requestBody = {
         audio_url: audioUrl,
+<<<<<<< HEAD
         webhook_url: buildWebhookUrl(audioHash),
         auto_chapters: true,
         speaker_labels: true, 
         speakers_expected: 1
+=======
+        webhook_url: buildWebhookUrl(audioHash)
+>>>>>>> b4169013af3567f8ec2f4ad69fc5b0b5d998c527
     };
     try {
         // Send a POST request to the API endpoint and handle the response
