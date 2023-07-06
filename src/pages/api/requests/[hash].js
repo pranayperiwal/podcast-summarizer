@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { incomingRequestEmailNotification } from "@/utils/email/IncomingRequestEmailNotifcation";
 const prisma = new PrismaClient();
 
 async function createTranscriptRequest(hash, audioUrl) {
@@ -27,6 +28,7 @@ export default async function handler(req, res) {
     showImage,
     podcastReleaseDate,
     podcastDuration,
+    podcastLink,
   } = req.body;
 
   //check all the errors
@@ -71,6 +73,7 @@ export default async function handler(req, res) {
               date: new Date(podcastReleaseDate),
               episode_name: data.podcast_name,
               show_name: data.show_name,
+              mp3_url: podcastLink,
             },
           }),
 
@@ -97,13 +100,21 @@ export default async function handler(req, res) {
 
         res.status(200);
         res.end(JSON.stringify(result));
+        if (result.length) {
+          //send request alert email to admin
+          incomingRequestEmailNotification(
+            data.userId,
+            data.podcast_name,
+            data.show_name
+          );
+        }
       } catch (error) {
         console.log(error);
         res.status(400).end(JSON.stringify(error));
       }
     };
 
-    await updateDatabases();
+    updateDatabases();
 
     await createTranscriptRequest(data.podcast_hash, "https://chrt.fm/track/97E2B5/dts.podtrac.com/redirect.mp3/traffic.omny.fm/d/clips/fa326977-3de5-4283-9b8b-af3500c58607/59fff0b5-0aab-4e5e-b71e-af4600178c59/2b79c8cf-2a62-455d-8708-b02d0040f0a8/audio.mp3?utm_source=Podcast&in_playlist=7f09fd51-ba1a-437b-9667-af4600178c62");
 

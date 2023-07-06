@@ -8,6 +8,7 @@ import SpotifyLinkForm from "@/components/home/SpotifyLinkForm";
 import { Divider } from "@mui/material";
 import { atom } from "jotai";
 import { useHydrateAtoms } from "jotai/utils";
+import InitialInformationModal from "@/components/home/InitialInformationModal";
 
 export const userUIDAtom = atom();
 
@@ -15,6 +16,21 @@ const HomePage = ({ user }) => {
   // console.log(user);
 
   useHydrateAtoms([[userUIDAtom, user.user_id]]);
+
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    localStorage.setItem(user.user_id + "_seen_welcome_modal", true);
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    let returningUser = localStorage.getItem(
+      user.user_id + "_seen_welcome_modal"
+    );
+    // console.log(returningUser);
+    setOpen(!returningUser);
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -25,6 +41,9 @@ const HomePage = ({ user }) => {
         </div>
         <Divider />
         <SpotifyLinkForm />
+      </div>
+      <div>
+        <InitialInformationModal open={open} handleClose={handleClose} />
       </div>
     </div>
   );

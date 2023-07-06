@@ -33,7 +33,7 @@ export const ProtectedLayout = ({ children }) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "100%",
+          height: 400,
         }}
       >
         <ColorRing

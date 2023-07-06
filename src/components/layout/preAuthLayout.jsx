@@ -15,7 +15,7 @@ function PreAuthLayout({ children }) {
       }}
     >
       <Header loggedIn={false} />
-      {children}
+      <main style={{ flex: "1 0 auto", width: "100%" }}>{children}</main>
       <Footer />
     </div>
   );

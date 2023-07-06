@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
@@ -6,17 +6,35 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import styles from "@/styles/RequestIndividual.module.css";
 import Grid from "@mui/material/Grid";
+import RequestConfirmedModal from "@/components/requests/RequestConfirmedModal";
 
 export default function RequestIndividualPage({ user, request }) {
   //   const router = useRouter();
 
-  const { podcast_name, show_name, status } = request;
+  // console.log(request);
+
+  const { podcast_name, show_name, status, summary_url } = request;
+
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const handleClose = () => {
+    localStorage.setItem(request.podcast_hash + "_seen__modal", true);
+    setModalOpen(false);
+  };
+
+  useEffect(() => {
+    let firstTimeRequestScreen = localStorage.getItem(
+      request.podcast_hash + "_seen__modal"
+    );
+    // console.log(returningUser);
+    setModalOpen(!firstTimeRequestScreen);
+  }, []);
 
   return (
     <div className={styles.container}>
       <Header loggedIn={true} credits={user.credits} />
       <div className={styles.contentContainer}>
-        <h2>Summary Request Placed</h2>
+        <h2>Request for Summary Placed</h2>
         <div className={styles.textContentContainer}>
           <Grid
             container
@@ -44,13 +62,23 @@ export default function RequestIndividualPage({ user, request }) {
             </Grid>
           </Grid>
 
-          {status === "Completed" ? (
+          {summary_url ? (
             <div>
-              <Link>Link to summary</Link>
+              <Grid item xs={2}>
+                <span>Summary:</span>
+              </Grid>
+              <Grid item xs={10}>
+                {/* <span style={{ fontWeight: "" }}>{summary_url}</span> */}
+                <Link href={summary_url}>Summary</Link>
+              </Grid>
             </div>
           ) : (
             <></>
           )}
+        </div>
+
+        <div>
+          <RequestConfirmedModal open={modalOpen} handleClose={handleClose} />
         </div>
       </div>
     </div>

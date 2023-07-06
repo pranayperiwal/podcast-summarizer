@@ -46,7 +46,7 @@ function Header({ loggedIn, credits }) {
           <Link className={styles.linkItem} href="/home">
             Home
           </Link>
-          <Link className={styles.linkItem} href="/about">
+          <Link className={styles.linkItem} href="/aboutUs">
             About
           </Link>
           <Link className={styles.linkItem} href="/summaries">

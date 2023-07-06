@@ -12,6 +12,11 @@ const EpisodeDetails = ({ data }) => {
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [loadingOpen, setLoadingOpen] = React.useState(false);
 
+  const [podcastTitleReturnedFromScraper, setPodcastTitleReturnedFromScraper] =
+    React.useState("");
+  const [podcastLinkReturnedFromScraper, setPodcastLinkReturnedFromScraper] =
+    React.useState(null);
+
   /* Mock sleep */
   async function sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
@@ -19,10 +24,10 @@ const EpisodeDetails = ({ data }) => {
 
   // const handleClose = () => {}
   // getAudioLink(data.show.name, data.name);
-  // const handleOpen = () => {
-  //   getAudioLink(data.show.name, data.name);
-  //   setOpen(true);
-  // };
+  const handleOpen = () => {
+    // getAudioLink(data.show.name, data.name);
+    setOpen(true);
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -47,54 +52,61 @@ const EpisodeDetails = ({ data }) => {
 
   async function makeTranscriptRequest() {
     const podcastDetails = {
-      hash: '1234567890',
-      audioUrl: 'https://example.com/podcast.mp3'
+      hash: "1234567890",
+      audioUrl: "https://example.com/podcast.mp3",
     };
 
     try {
-      const response = await fetch('http://localhost:3000/api/transcript', {
-        method: 'POST',
+      const response = await fetch("http://localhost:3000/api/transcript", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(podcastDetails)
+        body: JSON.stringify(podcastDetails),
       });
-    
+
       const data = await response.json();
       console.log(data);
     } catch (error) {
-      throw new Error("Error making transcript request - " + error.message);  
+      throw new Error("Error making transcript request - " + error.message);
     }
-}
+  }
 
   /**
    * Gets the audio of the podcast
    */
-  async function handleOpen(showName, episodeName) {
-    try {
-      setLoadingOpen(true);
-      await sleep(2000);
-      console.log("OK");
-      const url = `http://localhost:3000/api/audio?showName=${encodeURIComponent(
-        showName
-      )}&episodeName=${encodeURIComponent(episodeName)}`;
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-     
-      const data = await response.json();
-    
-      await makeTranscriptRequest();
-     
-      setLoadingOpen(false);
-    
-      setOpen(true);
-    } catch (error) {
-      setErrorOpen(true);
-      console.error("There was a problem with the fetch operation:", error);
-    }
-  }
+  // async function handleOpen(showName, episodeName) {
+  //   try {
+  //     setLoadingOpen(true);
+  //     // await sleep(2000);
+  //     console.log("OK");
+  //     const url = `http://localhost:3000/api/audio?showName=${encodeURIComponent(
+  //       showName
+  //     )}&episodeName=${encodeURIComponent(episodeName)}`;
+  //     const response = await fetch(url);
+  //     if (!response.ok) {
+  //       throw new Error("Network response was not ok");
+  //     }
+  //     const data = await response.json();
+  //     setLoadingOpen(false);
+
+  //     if (data.error) {
+  //       setErrorOpen(true);
+  //       console.error(
+  //         "There was a problem with the fetch operation:",
+  //         data.error
+  //       );
+  //     } else {
+  //       console.log(data);
+  //       setPodcastLinkReturnedFromScraper(data.link);
+  //       setPodcastTitleReturnedFromScraper(data.title);
+  //       setOpen(true);
+  //     }
+  //   } catch (error) {
+  //     setErrorOpen(true);
+  //     console.error("There was a problem with the fetch operation:", error);
+  //   }
+  // }
 
   // Function to get the summary of the episode
   function generateSummary() {
@@ -133,11 +145,12 @@ const EpisodeDetails = ({ data }) => {
         </div>
       </div>
 
-     <LoadingModal handleClose={handleClose} open={loadingOpen} />
+      <LoadingModal handleClose={handleClose} open={loadingOpen} />
       <ConfirmSummaryModal
         handleClose={handleClose}
         open={open}
         podcastName={data.name}
+        podcastLink={podcastLinkReturnedFromScraper}
         podcastDuration={data.duration_ms}
         showName={data.show.name}
         showImage={data.images[1].url}

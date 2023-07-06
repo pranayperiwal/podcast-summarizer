@@ -17,6 +17,7 @@ const ConfirmSummaryModal = ({
   handleClose,
   open,
   podcastName,
+  podcastLink,
   podcastDuration,
   showName,
   showImage,
@@ -65,6 +66,7 @@ const ConfirmSummaryModal = ({
       showImage,
       podcastReleaseDate,
       podcastDuration,
+      podcastLink,
     };
 
     setInitalState(false);

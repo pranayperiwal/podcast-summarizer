@@ -9,9 +9,10 @@ function PostAuthLayout({ children }) {
         flexDirection: "column",
         alignItems: "center",
         width: "100%",
+        minHeight: "100vh",
       }}
     >
-      {children}
+      <main style={{ flex: "1 0 auto", width: "100%" }}>{children}</main>
       <Footer />
     </div>
   );
