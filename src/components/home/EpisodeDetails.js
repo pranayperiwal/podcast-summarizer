@@ -12,6 +12,11 @@ const EpisodeDetails = ({ data }) => {
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [loadingOpen, setLoadingOpen] = React.useState(false);
 
+  const [podcastTitleReturnedFromScraper, setPodcastTitleReturnedFromScraper] =
+    React.useState("");
+  const [podcastLinkReturnedFromScraper, setPodcastLinkReturnedFromScraper] =
+    React.useState(null);
+
   /* Mock sleep */
   async function sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
@@ -19,10 +24,10 @@ const EpisodeDetails = ({ data }) => {
 
   // const handleClose = () => {}
   // getAudioLink(data.show.name, data.name);
-  // const handleOpen = () => {
-  //   getAudioLink(data.show.name, data.name);
-  //   setOpen(true);
-  // };
+  const handleOpen = () => {
+    // getAudioLink(data.show.name, data.name);
+    setOpen(true);
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -48,27 +53,38 @@ const EpisodeDetails = ({ data }) => {
   /**
    * Gets the audio of the podcast
    */
-  async function handleOpen(showName, episodeName) {
-    try {
-      // setLoadingOpen(true);
-      // await sleep(2000);
-      // console.log("OK");
-      // const url = `http://localhost:3000/api/audio?showName=${encodeURIComponent(
-      //   showName
-      // )}&episodeName=${encodeURIComponent(episodeName)}`;
-      // const response = await fetch(url);
-      // if (!response.ok) {
-      //   throw new Error("Network response was not ok");
-      // }
-      // const data = await response.json();
-      // setLoadingOpen(false);
-      // console.log(data);
-      setOpen(true);
-    } catch (error) {
-      setErrorOpen(true);
-      console.error("There was a problem with the fetch operation:", error);
-    }
-  }
+  // async function handleOpen(showName, episodeName) {
+  //   try {
+  //     setLoadingOpen(true);
+  //     // await sleep(2000);
+  //     console.log("OK");
+  //     const url = `http://localhost:3000/api/audio?showName=${encodeURIComponent(
+  //       showName
+  //     )}&episodeName=${encodeURIComponent(episodeName)}`;
+  //     const response = await fetch(url);
+  //     if (!response.ok) {
+  //       throw new Error("Network response was not ok");
+  //     }
+  //     const data = await response.json();
+  //     setLoadingOpen(false);
+
+  //     if (data.error) {
+  //       setErrorOpen(true);
+  //       console.error(
+  //         "There was a problem with the fetch operation:",
+  //         data.error
+  //       );
+  //     } else {
+  //       console.log(data);
+  //       setPodcastLinkReturnedFromScraper(data.link);
+  //       setPodcastTitleReturnedFromScraper(data.title);
+  //       setOpen(true);
+  //     }
+  //   } catch (error) {
+  //     setErrorOpen(true);
+  //     console.error("There was a problem with the fetch operation:", error);
+  //   }
+  // }
 
   // Function to get the summary of the episode
   function generateSummary() {
@@ -112,6 +128,7 @@ const EpisodeDetails = ({ data }) => {
         handleClose={handleClose}
         open={open}
         podcastName={data.name}
+        podcastLink={podcastLinkReturnedFromScraper}
         podcastDuration={data.duration_ms}
         showName={data.show.name}
         showImage={data.images[1].url}

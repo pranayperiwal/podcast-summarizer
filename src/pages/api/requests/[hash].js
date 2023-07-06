@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { incomingRequestEmailNotification } from "@/utils/email/IncomingRequestEmailNotifcation";
 const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
@@ -8,6 +9,7 @@ export default async function handler(req, res) {
     showImage,
     podcastReleaseDate,
     podcastDuration,
+    podcastLink,
   } = req.body;
 
   //check all the errors
@@ -52,6 +54,7 @@ export default async function handler(req, res) {
               date: new Date(podcastReleaseDate),
               episode_name: data.podcast_name,
               show_name: data.show_name,
+              mp3_url: podcastLink,
             },
           }),
 
@@ -78,13 +81,21 @@ export default async function handler(req, res) {
 
         res.status(200);
         res.end(JSON.stringify(result));
+        if (result.length) {
+          //send request alert email to admin
+          incomingRequestEmailNotification(
+            data.userId,
+            data.podcast_name,
+            data.show_name
+          );
+        }
       } catch (error) {
         console.log(error);
         res.status(400).end(JSON.stringify(error));
       }
     };
 
-    await updateDatabases();
+    updateDatabases();
 
     //make request
     // const requestCreatedResponse = await prisma.request.create({ data });

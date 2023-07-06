@@ -60,16 +60,17 @@ model User {
 }
 
 model Podcast {
-  id           Int      @id @default(autoincrement())
+  id           Int           @id @default(autoincrement())
   duration     Int
   image        String
   date         DateTime
-  hash         String   @unique
+  hash         String        @unique
   episode_name String
   show_name    String
-  users        User[]   @relation("PodcastToUser")
-  creditsSpent CreditsSpent[]
-  requests     Request[]
+  mp3_url      String?       @unique
+  creditsSpent CreditsSpent?
+  requests     Request?
+  users        User[]        @relation("PodcastToUser")
 }
 
 model Transaction {
@@ -83,26 +84,26 @@ model Transaction {
 }
 
 model CreditsSpent {
-  id                Int      @id @default(autoincrement())
-  date              DateTime
-  quantity          Float
-  podcast_hash      String   @unique
-  userId            String   @db.Uuid
-  podcast           Podcast?  @relation(fields: [podcast_hash], references: [hash])
-  user              User?     @relation(fields: [userId], references: [user_id])
+  id           Int      @id @default(autoincrement())
+  date         DateTime
+  quantity     Float
+  userId       String   @db.Uuid
+  podcast_hash String   @unique
+  podcast      Podcast  @relation(fields: [podcast_hash], references: [hash])
+  user         User     @relation(fields: [userId], references: [user_id])
 }
 
 model Request {
-  id           Int           @id @default(autoincrement())
-  podcast_hash String        @unique
-  date         DateTime      
+  id           Int      @id @default(autoincrement())
+  date         DateTime
   status       String
   podcast_name String
   show_name    String
-  userId       String        @db.Uuid
-  summary_url  String?       @unique
-  podcast      Podcast       @relation(fields: [podcast_hash], references: [hash])
-  user         User          @relation(fields: [userId], references: [user_id])
+  userId       String   @db.Uuid
+  summary_url  String?  @unique
+  podcast_hash String   @unique
+  podcast      Podcast  @relation(fields: [podcast_hash], references: [hash])
+  user         User     @relation(fields: [userId], references: [user_id])
 }
 
 model Summary {
