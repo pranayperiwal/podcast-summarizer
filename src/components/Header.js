@@ -106,7 +106,11 @@ function Header({ loggedIn, credits }) {
           </div>
         ) : (
           <>
-            <Button variant="outlined" onClick={handleOpenModal}>
+            <Button
+              variant="outlined"
+              onClick={handleOpenModal}
+              className={styles.signUpButton}
+            >
               Sign Up / Login
             </Button>
             <LoginModal open={openModal} onClose={handleCloseModal} />

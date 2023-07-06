@@ -1,0 +1,35 @@
+.container {
+  /* border: 1px solid red; */
+  width: 75%;
+  max-width: 900px;
+}
+
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalContentContainer {
+  width: 60%;
+  max-height: 600px;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--main-bg-color);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  overflow-y: auto;
+  border-radius: 10px;
+}
+
+.accordianContainer {
+  margin-bottom: 7px;
+  padding: 5px;
+  color: white;
+  background-color: var(--main-card-bg);
+}
+
+.chapterIndexText {
+  color: rgb(153, 150, 150);
+  width: 15%;
+  flex-shrink: 0;
+}

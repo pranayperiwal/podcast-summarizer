@@ -45,3 +45,13 @@
 .menu {
   width: 200px;
 }
+
+.signUpButton {
+  color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.signUpButton:hover {
+  border-color: var(--secondary-color);
+  /* border: 2px solid red; */
+}

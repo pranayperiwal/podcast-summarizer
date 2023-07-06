@@ -44,7 +44,12 @@ function LandingPage() {
                 >
                   Try Now
                 </button>
-                <button className={styles.sampleButton}>Free Sample</button>
+                <button
+                  className={styles.sampleButton}
+                  onClick={() => router.push("/samples")}
+                >
+                  Free Sample
+                </button>
               </div>
             </div>
           </div>
@@ -61,7 +66,7 @@ function LandingPage() {
             <div className={styles.card}>
               <div className={styles.cardHeading}>Chapter Breakdowns</div>
               <div className={styles.cardSubheading}>
-                PodCrunchAI breaks down podcasts into chapters for easy
+                PodCrunch AI breaks down podcasts into chapters for easy
                 navigation.
               </div>
             </div>
@@ -69,13 +74,14 @@ function LandingPage() {
               <div className={styles.cardHeading}>Spotify Integration</div>
               <div className={styles.cardSubheading}>
                 Enter any Spotify link and get a summary instantly with
-                <span style={{ whiteSpace: "nowrap" }}>PodCrunch AI. </span>
+                <span style={{ whiteSpace: "nowrap" }}> PodCrunch AI. </span>
               </div>
             </div>
             <div className={styles.card}>
               <div className={styles.cardHeading}>Popular Podcasts Library</div>
               <div className={styles.cardSubheading}>
-                Access summaries of popular podcasts with PodCrunchAI's library.
+                Access summaries of popular podcasts with PodCrunch AI's
+                library.
               </div>
             </div>
           </div>

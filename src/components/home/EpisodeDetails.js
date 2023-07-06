@@ -8,6 +8,7 @@ import SummaryErrorModal from "./SummaryErrorModal";
 import LoadingModal from "./LoadingModal";
 
 const EpisodeDetails = ({ data }) => {
+  // console.log(data);
   const [open, setOpen] = React.useState(false);
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [loadingOpen, setLoadingOpen] = React.useState(false);
