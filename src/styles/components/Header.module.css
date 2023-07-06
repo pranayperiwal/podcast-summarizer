@@ -11,8 +11,12 @@
   height: 100%;
   max-width: 1400px;
   padding-top: 24px;
+  padding-bottom: 24px;
   top: 0;
-  margin-bottom: 20px;
+
+  background-color: var(--main-bg-color);
+  color: white;
+  font-family: var(--main-font);
 }
 
 .logoContainer {
@@ -39,11 +43,17 @@
 }
 
 .linkItem {
-  color: #000;
+  color: white;
 }
 
 .menu {
   width: 200px;
+}
+
+.accountButton {
+  color: var(--secondary-color);
+  border-color: var(--secondary-color);
+  font-size: 14px;
 }
 
 .signUpButton {

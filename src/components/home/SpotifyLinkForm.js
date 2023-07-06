@@ -295,8 +295,8 @@ const SpotifyLinkForm = () => {
     const url = "https://accounts.spotify.com/api/token";
     const data = {
       grant_type: "client_credentials",
-      client_id: process.env.SPOTIFY_CLIENT_ID,
-      client_secret: process.env.SPOTIFY_CLIENT_SECRET,
+      client_id: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID,
+      client_secret: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET,
     };
     const options = {
       method: "POST",

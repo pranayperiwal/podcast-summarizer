@@ -2,13 +2,10 @@ import React, { useState } from "react";
 import styles from "@/styles/components/Header.module.css";
 import Button from "@mui/material/Button";
 import LoginModal from "./LoginModal";
-import { signOut, signIn } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Logout from "@mui/icons-material/Logout";
-import Avatar from "@mui/material/Avatar";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import { useRouter } from "next/router";
@@ -79,7 +76,12 @@ function Header({ loggedIn, credits }) {
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}
               onClick={handleClick}
-              style={{ fontSize: 14 }}
+              style={{
+                fontSize: 14,
+                borderColor: "var(--secondary-color)",
+                color: "var(--secondary-color)",
+              }}
+              // className={styles.accountButton}
             >
               Account
             </Button>
@@ -93,10 +95,10 @@ function Header({ loggedIn, credits }) {
               transformOrigin={{ horizontal: "right", vertical: "top" }}
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
-              <MenuItem onClick={handleClose} style={{ width: 200 }}>
+              {/* <MenuItem onClick={handleClose} style={{ width: 200 }}>
                 <AccountCircleIcon style={{ marginRight: 10 }} />
                 Profile
-              </MenuItem>
+              </MenuItem> */}
 
               <MenuItem onClick={handleLogout} style={{ width: 200 }}>
                 <LogoutRoundedIcon style={{ marginRight: 10 }} />
