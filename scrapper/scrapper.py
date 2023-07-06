@@ -32,13 +32,13 @@ class WebScrapper:
         self.driver.execute_script(f"window.scrollTo(0, {WebScrapper.scroll_y_offset})") 
 
         # Close one trust policy 
-        WebDriverWait(
-            self.driver, WebScrapper.timeout
-        ).until(
-            EC.element_to_be_clickable(
-                (By.XPATH, WebScrapper.one_trust_policy_xpath)
-            )
-        ).click()
+        # WebDriverWait(
+        #     self.driver, WebScrapper.timeout
+        # ).until(
+        #     EC.element_to_be_clickable(
+        #         (By.XPATH, WebScrapper.one_trust_policy_xpath)
+        #     )
+        # ).click()
 
         # Search 
         WebDriverWait(

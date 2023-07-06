@@ -2,17 +2,22 @@
   display: flex;
   /* align-items: center; */
   justify-content: center;
-  margin-top: 15%;
+  margin-top: -10%;
+  font-family: var(--main-font);
+  color: white;
 }
 
 .modalContainer {
-  background-color: white;
-  height: 300px;
+  background-color: var(--main-card-bg);
+  /* height: 250px; */
+  margin: auto;
   width: 360px;
   display: flex;
   flex-direction: column;
   align-items: center;
   border-radius: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.06);
+
   /* justify-content: center; */
   /* padding: 0 0px; */
 }
@@ -36,15 +41,31 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  right: 80px;
+  right: 70px;
   height: 30px;
   width: 30px;
 }
 
 .crossContainer:hover {
-  background-color: rgb(240, 239, 237);
+  background-color: rgb(147, 146, 143);
   border-radius: 20px;
   cursor: pointer;
+}
+
+.headerText {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.mainText {
+  position: relative;
+  bottom: 20;
+  /* border: 1px solid red; */
+  width: 80%;
+  text-align: center;
+  font-size: x-large;
+  margin-bottom: 20px;
+  /* font-family: var(--main-font); */
 }
 
 .loginProviderContainer {
@@ -55,6 +76,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding-top: 30px;
+  padding-bottom: 30px;
 }
 
 .loginButton {

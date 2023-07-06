@@ -10,6 +10,8 @@ function PreAuthLayout({ children }) {
         flexDirection: "column",
         alignItems: "center",
         width: "100%",
+        backgroundColor: "var(--main-bg-color)",
+        minHeight: "100vh",
       }}
     >
       <Header loggedIn={false} />

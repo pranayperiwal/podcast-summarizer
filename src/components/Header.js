@@ -11,6 +11,8 @@ import Avatar from "@mui/material/Avatar";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+import { useRouter } from "next/router";
+
 function Header({ loggedIn, credits }) {
   const [openModal, setOpenModal] = useState(false);
   const handleOpenModal = () => setOpenModal(true);
@@ -25,11 +27,7 @@ function Header({ loggedIn, credits }) {
     setAnchorEl(null);
   };
 
-  // const handleLogin = () => {
-  //   signIn("google", {
-  //     callbackUrl: "http://localhost:3000/home",
-  //   });
-  // };
+  const router = useRouter();
 
   const handleLogout = () => {
     signOut({
@@ -40,7 +38,7 @@ function Header({ loggedIn, credits }) {
   return (
     <header className={styles.headerContainer}>
       <div className={styles.logoContainer}>
-        <div>PodCrunch AI</div>
+        <div onClick={() => router.push("/home")}>PodCrunch AI</div>
       </div>
 
       {loggedIn ? (

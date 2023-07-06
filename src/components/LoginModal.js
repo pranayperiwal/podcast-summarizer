@@ -44,13 +44,11 @@ const LoginModal = ({ open, onClose }) => {
           <div className={styles.crossContainer}>
             <ClearIcon fontSize="small" onClick={onClose} />
           </div>
-          <h4 style={{ marginBottom: 0, marginTop: 0 }}>Log in or Sign Up</h4>
+          <h4 className={styles.headerText}>Log in or Sign Up</h4>
         </header>
 
         <div className={styles.loginProviderContainer}>
-          <div style={{ fontSize: 25, position: "relative", bottom: 20 }}>
-            Welcome to PodSum
-          </div>
+          <div className={styles.mainText}>Welcome to PodCrunch AI</div>
           <Button
             variant="outlined"
             color="primary"
