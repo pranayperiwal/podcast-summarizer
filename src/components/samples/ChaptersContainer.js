@@ -68,6 +68,7 @@ const ChaptersContainer = ({ chapters, open, handleClose }) => {
           {chapters.map((chapter, index) => {
             return (
               <IndividualAccordian
+                key={index}
                 count={index}
                 title={chapter.title}
                 summary={chapter.summary}

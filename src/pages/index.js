@@ -80,7 +80,7 @@ function LandingPage() {
             <div className={styles.card}>
               <div className={styles.cardHeading}>Popular Podcasts Library</div>
               <div className={styles.cardSubheading}>
-                Access summaries of popular podcasts with PodCrunch AI's
+                Access summaries of popular podcasts with PodCrunch AI&apos;s
                 library.
               </div>
             </div>
