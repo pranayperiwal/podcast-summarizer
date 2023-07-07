@@ -1,4 +1,4 @@
-import AWS from "aws-sdk"
+const { PutObjectCommand, S3Client } = require("@aws-sdk/client-s3");
 const { Configuration, OpenAIApi } = require("openai");
 
 const transcriptJson = require("./../../../../ai/podcast_30mins.json");
@@ -8,10 +8,14 @@ const configuration = new Configuration({
 });
 
 const openai = new OpenAIApi(configuration);
-AWS.config.update({ region: 'us-east-1' });
 
-const S3 = new AWS.S3();
-
+const client = new S3Client({ 
+    region: "ap-southeast-1",
+    credentials:{
+     accessKeyId:'AKIA3OEUKNMLKG5YAFCT',
+     secretAccessKey:'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'
+    }
+});
         
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 export default async function handler(req, res) {
@@ -45,9 +49,18 @@ export default async function handler(req, res) {
         const summary =  await generateSummary(transcriptFile);
         console.log("Generated Summary.");
 
+        const summaryJson = {
+            "summary": summary
+        };
+
+        // Upload to S3 
+        await saveTranscriptToS3(hashValue, summaryJson);
+
+
         // Update the status of the request 
         await updateRequestDbStatus(hashValue);
         console.log("Updated DB Status");
+
 
         res.status(200).json(
             { message: "Success"}
@@ -88,28 +101,17 @@ async function getTranscriptFile(transcriptId) {
   
 
 async function saveTranscriptToS3(fileName, transcriptData) {
-    return new Promise((resolve, reject) => {
-        const dataBuf = Buffer.from(JSON.stringify(transcriptData));
+    const dataBuf = Buffer.from(JSON.stringify(transcriptData));
 
-        const data = {
-            Bucket: process.env.TRANSCRIPT_BUCKET, 
-            Key: `${fileName}.json`,
-            Body: dataBuf, 
-            ContentEncoding: 'base64',
-            ContentType: 'application/json',
-            ACL: 'public-read'
-        };
-
-        S3.upload(data, (err, data) => {
-            if (err) {
-                console.error(err);
-                return reject(err);
-            } else {
-                console.log(`${filename}.json saved successfully`);
-                return resolve();
-            }
-        });
+    const data = PutObjectCommand({
+        Bucket: process.env.TRANSCRIPT_BUCKET, 
+        Key: `${fileName}.json`,
+        Body: dataBuf, 
     });
+
+    const response = await client.send(data);
+    console.log(response);
+
 }
 
 async function generateSummary(transcriptFile) {       
