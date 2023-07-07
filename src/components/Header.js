@@ -115,8 +115,11 @@ function Header({ loggedIn, credits }) {
                 onClick={handleOpenModal}
                 className={styles.signUpButton}
                 sx={{
-                  color: "#8758FF",
-                  borderColor: "#8758FF",
+                  "color": "#8758FF",
+                  "borderColor": "#8758FF",
+                  "&:hover": {
+                    borderColor: "#8758FF",
+                  },
                 }}
               >
                 Sign Up / Login

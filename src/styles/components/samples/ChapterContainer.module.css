@@ -15,7 +15,7 @@
   max-height: 600px;
   display: flex;
   flex-direction: column;
-  background-color: var(--main-bg-color);
+  background-color: #181818;
   border: 1px solid rgba(255, 255, 255, 0.6);
   overflow-y: auto;
   border-radius: 10px;
@@ -24,8 +24,8 @@
 .accordianContainer {
   margin-bottom: 7px;
   padding: 5px;
-  color: white;
-  background-color: var(--main-card-bg);
+  color: #fff;
+  background-color: #21262d;
 }
 
 .chapterIndexText {
