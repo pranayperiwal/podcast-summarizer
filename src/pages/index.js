@@ -27,7 +27,7 @@ function LandingPage() {
   return (
     <>
       <main className={styles.container}>
-        <div className={styles.contentContainer}>
+        <div className={styles.upperContentContainer}>
           <div className={styles.contentTextContainer}>
             <div className={styles.textContainer}>
               <div className={styles.mainText}> Your AI Podcast Summarizer</div>

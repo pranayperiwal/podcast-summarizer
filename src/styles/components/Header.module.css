@@ -1,15 +1,11 @@
 .headerContainer {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 
-  padding-left: 6%;
-  padding-right: 6%;
-  /* background-color: #f2f2f2; */
   width: 100%;
 
   height: 100%;
-  max-width: 1400px;
   padding-top: 24px;
   padding-bottom: 24px;
   top: 0;
@@ -17,6 +13,20 @@
   background-color: var(--main-bg-color);
   color: white;
   font-family: var(--main-font);
+
+  /* border: 1px solid yellow; */
+}
+
+.contentContainer {
+  max-width: 1400px;
+  width: 100%;
+  padding-left: 6%;
+  padding-right: 6%;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* border: 1px solid yellow; */
 }
 
 .logoContainer {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import EpisodeDetails from "@/components/home/EpisodeDetails";
 import { ColorRing } from "react-loader-spinner";
 import styles from "@/styles/components/home/SpotifyLinkForm.module.css";
+import HintUI from "./HintUI";
 
 const SpotifyLinkForm = () => {
   const [episodeData, setEpisodeData] = useState({});
@@ -421,7 +422,9 @@ const SpotifyLinkForm = () => {
           <EpisodeDetails data={episodeData} />
         )
       ) : (
-        <></>
+        <>
+          <HintUI />
+        </>
       )}
     </div>
   );

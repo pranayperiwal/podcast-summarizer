@@ -34,90 +34,92 @@ function Header({ loggedIn, credits }) {
 
   return (
     <header className={styles.headerContainer}>
-      <div className={styles.logoContainer}>
-        <div onClick={() => router.push("/home")}>PodCrunch AI</div>
-      </div>
-
-      {loggedIn ? (
-        <div className={styles.linksContainer}>
-          <Link className={styles.linkItem} href="/home">
-            Home
-          </Link>
-          <Link className={styles.linkItem} href="/aboutUs">
-            About
-          </Link>
-          <Link className={styles.linkItem} href="/summaries">
-            Summaries
-          </Link>
-          <Link className={styles.linkItem} href="/requests">
-            Requests
-          </Link>
+      <div className={styles.contentContainer}>
+        <div className={styles.logoContainer}>
+          <div onClick={() => router.push("/home")}>PodCrunch AI</div>
         </div>
-      ) : (
-        <div className={styles.linksContainer}></div>
-      )}
 
-      <div className={styles.authSectionContainer}>
         {loggedIn ? (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              // border: "1px solid red",
-              width: 210,
-            }}
-          >
-            <div style={{ fontSize: 13 }}>Credits: ${credits}</div>
-            <Button
-              variant="outlined"
-              id="basic-button"
-              aria-controls={open ? "basic-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-              onClick={handleClick}
-              style={{
-                fontSize: 14,
-                borderColor: "var(--secondary-color)",
-                color: "var(--secondary-color)",
-              }}
-              // className={styles.accountButton}
-            >
-              Account
-            </Button>
+          <div className={styles.linksContainer}>
+            <Link className={styles.linkItem} href="/home">
+              Home
+            </Link>
+            {/* <Link className={styles.linkItem} href="/aboutUs">
+            About
+          </Link> */}
+            {/* <Link className={styles.linkItem} href="/summaries">
+            Summaries
+          </Link> */}
+            <Link className={styles.linkItem} href="/library">
+              Library
+            </Link>
+          </div>
+        ) : (
+          <div className={styles.linksContainer}></div>
+        )}
 
-            <Menu
-              anchorEl={anchorEl}
-              id="account-menu"
-              open={open}
-              onClose={handleClose}
-              onClick={handleClose}
-              transformOrigin={{ horizontal: "right", vertical: "top" }}
-              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        <div className={styles.authSectionContainer}>
+          {loggedIn ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                // border: "1px solid red",
+                width: 210,
+              }}
             >
-              {/* <MenuItem onClick={handleClose} style={{ width: 200 }}>
+              <div style={{ fontSize: "small" }}>Credits: ${credits}</div>
+              <Button
+                variant="outlined"
+                id="basic-button"
+                aria-controls={open ? "basic-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
+                style={{
+                  fontSize: 14,
+                  borderColor: "var(--secondary-color)",
+                  color: "var(--secondary-color)",
+                }}
+                // className={styles.accountButton}
+              >
+                Account
+              </Button>
+
+              <Menu
+                anchorEl={anchorEl}
+                id="account-menu"
+                open={open}
+                onClose={handleClose}
+                onClick={handleClose}
+                transformOrigin={{ horizontal: "right", vertical: "top" }}
+                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+              >
+                {/* <MenuItem onClick={handleClose} style={{ width: 200 }}>
                 <AccountCircleIcon style={{ marginRight: 10 }} />
                 Profile
               </MenuItem> */}
 
-              <MenuItem onClick={handleLogout} style={{ width: 200 }}>
-                <LogoutRoundedIcon style={{ marginRight: 10 }} />
-                Logout
-              </MenuItem>
-            </Menu>
-          </div>
-        ) : (
-          <>
-            <Button
-              variant="outlined"
-              onClick={handleOpenModal}
-              className={styles.signUpButton}
-            >
-              Sign Up / Login
-            </Button>
-            <LoginModal open={openModal} onClose={handleCloseModal} />
-          </>
-        )}
+                <MenuItem onClick={handleLogout} style={{ width: 200 }}>
+                  <LogoutRoundedIcon style={{ marginRight: 10 }} />
+                  Logout
+                </MenuItem>
+              </Menu>
+            </div>
+          ) : (
+            <>
+              <Button
+                variant="outlined"
+                onClick={handleOpenModal}
+                className={styles.signUpButton}
+              >
+                Sign Up / Login
+              </Button>
+              <LoginModal open={openModal} onClose={handleCloseModal} />
+            </>
+          )}
+        </div>
       </div>
     </header>
   );

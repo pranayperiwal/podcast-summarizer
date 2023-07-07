@@ -8,10 +8,10 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Moment from "react-moment";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import styles from "@/styles/components/library/LibraryDataTable.module.css";
 
-import styles from "@/styles/components/requests/RequestDataTable.module.css";
-
-const RequestsDataTable = ({ requests }) => {
+const LibraryDataTable = ({ requests }) => {
   //   console.log(requests);
   const router = useRouter();
 
@@ -41,7 +41,7 @@ const RequestsDataTable = ({ requests }) => {
 
   const routeToRequest = (hash) => {
     // e.preventDefault();
-    router.push("/requests/" + hash);
+    router.push("/libaray/" + hash);
   };
 
   return (
@@ -72,38 +72,52 @@ const RequestsDataTable = ({ requests }) => {
               <TableCell scope="row">{row.index}</TableCell>
               <TableCell
                 scope="row"
-                onClick={() => routeToRequest(row.hash)}
+                // onClick={() => routeToRequest(row.hash)}
                 className={styles.tableRow}
               >
                 {row.podcast_name}
               </TableCell>
               <TableCell
                 align="left"
-                onClick={() => routeToRequest(row.hash)}
+                // onClick={() => routeToRequest(row.hash)}
                 className={styles.tableRow}
               >
                 {row.show_name}
               </TableCell>
               <TableCell
                 align="center"
-                onClick={() => routeToRequest(row.hash)}
+                // onClick={() => routeToRequest(row.hash)}
                 className={styles.tableRow}
               >
                 <Moment format="DD-MM-YYYY" date={new Date(row.date)} />
               </TableCell>
               <TableCell
                 align="center"
-                onClick={() => routeToRequest(row.hash)}
+                // onClick={() => routeToRequest(row.hash)}
                 className={styles.tableRow}
               >
                 {row.status}
               </TableCell>
               <TableCell
                 align="center"
-                onClick={() => routeToRequest(row.hash)}
+                // onClick={() => routeToRequest(row.hash)}
                 className={styles.tableRow}
               >
-                {row.summary_url || "N/A"}
+                {row.summary_url ? (
+                  <div>
+                    <Link
+                      href={"/library/" + row.hash}
+                      style={{
+                        color: "var(--secondary-color)",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Summary
+                    </Link>
+                  </div>
+                ) : (
+                  <div>N/A</div>
+                )}
               </TableCell>
             </TableRow>
           ))}
@@ -113,4 +127,4 @@ const RequestsDataTable = ({ requests }) => {
   );
 };
 
-export default RequestsDataTable;
+export default LibraryDataTable;

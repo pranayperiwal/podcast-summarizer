@@ -3,10 +3,10 @@ import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import Header from "@/components/Header";
 import styles from "@/styles/SummaryIndividual.module.css";
-import SummaryEpisodeDetails from "@/components/summaries/SummaryEpisodeDetails";
-import ChaptersContainer from "@/components/summaries/ChaptersContainer";
+import SummaryEpisodeDetails from "@/components/library/summaries/SummaryEpisodeDetails";
+import ChaptersContainer from "@/components/library/summaries/ChaptersContainer";
 
-const SummaryIndividualPage = ({ user }) => {
+const SummaryIndividualPage = ({ user, request }) => {
   const dummyData = {
     podcast_name:
       "E259: The Brain Coach To The World's Top Leaders & Billionaires! 10 Steps To Never Forget Anything Ever Again!: Jim Kwik",
@@ -98,22 +98,23 @@ export async function getServerSideProps(context) {
     };
   }
 
-  //2. check if the user has access to the requested podcast (this also ends up checking if podcast exists)
-  // const userRequest = await prisma.request.findFirst({
-  //   where: {
-  //     userId: session.user.uid,
-  //     podcast_hash: context.query.hash,
-  //   },
-  // });
-  // // console.log(userRequest);
-  // if (!userRequest) {
-  //   return {
-  //     redirect: {
-  //       destination: "/home",
-  //       permanent: false,
-  //     },
-  //   };
-  // }
+  // 2. check if requested summary is for the user and is completed
+  const userRequest = await prisma.request.findFirst({
+    where: {
+      userId: session.user.uid,
+      podcast_hash: context.query.hash,
+      status: "Completed",
+    },
+  });
+  // console.log(userRequest);
+  if (!userRequest) {
+    return {
+      redirect: {
+        destination: "/library",
+        permanent: false,
+      },
+    };
+  }
 
   const user = await prisma.user.findUnique({
     where: {
@@ -124,7 +125,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       user,
-      // request: JSON.parse(JSON.stringify(userRequest)),
+      request: JSON.parse(JSON.stringify(userRequest)),
     },
   };
 }

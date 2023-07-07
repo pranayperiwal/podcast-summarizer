@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from "@mui/material/Modal";
-import styles from "@/styles/components/requests/RequestConfirmedModal.module.css";
+import styles from "@/styles/components/library/RequestConfirmedModal.module.css";
 import ClearIcon from "@mui/icons-material/Clear";
 
 const RequestConfirmedModal = ({ open, handleClose }) => {

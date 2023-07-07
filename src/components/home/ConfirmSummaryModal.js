@@ -87,7 +87,10 @@ const ConfirmSummaryModal = ({
 
         //route to new page
         router.push({
-          pathname: "/requests/" + hash,
+          pathname: "/library",
+          query: {
+            hash,
+          },
         });
       })
 
