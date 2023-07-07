@@ -18,8 +18,8 @@ const SamplesPage = () => {
       </div>
 
       <div className={styles.contentContainer}>
-        {data.map((item) => {
-          return <EpisodeDetails data={item} />;
+        {data.map((item, index) => {
+          return <EpisodeDetails key={index} data={item} />;
         })}
       </div>
     </div>

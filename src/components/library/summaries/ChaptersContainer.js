@@ -65,6 +65,7 @@ const ChaptersContainer = ({ chapters }) => {
       {chapters.map((chapter, index) => {
         return (
           <IndividualAccordian
+            key={index}
             count={index}
             title={chapter.title}
             summary={chapter.summary}
