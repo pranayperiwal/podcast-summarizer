@@ -77,12 +77,15 @@ function Header({ loggedIn, credits }) {
                 aria-haspopup="true"
                 aria-expanded={open ? "true" : undefined}
                 onClick={handleClick}
-                style={{
-                  fontSize: 14,
-                  borderColor: "var(--secondary-color)",
-                  color: "var(--secondary-color)",
+                sx={{
+                  "color": "#8758FF",
+                  "borderColor": "#8758FF",
+                  "&:hover": {
+                    borderColor: "#8758FF",
+                  },
                 }}
-                // className={styles.accountButton}
+                className={styles.accountButton}
+                color="primary"
               >
                 Account
               </Button>
@@ -113,6 +116,13 @@ function Header({ loggedIn, credits }) {
                 variant="outlined"
                 onClick={handleOpenModal}
                 className={styles.signUpButton}
+                sx={{
+                  "color": "#8758FF",
+                  "borderColor": "#8758FF",
+                  "&:hover": {
+                    borderColor: "#8758FF",
+                  },
+                }}
               >
                 Sign Up / Login
               </Button>

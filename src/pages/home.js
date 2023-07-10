@@ -9,6 +9,7 @@ import { Divider } from "@mui/material";
 import { atom } from "jotai";
 import { useHydrateAtoms } from "jotai/utils";
 import InitialInformationModal from "@/components/home/InitialInformationModal";
+import { prisma } from "@/pages/api/auth/[...nextauth]";
 
 export const userUIDAtom = atom();
 

@@ -35,6 +35,11 @@ const ChaptersContainer = ({ chapters, open, handleClose }) => {
         expanded={expanded === "chapter" + count}
         onChange={handleChange("chapter" + count)}
         className={styles.accordianContainer}
+        sx={{
+          marginBottom: 1,
+          color: "#fff",
+          backgroundColor: "#21262d",
+        }}
       >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}

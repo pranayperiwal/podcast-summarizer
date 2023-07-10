@@ -67,8 +67,8 @@
 }
 
 .signUpButton {
-  color: var(--secondary-color);
-  border-color: var(--secondary-color);
+  /* color: var(--secondary-color);
+  border-color: var(--secondary-color); */
 }
 
 .signUpButton:hover {

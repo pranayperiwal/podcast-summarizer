@@ -12,7 +12,7 @@
 }
 
 .podcastDetailsContainer:hover {
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 .textContentContainer {
@@ -30,5 +30,5 @@
 }
 
 .summaryButton {
-  color: var(--secondary-color);
+  /* color: var(--secondary-color); */
 }

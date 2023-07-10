@@ -60,6 +60,7 @@ const LoginModal = ({ open, onClose }) => {
               alt="Google Logo"
               width={20}
               height={20}
+              style={{ marginRight: 5 }}
             />
             Continue with Google
           </Button>

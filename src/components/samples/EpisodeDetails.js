@@ -42,7 +42,18 @@ const EpisodeDetails = ({ data }) => {
             <Moment format="MMM D" date={new Date(data.release_date)} /> ∙{" "}
             {msToTime(data.duration_ms)}
           </div>
-          <Button onClick={handleOpen} className={styles.summaryButton}>
+          <Button
+            onClick={handleOpen}
+            className={styles.summaryButton}
+            variant="outlined"
+            sx={{
+              "color": "#8758FF",
+              "borderColor": "#8758FF",
+              "&:hover": {
+                borderColor: "#8758FF",
+              },
+            }}
+          >
             Summary
           </Button>
         </div>
