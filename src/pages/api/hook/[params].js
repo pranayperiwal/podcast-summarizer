@@ -145,7 +145,12 @@ async function generateSummary(transcriptFile) {
                 {role: "user", content: chapterContent}
             ],
         });
-        summary.push(chatCompletion.data.choices[0].message);
+        summary.push({
+            title: chapter["gist"],
+            summary: chatCompletion.data.choices[0].message["content"],
+            start: start, 
+            end: end
+        });
     }
 
     return summary;
