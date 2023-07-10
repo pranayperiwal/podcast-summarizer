@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import LibraryDataTable from "@/components/library/LibraryDataTable";
 import { useRouter } from "next/router";
 import RequestConfirmedModal from "@/components/library/RequestConfirmedModal";
+import { prisma } from "@/pages/api/auth/[...nextauth]";
 
 export default function LibraryMainPage({ user, requests }) {
   const router = useRouter();

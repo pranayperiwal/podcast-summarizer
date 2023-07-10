@@ -12,7 +12,7 @@
 }
 
 .podcastDetailsContainer:hover {
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 .textContentContainer {

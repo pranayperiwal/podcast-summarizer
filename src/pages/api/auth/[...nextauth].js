@@ -19,6 +19,8 @@ if (typeof window === "undefined") {
   }
 }
 
+export { prisma };
+
 export const authOptions = {
   providers: [
     GoogleProvider({
