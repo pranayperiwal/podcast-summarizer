@@ -28,7 +28,7 @@ function Header({ loggedIn, credits }) {
 
   const handleLogout = () => {
     signOut({
-      callbackUrl: "http://localhost:3000/",
+      callbackUrl: "/",
     });
   };
 
@@ -37,7 +37,7 @@ function Header({ loggedIn, credits }) {
       <div className={styles.contentContainer}>
         <div className={styles.logoContainer}>
           <div onClick={() => router.push("/home")}>
-            <img src="logo-transparent.png" style={{ width: "27%" }} />
+            <img src="logo-transparent.png" className={styles.logo} />
           </div>
         </div>
 

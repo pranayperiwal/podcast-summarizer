@@ -26,6 +26,10 @@ const ChaptersContainer = ({ chapters, open, handleClose }) => {
     var mins = s % 60;
     var hrs = (s - mins) / 60;
 
+    if (hrs == 0) {
+      return pad(mins) + ":" + pad(secs);
+    }
+
     return pad(hrs) + ":" + pad(mins) + ":" + pad(secs);
   }
 
@@ -35,11 +39,6 @@ const ChaptersContainer = ({ chapters, open, handleClose }) => {
         expanded={expanded === "chapter" + count}
         onChange={handleChange("chapter" + count)}
         className={styles.accordianContainer}
-        sx={{
-          marginBottom: 1,
-          color: "#fff",
-          backgroundColor: "#21262d",
-        }}
       >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -50,17 +49,13 @@ const ChaptersContainer = ({ chapters, open, handleClose }) => {
           <Typography className={styles.chapterIndexText}>
             Chapter {count + 1}
           </Typography>
-          <Typography sx={{ flexGrow: 1, paddingRight: 5, paddingLeft: 5 }}>
-            {title}
-          </Typography>
-          <Typography
-            sx={{ color: "rgb(153, 150, 150)", width: "20%", flexShrink: 0 }}
-          >
+          <Typography className={styles.chapterTitle}>{title}</Typography>
+          <Typography className={styles.timing}>
             {msToTime(start)} - {msToTime(end)}
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>{summary}</Typography>
+          <Typography className={styles.summaryContent}>{summary}</Typography>
         </AccordionDetails>
       </Accordion>
     );

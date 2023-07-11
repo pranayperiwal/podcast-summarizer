@@ -20,4 +20,7 @@
 
 .headerText {
   font-size: larger;
+  font-size: min(6vw, 24px);
+  padding: 10px;
+  text-align: center;
 }
