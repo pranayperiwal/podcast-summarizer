@@ -28,7 +28,7 @@ function Header({ loggedIn, credits }) {
 
   const handleLogout = () => {
     signOut({
-      callbackUrl: "http://localhost:3000/",
+      callbackUrl: "/",
     });
   };
 
