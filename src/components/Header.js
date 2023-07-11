@@ -36,7 +36,9 @@ function Header({ loggedIn, credits }) {
     <header className={styles.headerContainer}>
       <div className={styles.contentContainer}>
         <div className={styles.logoContainer}>
-          <div onClick={() => router.push("/home")}>PodCrunch AI</div>
+          <div onClick={() => router.push("/home")}>
+            <img src="logo-transparent.png" style={{ width: "27%" }} />
+          </div>
         </div>
 
         {loggedIn ? (
