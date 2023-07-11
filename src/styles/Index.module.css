@@ -78,9 +78,12 @@
 }
 
 .buttonContainer {
-  align-items: center;
-  justify-content: center;
+  /* display: flex; */
+
+  /* align-items: center; */
+  /* justify-content: space-between; */
   margin-top: 36px;
+  /* border: 1px solid red; */
 }
 .mainText {
   font-size: 64px;
@@ -107,6 +110,8 @@
   font-size: 18px;
   background-color: var(--secondary-color);
   cursor: pointer;
+
+  margin-right: 20px;
 }
 
 .sampleButton {
