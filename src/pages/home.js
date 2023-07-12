@@ -40,7 +40,7 @@ const HomePage = ({ user }) => {
         <div className={styles.contentHeader}>
           Enter the Spotify link of the podcast you would like to summarise
         </div>
-        <Divider />
+        {/* <Divider /> */}
         <SpotifyLinkForm />
       </div>
       <div>

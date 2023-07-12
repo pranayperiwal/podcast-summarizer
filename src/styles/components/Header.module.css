@@ -1,5 +1,6 @@
 .headerContainer {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 
@@ -60,6 +61,20 @@
   width: 200px;
 }
 
+.menuIconContainer {
+  display: none;
+}
+
+.authSectionContent {
+  width: 210px;
+}
+
+.desktopAuthSectionContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .accountButton {
   color: var(--secondary-color);
   border-color: var(--secondary-color);
@@ -78,12 +93,59 @@
   /* border: 2px solid red; */
 }
 
-@media (max-width: 600px) {
+.mobileMenuContainer {
+  width: 100%;
+  /* border: 1px solid red; */
+}
+
+.mobileMenu {
+  display: block;
+  padding: 15px;
+  /* Add any additional styling for the menu */
+}
+
+.mobileMenuList {
+  list-style: none;
+  padding-left: 5%;
+  padding-top: 10px;
+  margin: 0;
+}
+
+.mobileMenuItem {
+  margin-bottom: 10px;
+}
+
+.mobileMenuItem a {
+  color: #fff;
+  /* text-decoration: underline; */
+  /* font-weight: 600; */
+
+  /* Add any additional styling for the menu item links */
+}
+
+@media (max-width: 700px) {
   .logo {
     width: 60%;
+    max-width: 350px;
   }
 
   .signUpButton {
     font-size: small;
+  }
+
+  .linksContainer {
+    display: none;
+  }
+
+  .authSectionContent {
+    width: auto;
+  }
+
+  .desktopAuthSectionContent {
+    display: none;
+  }
+
+  .menuIconContainer {
+    display: inline;
   }
 }

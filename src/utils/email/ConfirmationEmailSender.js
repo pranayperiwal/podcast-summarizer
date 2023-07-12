@@ -58,12 +58,18 @@ export const sendConfirmationEmail = async (
     summaryURL
   );
 
-  console.log(receiverEmail, podcastName, showName, summaryURL);
+  console.log(
+    "Summary complete email sent: ",
+    receiverEmail,
+    podcastName,
+    showName,
+    summaryURL
+  );
 
   try {
     return await sesClient.send(sendEmailCommand);
   } catch (e) {
-    console.error("Failed to send email.");
+    console.error("Failed to send confirmation email.");
     console.log(e.message);
     return e;
   }
