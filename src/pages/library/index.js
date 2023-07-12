@@ -13,7 +13,7 @@ import EpisodeCard from "./episodeCard";
 export default function LibraryMainPage({ user, requests }) {
   const router = useRouter();
 
-  requests.sort((a, b) => a.status > b.status ? 1 : -1);
+  requests.sort((a, b) => a.status < b.status ? 1 : -1);
   console.log(requests);
 
   const specificPodcastHash = router.query?.hash;
@@ -59,7 +59,7 @@ export default function LibraryMainPage({ user, requests }) {
                   subTitle={request.podcast_name}
                   imageUrl = {request.podcast.image}
                   status={request.status}
-                  redirectUrl = {`/summary/${request.podcast_hash}`}
+                  redirectUrl = {`/library/${request.podcast_hash}`}
                 />
                 )
               })

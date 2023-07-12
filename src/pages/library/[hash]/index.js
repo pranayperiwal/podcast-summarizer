@@ -17,6 +17,7 @@ const client = new S3Client({
 });
 
 
+
 const SummaryIndividualPage = ({ user, request, podcastInfo, chapterSummary }) => {
   const podcastInfoJSON = JSON.parse(podcastInfo);
   const dummyData = {
@@ -31,13 +32,18 @@ const SummaryIndividualPage = ({ user, request, podcastInfo, chapterSummary }) =
   
 
   const { chapters, ...podcast_details } = dummyData;
-  console.log(dummyData);
   return (
     <div className={styles.container}>
       <Header loggedIn={true} credits={user.credits} />
-      <div className={styles.contentContainer}>
-        <h2>Summary</h2>
-        <SummaryEpisodeDetails data={podcast_details} />
+       <div className="pt-10 w-8/12">
+       <div className="w-full mb-10">
+          <h2 class="text-4xl font-bold tracking-tight text-slate-900 font-sans">Podcast Summary</h2>
+          <h4 class="text-base mt-3 font-normal text-gray-800 tracking-tight">View the chapter wise summary for your purchased podcasts.</h4>
+          <hr class="my-4 h-0.5 border-t-0 bg-neutral-100 opacity-800 dark:opacity-50" />
+      
+        </div>
+
+        <SummaryEpisodeDetails className="mt-8" data={podcast_details} />
         <ChaptersContainer chapters={chapterSummary["summary"]} />
       </div>
     </div>
