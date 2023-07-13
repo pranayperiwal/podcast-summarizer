@@ -78,7 +78,7 @@ function Header({ loggedIn, credits }) {
       <div className={styles.contentContainer}>
         <div className={styles.logoContainer}>
           <div onClick={() => router.push("/home")}>
-            <img src="logo-transparent.png" className={styles.logo} />
+            <img src="/logo-transparent.png" className={styles.logo} />
           </div>
         </div>
 

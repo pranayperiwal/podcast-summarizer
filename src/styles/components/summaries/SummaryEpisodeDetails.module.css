@@ -42,3 +42,9 @@
   flex: 1;
   justify-content: space-between;
 }
+
+@media (max-width: 768px) {
+  .podcastDetailsContainer {
+    flex-direction: column;
+  }
+}

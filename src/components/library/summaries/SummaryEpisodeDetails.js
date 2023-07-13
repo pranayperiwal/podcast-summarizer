@@ -26,7 +26,7 @@ const SummaryEpisodeDetails = ({ data }) => {
         width={200}
         height={200}
         alt="Podcast show image"
-        style={{ borderRadius: 10 }}
+        style={{ borderRadius: 10, marginBottom: 10 }}
       />
       <div className={styles.textContentContainer}>
         <h1 style={{ fontSize: 30, lineHeight: "1.2em" }}>

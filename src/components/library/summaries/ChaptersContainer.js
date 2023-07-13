@@ -8,7 +8,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import styles from "@/styles/components/summaries/ChaptersContainer.module.css";
 
 const ChaptersContainer = ({ chapters }) => {
-  console.log(chapters);
+  // console.log(chapters);
   const [expanded, setExpanded] = React.useState(false);
 
   const handleChange = (panel) => (event, isExpanded) => {
@@ -62,50 +62,65 @@ const ChaptersContainer = ({ chapters }) => {
   //   );
   // };
 
+  function Accordion({ title, content }) {
+    const [expanded, setExpanded] = useState(false);
+    const toggleExpanded = () => setExpanded((current) => !current);
 
-function Accordion({ title, content }) {
-  const [expanded, setExpanded] = useState(false)
-  const toggleExpanded = () => setExpanded((current) => !current)
-
-  return (
-    <div className={`border-b transition py-2 hover:bg-indigo-100 ${expanded ? "bg-indigo-50" : "bg-white"}`} onClick={toggleExpanded}>
-      <div className="accordion-header cursor-pointer transition flex space-x-5 px-5 items-center h-16 select-none">
-        {expanded ? <span>-</span>:<span>+</span>}
-        <h3 className="font-semibold">{title}</h3>
-      </div>
-      <div className={`px-20  pt-0 overflow-hidden transition-[max-height] duration-500 ease-in ${expanded ? "max-h-fit" : "max-h-0"}`}>
-        <p className="leading-6 font-light leading-8 pb-4 text-justify">{content}</p>
-      </div>
-    </div>
-  )
-}
-
-function AccordionWrapper() {
-  console.log(chapters);
-  return (
-    <div className="grid place-items-center">
-      <div className="w-12/12 mx-auto rounded">
-        <div className="bg-white p-10 shadow-sm">
-          <h3 className="text-lg font-medium text-gray-800"> Broken Down Chapter Summary </h3>
-          <p className="text-sm font-light text-gray-600 my-1">Read the Chapter Summary by Simply Clicking on the Tabs for Easy Podcast Navigation</p>
-          <div className="mt-10 h-1 w-full mx-auto border-b"></div>
-            {
-              chapters.map((chapter, index) => {
-                return (
-                <Accordion title={`Chapter ${index+1}: ${chapter.title}`} content={chapter.summary} />
-                )
-              })
-            }
+    return (
+      <div
+        className={`border-b transition p-2 hover:bg-indigo-100 ${
+          expanded ? "bg-indigo-50" : "bg-white"
+        }`}
+        onClick={toggleExpanded}
+      >
+        <div className="accordion-header cursor-pointer transition flex space-x-5 px-5 items-center h-16 select-none">
+          {expanded ? <span>-</span> : <span>+</span>}
+          <h3 className="font-semibold">{title}</h3>
+        </div>
+        <div
+          className={`sm:px-10 lg:px-15  pt-0 overflow-hidden transition-[max-height] duration-500 ease-in ${
+            expanded ? "max-h-fit" : "max-h-0"
+          }`}
+        >
+          <p className="leading-6 font-light pb-4 text-justify">{content}</p>
         </div>
       </div>
-    </div>
-  )
-}
+    );
+  }
 
+  function AccordionWrapper() {
+    // console.log(chapters);
+    return (
+      <div className="grid place-items-center">
+        <div className="w-12/12 mx-auto rounded">
+          <div className="bg-white sm:p-10 shadow-sm">
+            <h3 className="text-lg font-medium text-gray-800">
+              {" "}
+              Broken Down Chapter Summary{" "}
+            </h3>
+            <p className="text-sm font-light text-gray-600 my-1">
+              Read the Chapter Summary by Simply Clicking on the Tabs for Easy
+              Podcast Navigation
+            </p>
+            <div className="mt-10 h-1 w-full mx-auto border-b"></div>
+            {chapters.map((chapter, index) => {
+              return (
+                <Accordion
+                  key={index}
+                  title={`Chapter ${index + 1}: ${chapter.title}`}
+                  content={chapter.summary}
+                />
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>
-      <AccordionWrapper chapters = {chapters}/>
+      <AccordionWrapper chapters={chapters} />
     </div>
   );
 };
