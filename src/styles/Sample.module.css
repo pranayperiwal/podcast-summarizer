@@ -20,4 +20,9 @@
 
 .headerText {
   font-size: larger;
+  font-size: min(9vw, 30px);
+  font-weight: bold;
+  padding: 10px;
+  text-align: center;
+  margin-bottom: 20px;
 }

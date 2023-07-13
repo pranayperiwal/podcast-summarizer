@@ -1,17 +1,19 @@
-import AWS from "aws-sdk"
+const { PutObjectCommand, S3Client } = require("@aws-sdk/client-s3");
 const { Configuration, OpenAIApi } = require("openai");
-
-const transcriptJson = require("./../../../../ai/podcast_30mins.json");
 
 const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
 const openai = new OpenAIApi(configuration);
-AWS.config.update({ region: 'us-east-1' });
 
-const S3 = new AWS.S3();
-
+const client = new S3Client({ 
+    region: "ap-southeast-1",
+    credentials:{
+     accessKeyId:'AKIA3OEUKNMLKG5YAFCT',
+     secretAccessKey:'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'
+    }
+});
         
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 export default async function handler(req, res) {
@@ -32,11 +34,14 @@ export default async function handler(req, res) {
         const { status, transcript_id } = req.body;
         const hashValue = req.query.params;
 
-        
-        // if (requestIsComplete(hashValue)) {
-        //     console.log("Request is complete.");
-        //     return res.status(200).json({ message: "Request Complete" });
-        // }
+        console.log(`Got transcript for ${hashValue}`);
+
+        // If the request is processing cancel future processes
+        if (await checkRequestStatus(hashValue, "Processing")) {
+            return res.status(200).json({ message: "Request Complete" });
+        }
+
+        await updateRequestDbStatus(hashValue, "Processing");
 
         // Get the transcript 
         const transcriptFile = await getTranscriptFile(transcript_id);
@@ -45,13 +50,22 @@ export default async function handler(req, res) {
         const summary =  await generateSummary(transcriptFile);
         console.log("Generated Summary.");
 
+        const summaryJson = {
+            "summary": summary
+        };
+
+        // Upload to S3 
+        await saveTranscriptToS3(hashValue, summaryJson);
+
         // Update the status of the request 
-        await updateRequestDbStatus(hashValue);
+        await updateRequestDbStatus(hashValue, "completed");
         console.log("Updated DB Status");
 
-        res.status(200).json(
+
+        return res.status(200).json(
             { message: "Success"}
         )
+        
     } catch(err) {
         console.error(err);
         return res.status(404).json({ error: err.message });
@@ -88,38 +102,30 @@ async function getTranscriptFile(transcriptId) {
   
 
 async function saveTranscriptToS3(fileName, transcriptData) {
-    return new Promise((resolve, reject) => {
-        const dataBuf = Buffer.from(JSON.stringify(transcriptData));
+    const dataBuf = Buffer.from(JSON.stringify(transcriptData));
 
-        const data = {
-            Bucket: process.env.TRANSCRIPT_BUCKET, 
-            Key: `${fileName}.json`,
-            Body: dataBuf, 
-            ContentEncoding: 'base64',
-            ContentType: 'application/json',
-            ACL: 'public-read'
-        };
-
-        S3.upload(data, (err, data) => {
-            if (err) {
-                console.error(err);
-                return reject(err);
-            } else {
-                console.log(`${filename}.json saved successfully`);
-                return resolve();
-            }
-        });
+    const data = new PutObjectCommand({
+        Bucket: process.env.TRANSCRIPT_BUCKET, 
+        Key: `${fileName}.json`,
+        Body: dataBuf, 
     });
+
+    const response = await client.send(data);
+    console.log(response);
+
 }
 
 async function generateSummary(transcriptFile) {       
     let utteranceIndex = 0;
 
     let summary = [];
+    let chapterNumber = 1;
 
     for (const chapter of transcriptFile.chapters) {
+        console.log(`Generating for Chapter: ${chapterNumber}`);
         let start = chapter["start"];
         let end = chapter["end"];
+        chapterNumber++;
 
         let chapterContent = "";
         chapterContent += "Chapter: " + chapter["gist"] + '\n';
@@ -139,7 +145,12 @@ async function generateSummary(transcriptFile) {
                 {role: "user", content: chapterContent}
             ],
         });
-        summary.push(chatCompletion.data.choices[0].message);
+        summary.push({
+            title: chapter["gist"],
+            summary: chatCompletion.data.choices[0].message["content"],
+            start: start, 
+            end: end
+        });
     }
 
     return summary;
@@ -150,18 +161,18 @@ function generatePrompt() {
 }
 
 
-async function updateRequestDbStatus(podcastHash) {
+async function updateRequestDbStatus(podcastHash, newStatus) {
     await prisma.request.update({
         where: {
             podcast_hash: podcastHash
         },
         data: {
-            status: "completed"
+            status: newStatus
         }
     });
 }
 
-async function requestIsComplete(podcastHash) {
+async function checkRequestStatus(podcastHash, checkStatus) {
     const currentStatus = await prisma.request.findUnique({
         where: {
             podcast_hash: podcastHash
@@ -171,9 +182,12 @@ async function requestIsComplete(podcastHash) {
         }
     });
 
-    console.log(currentStatus["status"]);
-
-    console.log(currentStatus["status"] == "completed");
     
-    return currentStatus["status"] == "completed";
+    if (currentStatus["status"] == checkStatus) {
+        console.log(`Request is ${checkStatus}`);
+        return true;
+    } else {
+        console.log(`Request is not ${checkStatus}`);
+        return false;
+    }
 }

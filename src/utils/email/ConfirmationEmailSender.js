@@ -1,47 +1,29 @@
-import { SendEmailCommand } from "@aws-sdk/client-ses";
-import { sesClient } from "./sesClient";
+// import { SendEmailCommand } from "@aws-sdk/client-ses";
+// import { sesClient } from "./sesClient";
 
-const createSendEmailCommand = (
+const sgMail = require("@sendgrid/mail");
+
+const createSendEmailMsg = (
   toAddress,
   fromAddress,
   podcastName,
   showName,
   summaryURL
 ) => {
-  return new SendEmailCommand({
-    Destination: {
-      CcAddresses: [],
-      ToAddresses: [toAddress],
+  return {
+    to: toAddress,
+    from: {
+      email: fromAddress,
+      name: "PodCrunch Summary",
     },
-    Message: {
-      /* required */
-      Body: {
-        /* required */
-        Html: {
-          Charset: "UTF-8",
-          Data:
-            "The summary of " +
-            podcastName +
-            " from " +
-            showName +
-            " is done! You can find it at this link: " +
-            summaryURL,
-        },
-        Text: {
-          Charset: "UTF-8",
-          Data: "TEXT_FORMAT_BODY",
-        },
-      },
-      Subject: {
-        Charset: "UTF-8",
-        Data: "Podcast summary was successful!",
-      },
+    subject: "Podcast summary was successful!",
+    templateId: "d-f138b2b1578e45d996422dd15e6754e5",
+    dynamic_template_data: {
+      podcastName,
+      showName,
+      summaryURL,
     },
-    Source: fromAddress,
-    ReplyToAddresses: [
-      /* more items */
-    ],
-  });
+  };
 };
 
 export const sendConfirmationEmail = async (
@@ -50,21 +32,28 @@ export const sendConfirmationEmail = async (
   showName,
   summaryURL
 ) => {
-  const sendEmailCommand = createSendEmailCommand(
+  const msg = createSendEmailMsg(
     receiverEmail,
-    "podcrunch.ai@gmail.com",
+    "summary@podcrunch.co",
     podcastName,
     showName,
     summaryURL
   );
 
-  console.log(receiverEmail, podcastName, showName, summaryURL);
+  console.log(
+    "Summary complete email sent: ",
+    receiverEmail,
+    podcastName,
+    showName,
+    summaryURL
+  );
 
-  try {
-    return await sesClient.send(sendEmailCommand);
-  } catch (e) {
-    console.error("Failed to send email.");
-    console.log(e.message);
-    return e;
-  }
+  sgMail
+    .send(msg)
+    .then(() => {
+      console.log("Email sent");
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 };

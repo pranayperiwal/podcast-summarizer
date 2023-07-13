@@ -32,13 +32,13 @@ const EpisodeDetails = ({ data }) => {
         width={200}
         height={200}
         alt="Podcast show image"
-        style={{ borderRadius: 10 }}
+        className={styles.image}
       />
       <div className={styles.textContentContainer}>
-        <h1 style={{ fontSize: 23, lineHeight: "1.2em" }}>{data.name}</h1>
+        <h1 className={styles.episodeName}>{data.name}</h1>
         <h4>{data.show.name}</h4>
         <div className={styles.subSubContainer}>
-          <div style={{ marginRight: 20 }}>
+          <div className={styles.dateDuration}>
             <Moment format="MMM D" date={new Date(data.release_date)} /> ∙{" "}
             {msToTime(data.duration_ms)}
           </div>

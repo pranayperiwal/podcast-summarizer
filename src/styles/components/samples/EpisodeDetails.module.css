@@ -2,7 +2,11 @@
   background-color: var(--main-card-bg);
   border: 1px solid rgba(255, 255, 255, 0.6);
   color: white;
-  width: 800px;
+  /* width: 800px; */
+  max-width: 800px;
+  width: min(75vw, 800px);
+  margin-left: 20px;
+  margin-right: 20px;
   border-radius: 10px;
   padding: 20px;
   display: flex;
@@ -15,6 +19,10 @@
   /* cursor: pointer; */
 }
 
+.image {
+  border-radius: 10px;
+}
+
 .textContentContainer {
   /* border: 1px solid red; */
   width: 100%;
@@ -22,13 +30,42 @@
   /* display: flex;
     flex-direction: column; */
 }
+.episodeName {
+  font-size: 23px;
+  line-height: 1.2em;
+  margin-bottom: 10px;
+}
 
 .subSubContainer {
   color: rgb(167, 163, 162);
   display: flex;
   align-items: center;
+  margin-top: 10px;
+}
+
+.dateDuration {
+  margin-right: 20px;
 }
 
 .summaryButton {
   /* color: var(--secondary-color); */
+}
+
+@media (max-width: 750px) {
+  .podcastDetailsContainer {
+    flex-direction: column;
+  }
+  .image {
+    margin-bottom: 10px;
+  }
+  .subSubContainer {
+    flex-direction: column;
+  }
+  .dateDuration {
+    margin-bottom: 10px;
+  }
+  .textContentContainer {
+    font-size: smaller;
+    margin-left: 0;
+  }
 }

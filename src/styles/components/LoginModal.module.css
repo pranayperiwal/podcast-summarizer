@@ -86,3 +86,13 @@
   justify-content: space-around;
   width: 80%;
 }
+
+@media (max-width: 700px) {
+  .modalContainer {
+    margin: auto 20px;
+  }
+
+  .crossContainer {
+    right: 60px;
+  }
+}

@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { incomingRequestEmailNotification } from "@/utils/email/IncomingRequestEmailNotifcation";
+import { sendConfirmationEmail } from "@/utils/email/ConfirmationEmailSender";
 const prisma = new PrismaClient();
 
 async function createTranscriptRequest(host, hash, audioUrl) {

@@ -11,8 +11,9 @@
 }
 
 .modalContentContainer {
-  width: 60%;
+  width: 80%;
   max-height: 600px;
+  max-width: 850px;
   display: flex;
   flex-direction: column;
   background-color: #181818;
@@ -26,10 +27,51 @@
   padding: 5px;
   color: #fff;
   background-color: #21262d; */
+  margin-bottom: 10px;
+  color: #fff;
+  background-color: #21262d;
 }
 
 .chapterIndexText {
   color: rgb(153, 150, 150);
   width: 15%;
+  min-width: 100px;
+  /* border: 1px solid red; */
   flex-shrink: 0;
+}
+
+.chapterTitle {
+  flex-grow: 1;
+  padding-right: 5px;
+  padding-left: 5px;
+  /* border: 1px solid red; */
+}
+
+.timing {
+  color: rgb(153, 150, 150);
+  width: 20%;
+  flex-shrink: 0;
+  margin-left: 5px;
+}
+
+@media (max-width: 1000px) {
+  .modalContentContainer {
+    width: 90%;
+  }
+}
+
+@media (max-width: 500px) {
+  .chapterIndexText {
+    font-size: smaller;
+    min-width: 75px;
+  }
+  .chapterTitle {
+    font-size: smaller;
+  }
+  .timing {
+    font-size: smaller;
+  }
+  .summaryContent {
+    font-size: smaller;
+  }
 }

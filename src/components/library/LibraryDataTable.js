@@ -41,7 +41,7 @@ const LibraryDataTable = ({ requests }) => {
 
   const routeToRequest = (hash) => {
     // e.preventDefault();
-    router.push("/libaray/" + hash);
+    router.push("/library/" + hash);
   };
 
   return (
@@ -72,7 +72,7 @@ const LibraryDataTable = ({ requests }) => {
               <TableCell scope="row">{row.index}</TableCell>
               <TableCell
                 scope="row"
-                // onClick={() => routeToRequest(row.hash)}
+                onClick={() => routeToRequest(row.hash)}
                 className={styles.tableRow}
               >
                 {row.podcast_name}
