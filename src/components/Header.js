@@ -48,6 +48,7 @@ function Header({ loggedIn, credits }) {
           <li className={styles.mobileMenuItem}>
             <Link href="/library">Library</Link>
           </li>
+
           <li className={styles.mobileMenuItem}>
             <div style={{ fontSize: "small", paddingTop: 15 }}>
               Credits: ${credits}

@@ -32,8 +32,10 @@ function LandingPage() {
             <div className={styles.textContainer}>
               <div className={styles.mainText}> Your AI Podcast Summarizer</div>
               <div className={styles.subText}>
-                Get concise, actionable podcast summaries with{" "}
-                <span style={{ whiteSpace: "nowrap" }}>PodCrunch AI. </span>
+                Get concise, actionable, podcast summaries with{" "}
+                <span style={{ whiteSpace: "nowrap", color: "#8758FF" }}>
+                  PodCrunch AI.{" "}
+                </span>
                 <br />
                 Stay informed without spending hours listening to each episode.
               </div>
