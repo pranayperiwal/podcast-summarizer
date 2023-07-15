@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { incomingRequestEmailNotification } from "@/utils/email/IncomingRequestEmailNotifcation";
 import { sendConfirmationEmail } from "@/utils/email/ConfirmationEmailSender";
+
 const prisma = new PrismaClient();
 
 async function createTranscriptRequest(host, hash, audioUrl) {
@@ -21,6 +22,60 @@ async function createTranscriptRequest(host, hash, audioUrl) {
   console.log(data);
 }
 
+async function checkPreviousCompletedSummary(
+  podcast_hash,
+  podcast_name,
+  show_name,
+  userId,
+  userEmail,
+  host_url
+) {
+  //check if summary has been completed before or not
+  const podcast_requested = await prisma.podcast.findUnique({
+    where: {
+      hash: podcast_hash,
+    },
+  });
+
+  if (podcast_requested.summary_complete) {
+    //update status to Completed, and include the summary url in the row
+    const requestUpdated = await prisma.request.update({
+      where: {
+        userId: userId,
+        podcast_hash: podcast_hash,
+      },
+      data: {
+        status: "Completed",
+        summary_url: "podcrunch.co/library/" + podcast_hash,
+      },
+    });
+
+    console.log(
+      "Podcast that was requested was already completed: " + requestUpdated
+    );
+
+    //send confirmation email to user
+    sendConfirmationEmail(
+      userEmail,
+      podcast_name,
+      show_name,
+      "podcrunch.co/library/" + podcast_hash
+    );
+  } else {
+    //hit the transcript request api
+    //i removed the await keyword
+    //if you want to keep the await keyword, we need to not allow the above transaction to occur.
+    //So we need to somehow include this in the above function, or this function must also make an entry into the podcast
+    //table, so that at least the entry is present, lets talk about this on call
+    //nothing needs to happen for the time being
+    // createTranscriptRequest(
+    //   host_url,
+    //   podcast_hash,
+    //   "https://chrt.fm/track/97E2B5/dts.podtrac.com/redirect.mp3/traffic.omny.fm/d/clips/fa326977-3de5-4283-9b8b-af3500c58607/59fff0b5-0aab-4e5e-b71e-af4600178c59/2b79c8cf-2a62-455d-8708-b02d0040f0a8/audio.mp3?utm_source=Podcast&in_playlist=7f09fd51-ba1a-437b-9667-af4600178c62"
+    // );
+  }
+}
+
 export default async function handler(req, res) {
   const {
     data,
@@ -29,6 +84,7 @@ export default async function handler(req, res) {
     podcastReleaseDate,
     podcastDuration,
     podcastLink,
+    userEmail,
   } = req.body;
 
   //check all the errors
@@ -74,6 +130,7 @@ export default async function handler(req, res) {
               episode_name: data.podcast_name,
               show_name: data.show_name,
               mp3_url: podcastLink,
+              summary_complete: false,
             },
           }),
 
@@ -100,12 +157,23 @@ export default async function handler(req, res) {
 
         res.status(200);
         res.end(JSON.stringify(result));
+
         if (result.length) {
           // send request alert email to admin
           incomingRequestEmailNotification(
             data.userId,
             data.podcast_name,
             data.show_name
+          );
+
+          //check if summary was previously completed
+          checkPreviousCompletedSummary(
+            data.podcast_hash,
+            data.podcast_name,
+            data.show_name,
+            data.userId,
+            userEmail,
+            req.headers.host
           );
         }
       } catch (error) {
@@ -115,17 +183,6 @@ export default async function handler(req, res) {
     };
 
     updateDatabases();
-
-    //i removed the await keyword
-    //if you want to keep the await keyword, we need to not allow the above transaction to occur.
-    //So we need to somehow include this in the above function, or this function must also make an entry into the podcast
-    //table, so that at least the entry is present, lets talk about this on call
-
-    createTranscriptRequest(
-      req.headers.host,
-      data.podcast_hash,
-      "https://chrt.fm/track/97E2B5/dts.podtrac.com/redirect.mp3/traffic.omny.fm/d/clips/fa326977-3de5-4283-9b8b-af3500c58607/59fff0b5-0aab-4e5e-b71e-af4600178c59/2b79c8cf-2a62-455d-8708-b02d0040f0a8/audio.mp3?utm_source=Podcast&in_playlist=7f09fd51-ba1a-437b-9667-af4600178c62"
-    );
   } catch (err) {
     console.error(err);
 

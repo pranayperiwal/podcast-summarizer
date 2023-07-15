@@ -32,7 +32,7 @@ export default function EpisodeCard({
           className=" relative z-2"
         ></div>
         <div className="mt-4 px-5 py-5 relative z-3">
-          {status !== "completed" ? (
+          {status !== "Completed" ? (
             <span className="bg-blue-100 text-blue-800 text-xs font-medium rounded-full mr-2 px-2.5 py-0.5 dark:bg-blue-900 dark:text-blue-300">
               Processing
             </span>

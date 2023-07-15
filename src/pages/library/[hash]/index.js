@@ -11,8 +11,8 @@ const { GetObjectCommand, S3Client } = require("@aws-sdk/client-s3");
 const client = new S3Client({
   region: "ap-southeast-1",
   credentials: {
-    accessKeyId: "AKIA3OEUKNMLKG5YAFCT",
-    secretAccessKey: "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",
+    accessKeyId: process.env.NEXT_PUBLIC_AWS_S3_ACCESS_KEY_ID,
+    secretAccessKey: process.env.NEXT_PUBLIC_AWS_S3_SECRET_KEY_ID,
   },
 });
 
@@ -79,7 +79,7 @@ export async function getServerSideProps(context) {
     where: {
       userId: session.user.uid,
       podcast_hash: context.query.hash,
-      status: "completed",
+      status: "Completed",
     },
   });
   // console.log(userRequest);

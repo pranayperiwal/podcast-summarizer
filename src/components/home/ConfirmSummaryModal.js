@@ -10,6 +10,8 @@ import { useAtom } from "jotai";
 import { ColorRing } from "react-loader-spinner";
 
 import { userUIDAtom } from "@/pages/home";
+import { userEmailAtom } from "@/pages/home";
+
 import styles from "@/styles/components/home/ConfirmSummaryModal.module.css";
 import { useRouter } from "next/router";
 
@@ -24,6 +26,7 @@ const ConfirmSummaryModal = ({
   podcastReleaseDate,
 }) => {
   const [userUID] = useAtom(userUIDAtom);
+  const [userEmail] = useAtom(userEmailAtom);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -67,6 +70,7 @@ const ConfirmSummaryModal = ({
       podcastReleaseDate,
       podcastDuration,
       podcastLink,
+      userEmail,
     };
 
     setInitalState(false);
@@ -105,29 +109,31 @@ const ConfirmSummaryModal = ({
         setLoading(false);
       });
 
-      await makeTranscriptRequest(hash);
+    // await makeTranscriptRequest(hash);
   };
 
-
-  async function makeTranscriptRequest(audioHash, audioUrl = "https://chrt.fm/track/97E2B5/dts.podtrac.com/redirect.mp3/traffic.omny.fm/d/clips/fa326977-3de5-4283-9b8b-af3500c58607/59fff0b5-0aab-4e5e-b71e-af4600178c59/2b79c8cf-2a62-455d-8708-b02d0040f0a8/audio.mp3?utm_source=Podcast&in_playlist=7f09fd51-ba1a-437b-9667-af4600178c62") {
+  async function makeTranscriptRequest(
+    audioHash,
+    audioUrl = "https://chrt.fm/track/97E2B5/dts.podtrac.com/redirect.mp3/traffic.omny.fm/d/clips/fa326977-3de5-4283-9b8b-af3500c58607/59fff0b5-0aab-4e5e-b71e-af4600178c59/2b79c8cf-2a62-455d-8708-b02d0040f0a8/audio.mp3?utm_source=Podcast&in_playlist=7f09fd51-ba1a-437b-9667-af4600178c62"
+  ) {
     const podcastDetails = {
       hash: audioHash,
-      audioUrl: audioUrl
+      audioUrl: audioUrl,
     };
 
     try {
-      const response = await fetch('http://localhost:3000/api/transcript', {
-        method: 'POST',
+      const response = await fetch("http://localhost:3000/api/transcript", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(podcastDetails)
+        body: JSON.stringify(podcastDetails),
       });
-    
+
       const data = await response.json();
       console.log(data);
     } catch (error) {
-      throw new Error("Error making transcript request - " + error.message);  
+      throw new Error("Error making transcript request - " + error.message);
     }
   }
 

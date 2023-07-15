@@ -60,17 +60,19 @@ model User {
 }
 
 model Podcast {
-  id           Int           @id @default(autoincrement())
-  duration     Int
-  image        String
-  date         DateTime
-  hash         String        @unique
-  episode_name String
-  show_name    String
-  mp3_url      String?       @unique
-  creditsSpent CreditsSpent?
-  requests     Request?
-  users        User[]        @relation("PodcastToUser")
+  id                Int           @id @default(autoincrement())
+  duration          Int
+  image             String
+  date              DateTime
+  hash              String        @unique
+  episode_name      String
+  show_name         String
+  mp3_url           String?       @unique
+  summary_complete  Boolean?
+
+  creditsSpent      CreditsSpent[]
+  requests          Request[]
+  users             User[]        @relation("PodcastToUser")
 }
 
 model Transaction {
@@ -88,7 +90,7 @@ model CreditsSpent {
   date         DateTime
   quantity     Float
   userId       String   @db.Uuid
-  podcast_hash String   @unique
+  podcast_hash String   
   podcast      Podcast  @relation(fields: [podcast_hash], references: [hash])
   user         User     @relation(fields: [userId], references: [user_id])
 }
@@ -101,7 +103,7 @@ model Request {
   show_name    String
   userId       String   @db.Uuid
   summary_url  String?  @unique
-  podcast_hash String   @unique
+  podcast_hash String   
   podcast      Podcast  @relation(fields: [podcast_hash], references: [hash])
   user         User     @relation(fields: [userId], references: [user_id])
 }
