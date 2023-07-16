@@ -1,6 +1,7 @@
 const { PutObjectCommand, S3Client } = require("@aws-sdk/client-s3");
 const { Configuration, OpenAIApi } = require("openai");
 import { PrismaClient } from "@prisma/client";
+import { sendConfirmationEmail } from "@/utils/email/ConfirmationEmailSender";
 
 const prisma = new PrismaClient();
 
@@ -20,25 +21,24 @@ const client = new S3Client({
 
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 export default async function handler(req, res) {
-  try {
     // IP Filtering
     const allowedIPs = ["127.0.0.1", "44.238.19.20"];
 
     // Get the client IP address from the request headers
-    const clientIP =
-      req.headers["x-forwarded-for"].split(",")[0] || req.socket.remoteAddress;
+    const clientIP = req.headers["x-forwarded-for"].split(",")[0] || req.socket.remoteAddress;
     console.log(`Got Request From ${clientIP}`);
-
-    // Check if the client IP is in the allowed IP list
+  
+      // Check if the client IP is in the allowed IP list
     if (!allowedIPs.includes(clientIP)) {
-      res.status(403).json({ message: "Access denied" }); // Return a 403 error
-      return;
+      return res.status(403).json({ message: "Access denied" }); // Return a 403 error
     }
-
-    const { status, transcript_id } = req.body;
-    const hashValue = req.query.params;
-
-    console.log(`Got transcript for ${hashValue}`);
+  
+      const { status, transcript_id } = req.body;
+      const hashValue = req.query.params;
+  
+      console.log(`Got transcript for ${hashValue}`);
+  
+  try {
 
     // If the request is processing cancel future processes
     if (await checkRequestStatus(hashValue, "Processing")) {
@@ -49,6 +49,7 @@ export default async function handler(req, res) {
 
     // Get the transcript
     const transcriptFile = await getTranscriptFile(transcript_id);
+    console.log(transcriptFile);
     console.log("Got Transcript File. Generating Summary...");
 
     const summary = await generateSummary(transcriptFile);
@@ -96,6 +97,7 @@ export default async function handler(req, res) {
 
     return res.status(200).json({ message: "Success" });
   } catch (err) {
+    await updateRequestDbStatus(hashValue, "Error");
     console.error(err);
     return res.status(404).json({ error: err.message });
   }
@@ -116,7 +118,8 @@ async function getTranscriptFile(transcriptId) {
         headers: headers,
       });
       const transcriptionResult = await pollingResponse.json();
-      if (transcriptionResult.status === "Completed") {
+      console.log(transcriptionResult.status);
+      if (transcriptionResult.status === "completed") {
         return transcriptionResult;
       } else if (transcriptionResult.status === "error") {
         throw new Error(`Transcription failed: ${transcriptionResult.error}`);
@@ -240,6 +243,10 @@ async function checkRequestStatus(podcastHash, checkStatus) {
       status: true,
     },
   });
+
+  console.log("Checking request status: ")
+  console.log(currentStatus)
+
 
   if (currentStatus["status"] == checkStatus) {
     console.log(`Request is ${checkStatus}`);
