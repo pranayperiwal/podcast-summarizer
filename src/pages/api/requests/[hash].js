@@ -163,7 +163,8 @@ export default async function handler(req, res) {
           incomingRequestEmailNotification(
             data.userId,
             data.podcast_name,
-            data.show_name
+            data.show_name,
+            data.podcast_hash
           );
 
           //check if summary was previously completed

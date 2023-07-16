@@ -35,11 +35,13 @@ const ConfirmSummaryModal = ({
   const router = useRouter();
 
   const calculateCost = (duration) => {
-    if (duration > 3600000) {
-      return 2;
-    } else {
-      return 1;
-    }
+    // if (duration > 3600000) {
+    //   return 2;
+    // } else {
+    //   return 1;
+    // }
+
+    return 1;
   };
 
   const generateHash = (epName, shName) => {

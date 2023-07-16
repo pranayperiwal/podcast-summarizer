@@ -21,25 +21,25 @@ const client = new S3Client({
 
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 export default async function handler(req, res) {
-    // IP Filtering
-    const allowedIPs = ["127.0.0.1", "44.238.19.20"];
+  // IP Filtering
+  const allowedIPs = ["127.0.0.1", "44.238.19.20"];
 
-    // Get the client IP address from the request headers
-    const clientIP = req.headers["x-forwarded-for"].split(",")[0] || req.socket.remoteAddress;
-    console.log(`Got Request From ${clientIP}`);
-  
-      // Check if the client IP is in the allowed IP list
-    if (!allowedIPs.includes(clientIP)) {
-      return res.status(403).json({ message: "Access denied" }); // Return a 403 error
-    }
-  
-      const { status, transcript_id } = req.body;
-      const hashValue = req.query.params;
-  
-      console.log(`Got transcript for ${hashValue}`);
-  
+  // Get the client IP address from the request headers
+  const clientIP =
+    req.headers["x-forwarded-for"].split(",")[0] || req.socket.remoteAddress;
+  console.log(`Got Request From ${clientIP}`);
+
+  // Check if the client IP is in the allowed IP list
+  if (!allowedIPs.includes(clientIP)) {
+    return res.status(403).json({ message: "Access denied" }); // Return a 403 error
+  }
+
+  const { status, transcript_id } = req.body;
+  const hashValue = req.query.params;
+
+  console.log(`Got transcript for ${hashValue}`);
+
   try {
-
     // If the request is processing cancel future processes
     if (await checkRequestStatus(hashValue, "Processing")) {
       return res.status(200).json({ message: "Request Complete" });
@@ -117,8 +117,9 @@ async function getTranscriptFile(transcriptId) {
         method: "GET",
         headers: headers,
       });
+
       const transcriptionResult = await pollingResponse.json();
-      console.log(transcriptionResult.status);
+      console.log(transcriptionResult);
       if (transcriptionResult.status === "completed") {
         return transcriptionResult;
       } else if (transcriptionResult.status === "error") {
@@ -244,9 +245,8 @@ async function checkRequestStatus(podcastHash, checkStatus) {
     },
   });
 
-  console.log("Checking request status: ")
-  console.log(currentStatus)
-
+  console.log("Current request status:");
+  console.log(currentStatus);
 
   if (currentStatus["status"] == checkStatus) {
     console.log(`Request is ${checkStatus}`);
