@@ -30,23 +30,35 @@ export default async function handler(req, res) {
       },
     });
 
-    if (request.length >= 2) {
-      res.status(301).json({
-        message: "request under way, was previously created",
-      });
-    } else {
-      const responseData = await transcribeAudio(
-        hash,
-        audioUrl,
-        process.env.ASSEMBLY_API_KEY,
-        speakersExpected
-      );
+    const responseData = await transcribeAudio(
+      hash,
+      audioUrl,
+      process.env.ASSEMBLY_API_KEY,
+      speakersExpected
+    );
 
-      // Return success response
-      res.status(201).json({
-        message: responseData,
-      });
-    }
+    // Return success response
+    res.status(201).json({
+      message: responseData,
+    });
+
+    // if (request.length >= 2) {
+    //   res.status(301).json({
+    //     message: "request under way, was previously created",
+    //   });
+    // } else {
+    //   const responseData = await transcribeAudio(
+    //     hash,
+    //     audioUrl,
+    //     process.env.ASSEMBLY_API_KEY,
+    //     speakersExpected
+    //   );
+
+    //   // Return success response
+    //   res.status(201).json({
+    //     message: responseData,
+    //   });
+    // }
   } catch (error) {
     // Handle errors
     console.error(error);

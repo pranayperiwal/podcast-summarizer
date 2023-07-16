@@ -89,8 +89,8 @@ export default async function handler(req, res) {
     emailList.forEach((email) => {
       sendConfirmationEmail(
         email,
-        currentRequest.podcast_name,
-        currentRequest.show_name,
+        currentRequest.podcastUpdate.episode_name,
+        currentRequest.podcastUpdate.show_name,
         "podcrunch.co/library/" + hashValue
       );
     });
