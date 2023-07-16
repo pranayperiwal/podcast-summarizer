@@ -15,7 +15,7 @@ export default function EpisodeCard({
   };
 
   return (
-    <article className="mx-3 cursor-pointer mb-10 rounded-xl bg-[#29282b] pb-5 shadow-lg hover:shadow-xl hover:transform hover:scale-105 duration-300 h-[300px] w-[300px]">
+    <article className="mx-1 cursor-pointer mb-10 rounded-xl bg-[#29282b] pb-5 shadow-lg hover:shadow-xl hover:transform hover:scale-105 duration-300 h-[300px] w-[300px]">
       <div
         style={{ "--image-url": `url(${imageUrl})` }}
         className="h-[300px] w-[300px] bg-[image:var(--image-url)] relative flex flex-column items-end overflow-hidden rounded"

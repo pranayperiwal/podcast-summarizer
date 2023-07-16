@@ -82,7 +82,7 @@ const ChaptersContainer = ({ chapters }) => {
             expanded ? "max-h-fit" : "max-h-0"
           }`}
         >
-          <p className="leading-6 font-light pb-4 text-justify">{content}</p>
+          <p style={{whiteSpace:"pre-line"}} className="leading-6 font-light pb-4 text-justify">{content}</p>
         </div>
       </div>
     );

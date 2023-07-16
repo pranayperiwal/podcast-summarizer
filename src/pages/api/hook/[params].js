@@ -41,7 +41,7 @@ export default async function handler(req, res) {
 
   try {
     // If the request is processing cancel future processes
-    if (await checkRequestStatus(hashValue, "Processing")) {
+    if (await checkRequestStatus(hashValue, "Processing") || await checkRequestStatus(hashValue, "Completed")) {
       return res.status(200).json({ message: "Request Complete" });
     }
 
@@ -183,7 +183,7 @@ async function generateSummary(transcriptFile) {
         {
           role: "system",
           content:
-            "You are a podcast summariser. You will be given a chapter of the podcast. No need to mention the chapter name. Give a detailed summary of the chapter.",
+            "You are a podcast summariser. You will be given a chapter of the podcast. No need to mention the chapter name. Give a summary of the chapter.",
         },
         { role: "user", content: chapterContent },
       ],
