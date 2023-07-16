@@ -12,7 +12,7 @@ import EpisodeCard from "./episodeCard";
 export default function LibraryMainPage({ user, requests }) {
   const router = useRouter();
 
-  requests.sort((a, b) => (a.status < b.status ? 1 : -1));
+  requests.sort((a, b) => (a.status > b.status ? 1 : -1));
   // console.log(requests);
 
   const specificPodcastHash = router.query?.hash;
