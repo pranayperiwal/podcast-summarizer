@@ -39,7 +39,7 @@ async function checkPreviousCompletedSummary(
 
   if (podcast_requested.summary_complete) {
     //update status to Completed, and include the summary url in the row
-    const requestUpdated = await prisma.request.update({
+    const requestUpdated = await prisma.request.updateMany({
       where: {
         userId: userId,
         podcast_hash: podcast_hash,
