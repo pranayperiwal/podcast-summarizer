@@ -12,7 +12,7 @@ import EpisodeCard from "./episodeCard";
 export default function LibraryMainPage({ user, requests }) {
   const router = useRouter();
 
-  requests.sort((a, b) => (a.status < b.status ? 1 : -1));
+  requests.sort((a, b) => (a.status > b.status ? 1 : -1));
   // console.log(requests);
 
   const specificPodcastHash = router.query?.hash;
@@ -41,7 +41,7 @@ export default function LibraryMainPage({ user, requests }) {
       <Header loggedIn={true} credits={user.credits} />
       <div className="bg-white flex justify-center">
         <div
-          className="sm:mx-10 max-w-2xl px-8 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8 "
+          className="sm:mx-10 max-w-2xl min-w-[80%] px-8 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8 "
           // style={{ border: "1px solid red" }}
         >
           <div className="flex justify-between ">

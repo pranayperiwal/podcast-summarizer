@@ -15,7 +15,7 @@ export default function EpisodeCard({
   };
 
   return (
-    <article className="cursor-pointer mb-10 rounded-xl bg-[#29282b] pb-5 shadow-lg hover:shadow-xl hover:transform hover:scale-105 duration-300 h-[300px] w-[300px]">
+    <article className="mx-1 cursor-pointer mb-10 rounded-xl bg-[#29282b] pb-5 shadow-lg hover:shadow-xl hover:transform hover:scale-105 duration-300 h-[300px] w-[300px]">
       <div
         style={{ "--image-url": `url(${imageUrl})` }}
         className="h-[300px] w-[300px] bg-[image:var(--image-url)] relative flex flex-column items-end overflow-hidden rounded"
@@ -32,7 +32,7 @@ export default function EpisodeCard({
           className=" relative z-2"
         ></div>
         <div className="mt-4 px-5 py-5 relative z-3">
-          {status !== "completed" ? (
+          {status !== "Completed" ? (
             <span className="bg-blue-100 text-blue-800 text-xs font-medium rounded-full mr-2 px-2.5 py-0.5 dark:bg-blue-900 dark:text-blue-300">
               Processing
             </span>
@@ -46,7 +46,7 @@ export default function EpisodeCard({
           </h2>
           <p className="mt-1 text-sm text-white font-light">{subTitle}</p>
           <div className="mt-6 flex items-center justify-between">
-            {status === "completed" ? (
+            {status === "Completed" ? (
               <div className="flex items-center space-x-1.5 rounded-lg bg-[#6a6bf3] px-4 py-2 text-white duration-100 hover:bg-[#6a6bf3]">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

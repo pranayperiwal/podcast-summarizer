@@ -8,7 +8,8 @@ const createSendEmailCommand = (
   //   requesterEmail,
   fromAddress,
   podcastName,
-  showName
+  showName,
+  podcastHash
 ) => {
   return new SendEmailCommand({
     Destination: {
@@ -27,7 +28,9 @@ const createSendEmailCommand = (
             ". Podcast name: " +
             podcastName +
             ". Show name: " +
-            showName,
+            showName +
+            " Podcast hash: " +
+            podcastHash,
         },
         Text: {
           Charset: "UTF-8",
@@ -50,7 +53,8 @@ export const incomingRequestEmailNotification = async (
   requesterUUID,
   //   requesterEmail,
   podcastName,
-  showName
+  showName,
+  podcastHash
 ) => {
   const receiverProb = Math.random();
   let receiverEmail = "";
@@ -66,10 +70,17 @@ export const incomingRequestEmailNotification = async (
     // requesterEmail,
     "podcrunch.ai@gmail.com",
     podcastName,
-    showName
+    showName,
+    podcastHash
   );
 
-  console.log(requesterUUID, podcastName, showName);
+  console.log(
+    "Send incoming request email - details:",
+    requesterUUID,
+    podcastName,
+    showName,
+    podcastHash
+  );
 
   try {
     const res = await sesClient.send(sendEmailCommand);

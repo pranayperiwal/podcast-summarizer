@@ -12,11 +12,13 @@ import InitialInformationModal from "@/components/home/InitialInformationModal";
 import { prisma } from "@/pages/api/auth/[...nextauth]";
 
 export const userUIDAtom = atom();
+export const userEmailAtom = atom();
 
 const HomePage = ({ user }) => {
   // console.log(user);
 
   useHydrateAtoms([[userUIDAtom, user.user_id]]);
+  useHydrateAtoms([[userEmailAtom, user.email]]);
 
   const [open, setOpen] = useState(false);
 
