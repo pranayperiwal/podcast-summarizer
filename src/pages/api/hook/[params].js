@@ -175,7 +175,7 @@ async function generateSummary(transcriptFile) {
         `(${utterance["start"]} - ${utterance["end"]}): \n`;
       chapterContent += utterance["text"] + "\n";
       utteranceIndex++;
-    }
+    } 
 
     const chatCompletion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo-16k",
