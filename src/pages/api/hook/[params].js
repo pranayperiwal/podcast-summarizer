@@ -187,7 +187,7 @@ async function generateSummary(transcriptFile) {
         `(${utterance["start"]} - ${utterance["end"]}): \n`;
       chapterContent += utterance["text"] + "\n";
       utteranceIndex++;
-    }
+    } 
 
     // console.log(chapterContent);
 
