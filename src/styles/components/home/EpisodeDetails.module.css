@@ -8,6 +8,7 @@
   /* background-color: black; */
   background-color: var(--main-card-bg);
   /* border: 1px solid rgba(255, 255, 255, 0.6); */
+  /* border: 1px solid red; */
   color: white;
   width: 700px;
   border-radius: 10px;
@@ -24,6 +25,11 @@
   margin-left: 20px;
   /* display: flex;
   flex-direction: column; */
+}
+
+.episodeName {
+  font-size: 30px;
+  line-height: 1.2em;
 }
 
 .summarizeButton {
@@ -49,4 +55,28 @@
   margin-top: 30px;
   flex: 1;
   justify-content: space-between;
+}
+
+@media (max-width: 600px) {
+  .podcastDetailsContainer {
+    flex-direction: column;
+    /* justify-content: center; */
+    /* align-items: center; */
+    width: 85%;
+  }
+  .textContentContainer {
+    margin-top: 20px;
+    /* border: 1px solid red; */
+    /* margin-bottom: 20px; */
+  }
+
+  .buttonContainer {
+    justify-content: center;
+  }
+  .episodeName {
+    margin-bottom: 10px;
+  }
+  .date {
+    margin-top: 10px;
+  }
 }

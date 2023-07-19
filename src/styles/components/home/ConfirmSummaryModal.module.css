@@ -75,3 +75,12 @@
 
   /* width: 80%; */
 }
+
+@media (max-width: 700px) {
+  .modalContainer {
+    width: 85%;
+  }
+  .crossContainer {
+    right: 15%;
+  }
+}
