@@ -1,0 +1,117 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["rhel-openssl-1.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  type               String
+  provider           String
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+  oauth_token_secret String?
+  oauth_token        String?
+  providerAccountId  String
+  userId             Int
+  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  expires      DateTime
+  sessionToken String   @unique
+  userId       Int
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model User {
+  id                  Int            @id @default(autoincrement())
+  name                String?
+  email               String         @unique
+  image               String?
+  credits             Float          @default(20.0)
+  emailVerified       DateTime?
+  user_id             String         @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  accounts            Account[]
+  credits_spent       CreditsSpent[]
+  request             Request[]
+  sessions            Session[]
+  transactions        Transaction[]
+  podcasts_summarised Podcast[]      @relation("PodcastToUser")
+}
+
+model Podcast {
+  id               Int            @id @default(autoincrement())
+  duration         Int
+  image            String
+  date             DateTime
+  hash             String         @unique
+  episode_name     String
+  show_name        String
+  mp3_url          String?        @unique
+  summary_complete Boolean?
+  creditsSpent     CreditsSpent[]
+  requests         Request[]
+  users            User[]         @relation("PodcastToUser")
+}
+
+model Transaction {
+  amount           Int
+  status           String
+  payment_method   String
+  transaction_date DateTime
+  transaction_id   Int      @id @default(autoincrement())
+  userId           String   @db.Uuid
+  user             User     @relation(fields: [userId], references: [user_id])
+}
+
+model CreditsSpent {
+  id           Int      @id @default(autoincrement())
+  date         DateTime
+  quantity     Float
+  userId       String   @db.Uuid
+  podcast_hash String
+  podcast      Podcast  @relation(fields: [podcast_hash], references: [hash])
+  user         User     @relation(fields: [userId], references: [user_id])
+}
+
+model Request {
+  id           Int      @id @default(autoincrement())
+  date         DateTime
+  status       String
+  podcast_name String
+  show_name    String
+  userId       String   @db.Uuid
+  summary_url  String?  @unique
+  podcast_hash String
+  podcast      Podcast  @relation(fields: [podcast_hash], references: [hash])
+  user         User     @relation(fields: [userId], references: [user_id])
+}
+
+model Summary {
+  id           Int    @id @default(autoincrement())
+  hash         String
+  summary      Json
+  podcast_name String
+  show_name    String
+}
