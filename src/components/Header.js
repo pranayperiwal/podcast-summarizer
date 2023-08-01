@@ -46,6 +46,10 @@ function Header({ loggedIn, credits }) {
             <Link href="/home">Home</Link>
           </li>
           <li className={styles.mobileMenuItem}>
+            <Link href="/market">Market</Link>
+          </li>
+
+          <li className={styles.mobileMenuItem}>
             <Link href="/library">Library</Link>
           </li>
 
@@ -87,6 +91,11 @@ function Header({ loggedIn, credits }) {
             <Link className={styles.linkItem} href="/home">
               Home
             </Link>
+
+            <Link className={styles.linkItem} href="/market">
+              Market
+            </Link>
+
 
             <Link className={styles.linkItem} href="/library">
               Library

@@ -1,8 +1,6 @@
-import { PrismaClient } from "@prisma/client";
 import { incomingRequestEmailNotification } from "@/utils/email/IncomingRequestEmailNotifcation";
 import { sendConfirmationEmail } from "@/utils/email/ConfirmationEmailSender";
 
-const prisma = new PrismaClient();
 
 async function createTranscriptRequest(host, hash, audioUrl) {
   const url = "http://" + host + "/api/transcript";
@@ -90,6 +88,7 @@ export default async function handler(req, res) {
   //check all the errors
 
   try {
+    console.log(data.podcast_hash);
     //check if the request hasnt been made previously, if it has, raise error
     const prevRequestMadeResponse = await prisma.request.findMany({
       where: {
@@ -157,27 +156,7 @@ export default async function handler(req, res) {
 
         res.status(200);
         res.end(JSON.stringify(result));
-
-        if (result.length && userEmail !== null) {
-          // send request alert email to admin
-          incomingRequestEmailNotification(
-            data.userId,
-            data.podcast_name,
-            data.show_name,
-            data.podcast_hash
-          );
-
-          //check if summary was previously completed
-          checkPreviousCompletedSummary(
-            data.podcast_hash,
-            data.podcast_name,
-            data.show_name,
-            data.userId,
-            userEmail,
-            req.headers.host
-          );
-        }
-      } catch (error) {
+    } catch (error) {
         console.log(error);
         res.status(400).end(JSON.stringify(error));
       }

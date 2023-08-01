@@ -3,17 +3,14 @@ import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import styles from "@/styles/Request.module.css";
 import Header from "@/components/Header";
-import LibraryDataTable from "@/components/library/LibraryDataTable";
 import { useRouter } from "next/router";
-import RequestConfirmedModal from "@/components/library/RequestConfirmedModal";
 import { prisma } from "@/pages/api/auth/[...nextauth]";
-import EpisodeCard from "@/components/episodeCard";
+import MarketCard from "@/components/marketCard";
 
-export default function LibraryMainPage({ user, requests }) {
+export default function MarketPlace({ user, marketRequests }) {
   const router = useRouter();
 
-  requests.sort((a, b) => (a.status > b.status ? 1 : -1));
-  // console.log(requests);
+  marketRequests.sort((a, b) => (a.status > b.status ? 1 : -1));
 
   const specificPodcastHash = router.query?.hash;
 
@@ -47,7 +44,7 @@ export default function LibraryMainPage({ user, requests }) {
           <div className="flex justify-between ">
             <div>
               <h2 className="text-4xl font-bold tracking-tight text-slate-900 font-sans">
-                Your Library
+                Market Place
               </h2>
               <h4 className="text-base mt-3 font-normal text-gray-800 tracking-tight">
                 Access your summaries from here.{" "}
@@ -60,15 +57,20 @@ export default function LibraryMainPage({ user, requests }) {
               className="flex flex-row flex-wrap md:justify-around justify-center"
               // style={{ border: "1px solid red" }}
             >
-              {requests.map((request, index) => {
+              {marketRequests.map((request, index) => {
                 return (
-                  <EpisodeCard
+                  <MarketCard
                     key={index}
-                    title={request.show_name}
-                    subTitle={request.podcast_name}
-                    imageUrl={request.podcast.image}
-                    status={request.status}
-                    redirectUrl={`/library/${request.podcast_hash}`}
+                    showName={request.show_name}
+                    podcastName={request.episode_name}
+                    podcastDuration={request.duration}
+                    podcastReleaseDate={request.date}
+                    showImage ={request.image}
+                    hash={request.hash}
+                    userId={user.user_id}
+                    podcastLink={null}
+                    userEmail={null}
+                    creditsRequired={1}
                   />
                 );
               })}
@@ -80,7 +82,7 @@ export default function LibraryMainPage({ user, requests }) {
   );
 }
 
-LibraryMainPage.requireAuth = true;
+MarketPlace.requireAuth = true;
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
@@ -96,20 +98,34 @@ export async function getServerSideProps(context) {
   }
 
   //2. return all requests of the user
-  const userRequests = await prisma.request.findMany({
+  let marketRequests = await prisma.podcast.findMany({
     include: {
-      podcast: {
-        select: {
-          image: true,
-        },
-      },
-    },
-    where: {
-      userId: session.user.uid,
+      requests: {
+        where: {
+          NOT: {
+            userId: session.user.uid
+          },
+          status: "Completed"    
+        }
+      }
     },
   });
 
-  // console.log(userRequests);
+  let userRequests = await prisma.request.findMany({
+     where: {
+        userId: session.user.uid
+      },
+      select: {
+        podcast_hash: true
+      }
+  });
+
+  let userRequestsMap = {};
+  for (let request of userRequests) {
+    userRequestsMap[request["podcast_hash"]] = true;
+  }
+
+  marketRequests = marketRequests.filter(req => ((req.hash in userRequestsMap) === false));
 
   const user = await prisma.user.findUnique({
     where: {
@@ -120,7 +136,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       user,
-      requests: JSON.parse(JSON.stringify(userRequests)),
+      marketRequests: JSON.parse(JSON.stringify(marketRequests)),
     },
   };
 }
