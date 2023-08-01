@@ -1,7 +1,7 @@
-const { PutObjectCommand, S3Client } = require("@aws-sdk/client-s3");
 const { Configuration, OpenAIApi } = require("openai");
+const { SQSClient, SendMessageCommand } = require("@aws-sdk/client-sqs");
+
 import { PrismaClient } from "@prisma/client";
-import { sendConfirmationEmail } from "@/utils/email/ConfirmationEmailSender";
 
 const prisma = new PrismaClient();
 
@@ -11,13 +11,15 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-const client = new S3Client({
+const sqsclient = new SQSClient({
   region: "ap-southeast-1",
   credentials: {
-    accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_S3_SECRET_KEY_ID,
+    accessKeyId: process.env.AWS_SQS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SQS_SECRET_KEY_ID,
   },
 });
+
+const SQS_QUEUE_URL = "assembly-ai-hook";
 
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 export default async function handler(req, res) {
@@ -41,166 +43,48 @@ export default async function handler(req, res) {
 
   try {
     // If the request is processing cancel future processes
-    if (await checkRequestStatus(hashValue, "Processing") || await checkRequestStatus(hashValue, "Completed")) {
+    if (
+      (await checkRequestStatus(hashValue, "Processing")) ||
+      (await checkRequestStatus(hashValue, "Completed"))
+    ) {
       return res.status(200).json({ message: "Request Complete" });
     }
 
-    await updateRequestDbStatus(hashValue, "Processing");
+    if (await checkRequestStatus(hashValue, "Error")) {
+      return res.status(200).json({ message: "Request Complete" });
+    }
 
-    // Get the transcript
-    const transcriptFile = await getTranscriptFile(transcript_id);
-    console.log(transcriptFile);
-    console.log("Got Transcript File. Generating Summary...");
+    //offload the processing to aws lambda
+    //send details to SQS
+    //details to be send:
+    // 1. transcript_id
+    // 2. hashValue
 
-    const summary = await generateSummary(transcriptFile);
-    console.log("Generated Summary.");
+    const messageBody = { transcript_id, hashValue };
 
-    const summaryJson = {
-      summary: summary,
-    };
-
-    // Upload to S3
-    await saveTranscriptToS3(hashValue, summaryJson);
-
-    // Update the status of the request to Completed
-    const currentRequest = await updateRequestDbStatus(hashValue, "Completed");
-    console.log(
-      "Updated Request DB Status to Completed for podcast: " + hashValue
-    );
-
-    //send confirmation email
-    // 1. check who all have requested the summary
-    const emails = await prisma.user.findMany({
-      where: {
-        request: {
-          some: {
-            podcast_hash: hashValue,
-          },
-        },
-      },
-      distinct: ["email"],
-      select: {
-        email: true,
-      },
+    const command = new SendMessageCommand({
+      QueueUrl: SQS_QUEUE_URL,
+      MessageBody: JSON.stringify(messageBody),
     });
 
-    const emailList = emails.map((user) => user.email);
-    // 2. send emails to everyone about confirmation
-    emailList.forEach((email) => {
-      sendConfirmationEmail(
-        email,
-        currentRequest.podcastUpdate.episode_name,
-        currentRequest.podcastUpdate.show_name,
-        "podcrunch.co/library/" + hashValue
-      );
-    });
+    //after that respond to the request with success or failure status
+    await sqsclient
+      .send(command)
+      .then((sqsRes) => {
+        console.log("Success response from sqs: ", sqsRes);
+        return res.status(200).send("Success");
+      })
+      .catch(async (err) => {
+        console.error("Error response from sqs: ", err);
 
-    return res.status(200).json({ message: "Success" });
+        await updateRequestDbStatus(hashValue, "Error");
+        return res.status(404).send("error in processing");
+      });
   } catch (err) {
     await updateRequestDbStatus(hashValue, "Error");
     console.error(err);
-    return res.status(404).json({ error: err.message });
+    return res.status(404).send(err.message);
   }
-}
-
-async function getTranscriptFile(transcriptId) {
-  try {
-    const pollingEndpoint = `https://api.assemblyai.com/v2/transcript/${transcriptId}`;
-
-    const headers = {
-      Authorization: process.env.ASSEMBLY_API_KEY,
-    };
-
-    for (let i = 0; i <= 10; i++) {
-      console.log("Polling Attempt...");
-      const pollingResponse = await fetch(pollingEndpoint, {
-        method: "GET",
-        headers: headers,
-      });
-
-      const transcriptionResult = await pollingResponse.json();
-      console.log(transcriptionResult);
-      if (transcriptionResult.status === "completed") {
-        return transcriptionResult;
-      } else if (transcriptionResult.status === "error") {
-        throw new Error(`Transcription failed: ${transcriptionResult.error}`);
-      } else {
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-      }
-    }
-
-    // while (true) {
-
-    // }
-  } catch (error) {
-    throw new Error(`Error: ${error.message}`);
-  }
-}
-
-async function saveTranscriptToS3(fileName, transcriptData) {
-  const dataBuf = Buffer.from(JSON.stringify(transcriptData));
-
-  const data = new PutObjectCommand({
-    Bucket: process.env.TRANSCRIPT_BUCKET,
-    Key: `${fileName}.json`,
-    Body: dataBuf,
-  });
-
-  const response = await client.send(data);
-  console.log("Saving summary s3 response: ", response);
-}
-
-async function generateSummary(transcriptFile) {
-  let utteranceIndex = 0;
-
-  let summary = [];
-  let chapterNumber = 1;
-
-  for (const chapter of transcriptFile.chapters) {
-    console.log(`Generating for Chapter: ${chapterNumber}`);
-    let start = chapter["start"];
-    let end = chapter["end"];
-    chapterNumber++;
-
-    let chapterContent = "";
-    chapterContent += "Chapter: " + chapter["gist"] + "\n";
-
-    while (
-      utteranceIndex < transcriptFile["utterances"].length &&
-      transcriptFile["utterances"][utteranceIndex]["end"] <= end
-    ) {
-      const utterance = transcriptFile["utterances"][utteranceIndex];
-      chapterContent +=
-        utterance["speaker"] +
-        `(${utterance["start"]} - ${utterance["end"]}): \n`;
-      chapterContent += utterance["text"] + "\n";
-      utteranceIndex++;
-    } 
-
-    const chatCompletion = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo-16k",
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are a podcast summariser. You will be given a chapter of the podcast. No need to mention the chapter name. Give a summary of the chapter.",
-        },
-        { role: "user", content: chapterContent },
-      ],
-    });
-    summary.push({
-      title: chapter["gist"],
-      summary: chatCompletion.data.choices[0].message["content"],
-      start: start,
-      end: end,
-    });
-  }
-
-  return summary;
-}
-
-function generatePrompt() {
-  return "You are given the task to summarise a transcribed script of a podcast. Break down the text into relevant chapters and summarise each chapter capturing main details and key points. Make sure the summary includes relevant details and examples that support the main ideas while avoiding any unnecessary information or repetition. In case there is repetition across chapters then add it to the existing chapter";
 }
 
 async function updateRequestDbStatus(podcastHash, newStatus) {

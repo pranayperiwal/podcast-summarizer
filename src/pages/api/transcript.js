@@ -17,6 +17,7 @@ const prisma = new PrismaClient();
 export default async function handler(req, res) {
   try {
     const { hash, audioUrl, speakersExpected } = req.body;
+    const hostURL = "https://" + req.headers.host;
     console.log(hash, audioUrl);
     // Validate input
     if (!hash || !audioUrl) {
@@ -34,7 +35,8 @@ export default async function handler(req, res) {
       hash,
       audioUrl,
       process.env.ASSEMBLY_API_KEY,
-      speakersExpected
+      speakersExpected,
+      hostURL
     );
 
     // Return success response
@@ -72,9 +74,16 @@ This function sends a POST request to the AssemblyAI API to transcribe an audio 
 @param {string} audioUrl - The URL of the audio file to transcribe.
 @param {string} apiKey - The API key for accessing the AssemblyAI API.
 @param {string} speakersExpected - The API key for accessing the AssemblyAI API.
+@param {string} hostURL - The URL of the host 
 @returns {object} The parsed response data from the API.
 */
-async function transcribeAudio(audioHash, audioUrl, apiKey, speakersExpected) {
+async function transcribeAudio(
+  audioHash,
+  audioUrl,
+  apiKey,
+  speakersExpected,
+  hostURL
+) {
   // Define the API endpoint URL and headers
   const apiUrl = "https://api.assemblyai.com/v2/transcript";
   const headers = {
@@ -85,6 +94,7 @@ async function transcribeAudio(audioHash, audioUrl, apiKey, speakersExpected) {
   const requestBody = {
     audio_url: audioUrl,
     webhook_url: buildWebhookUrl(audioHash),
+    // webhook_url: hostURL,
     auto_chapters: true,
     speaker_labels: true,
     speakers_expected: speakersExpected,

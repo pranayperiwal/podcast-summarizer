@@ -51,7 +51,6 @@ const EpisodeDetails = ({ data }) => {
     return pad(hrs) + ":" + pad(mins) + ":" + pad(secs);
   }
 
-
   /**
    * Gets the audio of the podcast
    */
@@ -104,11 +103,11 @@ const EpisodeDetails = ({ data }) => {
           style={{ borderRadius: 10 }}
         />
         <div className={styles.textContentContainer}>
-          <h1 style={{ fontSize: 30, lineHeight: "1.2em" }}>{data.name}</h1>
+          <h1 className={styles.episodeName}>{data.name}</h1>
           <h3>{data.show.name}</h3>
           <div style={{ color: "rgb(167,163,162" }}>
             <div></div>
-            <div>
+            <div className={styles.date}>
               <Moment format="MMM D" date={new Date(data.release_date)} /> ∙{" "}
               {msToTime(data.duration_ms)}
             </div>

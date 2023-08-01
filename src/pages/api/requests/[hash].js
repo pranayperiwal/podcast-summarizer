@@ -50,9 +50,8 @@ async function checkPreviousCompletedSummary(
       },
     });
 
-    console.log(
-      "Podcast that was requested was already completed: " + requestUpdated
-    );
+    console.log("Podcast that was requested was already completed: ");
+    console.log(requestUpdated);
 
     //send confirmation email to user
     sendConfirmationEmail(

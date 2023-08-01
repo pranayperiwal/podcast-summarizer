@@ -48,7 +48,7 @@ const LoginModal = ({ open, onClose }) => {
         </header>
 
         <div className={styles.loginProviderContainer}>
-          <div className={styles.mainText}>Welcome to PodCrunch AI</div>
+          <div className={styles.mainText}>Welcome to PodCrunch</div>
           <Button
             variant="outlined"
             color="primary"
