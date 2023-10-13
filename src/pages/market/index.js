@@ -7,7 +7,12 @@ import { useRouter } from "next/router";
 import { prisma } from "@/pages/api/auth/[...nextauth]";
 import MarketCard from "@/components/marketCard";
 
-export default function MarketPlace({ user, marketRequests, trendingRequests, editorPickedPodcasts }) {
+export default function MarketPlace({
+  user,
+  marketRequests,
+  trendingRequests,
+  editorPickedPodcasts,
+}) {
   const router = useRouter();
 
   marketRequests.sort((a, b) => (a.status > b.status ? 1 : -1));
@@ -47,18 +52,19 @@ export default function MarketPlace({ user, marketRequests, trendingRequests, ed
                 Editors Picked Podcasts
               </h2>
               <h4 className="text-base mt-3 font-normal text-gray-800 tracking-tight">
-              Curated Selection of High-Quality Podcast Summaries for Busy Listeners and Learners.{" "}
+                Curated Selection of High-Quality Podcast Summaries for Busy
+                Listeners and Learners.{" "}
               </h4>
             </div>
           </div>
           <hr className="my-4 h-0.5 border-t-0 bg-neutral-100 opacity-100 dark:opacity-50" />
-          
+
           <section className="py-0 mt-10">
             <div
               className="flex flex-row flex-wrap md:justify-around justify-center"
               // style={{ border: "1px solid red" }}
             >
-              {editorPickedPodcasts.map((request, index) => {
+              {/* {editorPickedPodcasts.map((request, index) => {
                 return (
                   <MarketCard
                     key={index}
@@ -74,7 +80,8 @@ export default function MarketPlace({ user, marketRequests, trendingRequests, ed
                     creditsRequired={1}
                   />
                 );
-              })}
+              })} */}
+              <span className="text-gray-400">Coming Soon... </span>
             </div>
           </section>
           <div className="flex justify-between ">
@@ -83,18 +90,19 @@ export default function MarketPlace({ user, marketRequests, trendingRequests, ed
                 Trending Podcasts
               </h2>
               <h4 className="text-base mt-3 font-normal text-gray-800 tracking-tight">
-                Discover, Engage and Learn with Concise Podcast Summaries Available At Your Fingertips.{" "}
+                Discover, Engage and Learn with Concise Podcast Summaries
+                Available At Your Fingertips.{" "}
               </h4>
             </div>
           </div>
           <hr className="my-4 h-0.5 border-t-0 bg-neutral-100 opacity-100 dark:opacity-50" />
-          
+
           <section className="py-0 mt-10">
             <div
               className="flex flex-row flex-wrap md:justify-around justify-center"
               // style={{ border: "1px solid red" }}
             >
-              {trendingRequests.map((request, index) => {
+              {/* {trendingRequests.map((request, index) => {
                 return (
                   <MarketCard
                     key={index}
@@ -102,7 +110,7 @@ export default function MarketPlace({ user, marketRequests, trendingRequests, ed
                     podcastName={request.episode_name}
                     podcastDuration={request.duration}
                     podcastReleaseDate={request.date}
-                    showImage ={request.image}
+                    showImage={request.image}
                     hash={request.hash}
                     userId={user.user_id}
                     podcastLink={null}
@@ -110,7 +118,8 @@ export default function MarketPlace({ user, marketRequests, trendingRequests, ed
                     creditsRequired={1}
                   />
                 );
-              })}
+              })} */}
+              <span className="text-gray-400">Coming Soon... </span>
             </div>
           </section>
           <div className="flex justify-between ">
@@ -119,18 +128,19 @@ export default function MarketPlace({ user, marketRequests, trendingRequests, ed
                 Market Place
               </h2>
               <h4 className="text-base mt-3 font-normal text-gray-800 tracking-tight">
-                Discover, Engage and Learn with Concise Podcast Summaries Available At Your Fingertips.{" "}
+                Discover, Engage and Learn with Concise Podcast Summaries
+                Available At Your Fingertips.{" "}
               </h4>
             </div>
           </div>
           <hr className="my-4 h-0.5 border-t-0 bg-neutral-100 opacity-100 dark:opacity-50" />
-          
+
           <section className="py-0 mt-10">
             <div
               className="flex flex-row flex-wrap md:justify-around justify-center"
               // style={{ border: "1px solid red" }}
             >
-              {marketRequests.map((request, index) => {
+              {/* {marketRequests.map((request, index) => {
                 return (
                   <MarketCard
                     key={index}
@@ -138,7 +148,7 @@ export default function MarketPlace({ user, marketRequests, trendingRequests, ed
                     podcastName={request.episode_name}
                     podcastDuration={request.duration}
                     podcastReleaseDate={request.date}
-                    showImage ={request.image}
+                    showImage={request.image}
                     hash={request.hash}
                     userId={user.user_id}
                     podcastLink={null}
@@ -146,7 +156,9 @@ export default function MarketPlace({ user, marketRequests, trendingRequests, ed
                     creditsRequired={1}
                   />
                 );
-              })}
+              })} */}
+
+              <span className="text-gray-400">Coming Soon... </span>
             </div>
           </section>
         </div>
@@ -176,21 +188,21 @@ export async function getServerSideProps(context) {
       requests: {
         where: {
           NOT: {
-            userId: session.user.uid
+            userId: session.user.uid,
           },
-          status: "Completed"    
-        }
-      }
+          status: "Completed",
+        },
+      },
     },
   });
 
   let userRequests = await prisma.request.findMany({
-     where: {
-        userId: session.user.uid
-      },
-      select: {
-        podcast_hash: true
-      }
+    where: {
+      userId: session.user.uid,
+    },
+    select: {
+      podcast_hash: true,
+    },
   });
 
   let userRequestsMap = {};
@@ -198,7 +210,9 @@ export async function getServerSideProps(context) {
     userRequestsMap[request["podcast_hash"]] = true;
   }
 
-  marketRequests = marketRequests.filter(req => ((req.hash in userRequestsMap) === false));
+  marketRequests = marketRequests.filter(
+    (req) => req.hash in userRequestsMap === false
+  );
 
   const user = await prisma.user.findUnique({
     where: {
@@ -206,13 +220,13 @@ export async function getServerSideProps(context) {
     },
   });
 
-  /* Get trending podcasts */ 
+  /* Get trending podcasts */
   let groupPodcasts = await prisma.request.groupBy({
-    by: ['podcast_hash'],
+    by: ["podcast_hash"],
     where: {
-      status: "Completed"
+      status: "Completed",
     },
-    _count: true 
+    _count: true,
   });
 
   groupPodcasts.sort((x, y) => {
@@ -224,30 +238,34 @@ export async function getServerSideProps(context) {
     return 0;
   });
 
-  groupPodcasts = groupPodcasts.slice(0,4);
-  let groupPodcastsKeys = { };
+  groupPodcasts = groupPodcasts.slice(0, 4);
+  let groupPodcastsKeys = {};
 
-  for ( const el of groupPodcasts ) {
-    groupPodcastsKeys[el.podcast_hash] = true;    
+  for (const el of groupPodcasts) {
+    groupPodcastsKeys[el.podcast_hash] = true;
   }
 
   console.log(groupPodcastsKeys);
 
-  let trendingPodcasts = marketRequests.filter(req => ((req.hash in groupPodcastsKeys)));
+  let trendingPodcasts = marketRequests.filter(
+    (req) => req.hash in groupPodcastsKeys
+  );
   console.log(trendingPodcasts);
-  /* Trending podcasts end */ 
+  /* Trending podcasts end */
 
-  /* Editors Picked Podcasts */ 
+  /* Editors Picked Podcasts */
   const editorPickedShows = getEditorPicked();
-  let editorPickedPodcasts = marketRequests.filter( req => (req.episode_name in editorPickedShows) );
+  let editorPickedPodcasts = marketRequests.filter(
+    (req) => req.episode_name in editorPickedShows
+  );
   console.log(editorPickedPodcasts);
 
   return {
     props: {
       user,
       marketRequests: JSON.parse(JSON.stringify(marketRequests)),
-      trendingRequests: JSON.parse(JSON.stringify(trendingPodcasts)), 
-      editorPickedPodcasts: JSON.parse(JSON.stringify(editorPickedPodcasts))
+      trendingRequests: JSON.parse(JSON.stringify(trendingPodcasts)),
+      editorPickedPodcasts: JSON.parse(JSON.stringify(editorPickedPodcasts)),
     },
   };
 }
@@ -262,6 +280,5 @@ function getEditorPicked() {
     "Ep 1. Anxious attachment and how it manifests in relationships": true,
     "President Joe Biden ON: How to Navigate the Path of Grief with Resilience and Hope & Ways to Make Challenging Decisions Under Pressure": true,
     "Why 'everything aligns' for Japanese stocks": true,
-
   };
 }
