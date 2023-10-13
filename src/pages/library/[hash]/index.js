@@ -6,7 +6,11 @@ import styles from "@/styles/SummaryIndividual.module.css";
 import SummaryEpisodeDetails from "@/components/library/summaries/SummaryEpisodeDetails";
 import ChaptersContainer from "@/components/library/summaries/ChaptersContainer";
 
-const { GetObjectCommand, S3Client } = require("@aws-sdk/client-s3");
+const {
+  GetObjectCommand,
+  S3Client,
+  ListObjectsV2Command,
+} = require("@aws-sdk/client-s3");
 
 const client = new S3Client({
   region: "ap-southeast-1",
@@ -22,6 +26,8 @@ const SummaryIndividualPage = ({
   podcastInfo,
   chapterSummary,
 }) => {
+  // console.log(chapterSummary);
+
   const podcastInfoJSON = JSON.parse(podcastInfo);
   const dummyData = {
     podcast_name: podcastInfoJSON["episode_name"],
@@ -29,7 +35,7 @@ const SummaryIndividualPage = ({
     duration: podcastInfoJSON["duration"],
     date: new Date(),
     image: podcastInfoJSON["image"],
-    chapters: chapterSummary["summary"],
+    chapters: chapterSummary,
   };
 
   const { chapters, ...podcast_details } = dummyData;
@@ -51,7 +57,7 @@ const SummaryIndividualPage = ({
         </div>
 
         <SummaryEpisodeDetails className="mt-8" data={podcast_details} />
-        <ChaptersContainer chapters={chapterSummary["summary"]} />
+        <ChaptersContainer chapters={chapterSummary} />
       </div>
     </div>
   );
@@ -104,16 +110,58 @@ export async function getServerSideProps(context) {
     },
   });
 
-  const chapterSummary = await getObject(`${context.query.hash}.json`);
+  // const temp = await getObject(context.query.hash + ".json");
+
+  const chapterSummary = await returnSummaryFiles(context.query.hash);
 
   return {
     props: {
       user,
       request: JSON.parse(JSON.stringify(userRequest)),
       podcastInfo: JSON.stringify(podcast_information),
-      chapterSummary: JSON.parse(chapterSummary),
+      chapterSummary: JSON.parse(JSON.stringify(chapterSummary)),
     },
   };
+}
+
+async function returnSummaryFiles(podcastHash) {
+  const listParams = {
+    Bucket: "podcrunch-summaries",
+    Prefix: podcastHash + "/",
+  };
+
+  try {
+    const listedObjects = await client.send(
+      new ListObjectsV2Command(listParams)
+    );
+
+    listedObjects.Contents.sort((a, b) => {
+      // Use localeCompare to perform a case-insensitive string comparison
+
+      return a.Key.localeCompare(b.Key, undefined, { sensitivity: "base" });
+    });
+
+    const summaryPromises = listedObjects.Contents.map((item) =>
+      getObject(item.Key)
+    );
+
+    let summaryArray = [];
+
+    for (const summaryPromise of summaryPromises) {
+      try {
+        const summaryObject = await summaryPromise;
+        const summaryParsedObject = JSON.parse(summaryObject);
+        summaryArray.push(...summaryParsedObject.summary);
+      } catch (error) {
+        console.error("Error processing summary:", error);
+        // Handle errors as needed
+      }
+    }
+
+    return summaryArray;
+  } catch (e) {
+    console.error("error finding all the summary files: ", e);
+  }
 }
 
 function getObject(key) {

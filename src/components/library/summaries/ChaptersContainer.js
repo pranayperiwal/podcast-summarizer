@@ -1,10 +1,10 @@
 import React from "react";
 import { useState } from "react";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+// import Accordion from "@mui/material/Accordion";
+// import AccordionDetails from "@mui/material/AccordionDetails";
+// import AccordionSummary from "@mui/material/AccordionSummary";
+// import Typography from "@mui/material/Typography";
+// import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import styles from "@/styles/components/summaries/ChaptersContainer.module.css";
 
 const ChaptersContainer = ({ chapters }) => {
@@ -62,18 +62,22 @@ const ChaptersContainer = ({ chapters }) => {
   //   );
   // };
 
-  function Accordion({ title, content }) {
+  function Accordion({ title, content, learnings }) {
     const [expanded, setExpanded] = useState(false);
     const toggleExpanded = () => setExpanded((current) => !current);
 
+    // console.log(learnings);
+
     return (
       <div
-        className={`border-b transition p-2 hover:bg-indigo-100 ${
+        className={`border-b transition p-2 hover:bg-indigo-100 mb-4 ${
           expanded ? "bg-indigo-50" : "bg-white"
         }`}
-        onClick={toggleExpanded}
       >
-        <div className="accordion-header cursor-pointer transition flex space-x-5 px-5 items-center h-16 select-none">
+        <div
+          className="accordion-header cursor-pointer transition flex space-x-5 px-5 items-center h-16 select-none"
+          onClick={toggleExpanded}
+        >
           {expanded ? <span>-</span> : <span>+</span>}
           <h3 className="font-semibold">{title}</h3>
         </div>
@@ -82,7 +86,36 @@ const ChaptersContainer = ({ chapters }) => {
             expanded ? "max-h-fit" : "max-h-0"
           }`}
         >
-          <p style={{whiteSpace:"pre-line"}} className="leading-6 font-light pb-4 text-justify">{content}</p>
+          {/* {learnings && (
+            <div>
+              <h2 style={{ color: "#8758FF", fontSize: 18, marginBottom: 5 }}>
+                Key Takeaways:
+              </h2>
+              <ul>
+                {learnings.map((learning, index) => {
+                  return (
+                    <li
+                      style={{
+                        listStyle: "outside",
+                        // fontSize: 17,
+                        marginBottom: 5,
+                      }}
+                      key={index}
+                    >
+                      {learning}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )} */}
+
+          <p
+            style={{ whiteSpace: "pre-line" }}
+            className="leading-6 font-light pb-4 text-justify mt-3"
+          >
+            {content}
+          </p>
         </div>
       </div>
     );
@@ -109,6 +142,7 @@ const ChaptersContainer = ({ chapters }) => {
                   key={index}
                   title={`Chapter ${index + 1}: ${chapter.title}`}
                   content={chapter.summary}
+                  learnings={chapter.learnings}
                 />
               );
             })}
