@@ -42,44 +42,36 @@ export default async function handler(req, res) {
   console.log(`Got transcript for ${hashValue}`);
 
   try {
-    // If the request is processing cancel future processes
-    if (
-      (await checkRequestStatus(hashValue, "Processing")) ||
-      (await checkRequestStatus(hashValue, "Completed"))
-    ) {
-      return res.status(200).json({ message: "Request Complete" });
-    }
+    if (await checkRequestStatus(hashValue, "In Progress")) {
+      //offload the processing to aws lambda
+      //send details to SQS
+      //details to be send:
+      // 1. transcript_id
+      // 2. hashValue
 
-    if (await checkRequestStatus(hashValue, "Error")) {
-      return res.status(200).json({ message: "Request Complete" });
-    }
+      const messageBody = { transcript_id, hashValue };
 
-    //offload the processing to aws lambda
-    //send details to SQS
-    //details to be send:
-    // 1. transcript_id
-    // 2. hashValue
-
-    const messageBody = { transcript_id, hashValue };
-
-    const command = new SendMessageCommand({
-      QueueUrl: SQS_QUEUE_URL,
-      MessageBody: JSON.stringify(messageBody),
-    });
-
-    //after that respond to the request with success or failure status
-    await sqsclient
-      .send(command)
-      .then((sqsRes) => {
-        console.log("Success response from sqs: ", sqsRes);
-        return res.status(200).send("Success");
-      })
-      .catch(async (err) => {
-        console.error("Error response from sqs: ", err);
-
-        await updateRequestDbStatus(hashValue, "Error");
-        return res.status(404).send("error in processing");
+      const command = new SendMessageCommand({
+        QueueUrl: SQS_QUEUE_URL,
+        MessageBody: JSON.stringify(messageBody),
       });
+
+      //after that respond to the request with success or failure status
+      await sqsclient
+        .send(command)
+        .then((sqsRes) => {
+          console.log("Success response from sqs: ", sqsRes);
+          return res.status(200).send("Success");
+        })
+        .catch(async (err) => {
+          console.error("Error response from sqs: ", err);
+
+          await updateRequestDbStatus(hashValue, "Error");
+          return res.status(404).send("error in processing");
+        });
+    } else {
+      return res.status(200).json({ message: "Request Complete" });
+    }
   } catch (err) {
     await updateRequestDbStatus(hashValue, "Error");
     console.error(err);

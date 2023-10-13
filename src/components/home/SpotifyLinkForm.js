@@ -3,6 +3,7 @@ import EpisodeDetails from "@/components/home/EpisodeDetails";
 import { ColorRing } from "react-loader-spinner";
 import styles from "@/styles/components/home/SpotifyLinkForm.module.css";
 import HintUI from "./HintUI";
+import axios from "axios";
 
 const SpotifyLinkForm = () => {
   const [episodeData, setEpisodeData] = useState({});
@@ -53,11 +54,16 @@ const SpotifyLinkForm = () => {
   }
 
   const validateLink = (link) => {
-    const pattern =
+    const pattern1 =
       /^https:\/\/open\.spotify\.com\/episode\/[a-zA-Z0-9]{22}\?si=[a-zA-Z0-9_-]+$/;
-    const match = pattern.test(link);
 
-    if (match) {
+    // const pattern2 =
+    //   /^https:\/\/spotify\.link\/[a-zA-Z0-9]+(?=[a-zA-Z0-9]{11}$)/;
+
+    const match1 = pattern1.test(link);
+    // const match2 = pattern2.test(link);
+
+    if (match1) {
       setValidLink(true);
       // console.log(true);
       return true;
